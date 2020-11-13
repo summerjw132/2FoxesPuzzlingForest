@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 7045160852408786492}
   - component: {fileID: 7045160852408786491}
   - component: {fileID: 7045160852408786495}
+  - component: {fileID: -4691761666310564150}
   m_Layer: 0
   m_Name: Turn-Based Player
   m_TagString: Untagged
@@ -214,3 +215,19 @@ MonoBehaviour:
   maxMovementRange: 20
   characterType: 0
   turnIndicator: {fileID: 0}
+--- !u!54 &-4691761666310564150
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7045160852408786490}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0

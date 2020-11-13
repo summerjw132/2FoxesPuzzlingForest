@@ -159,6 +159,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
     }
 
+    //
     private void UpdateTurnForPlayer()
     {
         if (!isMoving)//Deactivate controls if character isMoving from point to point
@@ -233,6 +234,19 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 turn.wasTurnPrev = true;
             }
         }
+    }
+
+    //Check if it is OK to move to the next
+    private bool OkayToMoveToNextTile(Vector3 nextTilePosition)
+    {        
+        //Check Walls
+        Collider[] wallHitColliders = Physics.OverlapSphere(nextTilePosition, 1);//1 is purely chosen arbitrarly
+        if (wallHitColliders.Length > 0) //You have someone with a collider here'
+        {
+            return true;
+        }
+
+        return false;
     }
 
     private void UpdateTurnForNPC()
