@@ -19,13 +19,19 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private GameObject turnIndicator = null;
     private int currentMovementRemaining;
     private bool isMoving = false;
-    private Vector3 targetMoveToPosition;
+    protected Vector3 targetMoveToPosition;
     
 
-    private enum CharacterType
+    public enum CharacterType
     {
         Player,
-        NPC
+        NPC,
+        Wall
+    }
+
+    public CharacterType GetCharacterType()
+    {
+        return characterType;
     }
 
 
@@ -74,6 +80,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         UpdateTurnIndicator();
 
         //MoveCharacter();
+        Fall();
 
         //If new position is ever updated (via player input or other external factors), move the character to the new position
         if(this.transform.position != targetMoveToPosition)
@@ -99,66 +106,19 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
     }
 
-
-    public abstract void SpecialAction();
-
-    private void UpdateTurnForPlayer_deprecated()
+    private void Fall()
     {
-        isTurn = turn.isTurn;
-
-        if (isTurn && turn.isEnabled)
+        if(!FloorIsPresent(this.transform.position) && !isMoving)
         {
-            //if it is turn, AND there is current movement remaining
-            //Listen for input, move accordingly
-
-            //else, 
-            if (currentMovementRemaining > 0)
-            {
-                if (Input.GetKeyDown(KeyCode.UpArrow))
-                {
-                    transform.position += Vector3.forward;
-                    currentMovementRemaining--;
-
-
-                }else if (Input.GetKeyDown(KeyCode.DownArrow))
-                {
-                    transform.position += Vector3.back;
-                    currentMovementRemaining--;
-
-
-                }else if (Input.GetKeyDown(KeyCode.LeftArrow))
-                {
-                    transform.position += Vector3.left;
-                    currentMovementRemaining--;
-
-                } else if (Input.GetKeyDown(KeyCode.RightArrow))
-                {
-                    //transform.position += Vector3.right;
-                    Vector3 currentPosition = transform.position;
-                    Vector3 newPosition = currentPosition + Vector3.right;
-
-                    Debug.Log("Current Position: " + currentPosition);
-                    Debug.Log("New Position: " + newPosition);
-
-                    this.transform.position = Vector3.MoveTowards(currentPosition, newPosition, 5f * Time.deltaTime);
-                    
-                    currentMovementRemaining--;
-                }
-            }
-            else
-            {
-                isTurn = false;
-                turn.isTurn = isTurn;
-                turn.wasTurnPrev = true;
-            }
-        }else if (!turn.isEnabled)
-        {
-            isTurn = false;
-            turn.isTurn = isTurn;
-            turn.wasTurnPrev = true;
+            targetMoveToPosition = this.transform.position + Vector3.down;
         }
     }
 
+
+    public abstract void SpecialAction();
+
+
+    //
     private void UpdateTurnForPlayer()
     {
         if (!isMoving)//Deactivate controls if character isMoving from point to point
@@ -174,48 +134,87 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                     {
                         //transform.position += Vector3.right;
                         Vector3 currentPosition = transform.position;
-                        targetMoveToPosition = currentPosition + Vector3.forward;
+                        if (OkayToMoveToNextTile(currentPosition + Vector3.forward))
+                        {
 
-                        currentMovementRemaining--;
+                            currentMovementRemaining--;
 
-                        Debug.Log("Current Position: " + currentPosition);
-                        Debug.Log("New Position: " + targetMoveToPosition);
+                            targetMoveToPosition = currentPosition + Vector3.forward;
+                            //Debug("Current Position: " + currentPosition);
+                            //Debug.Log("New Position: " + targetMoveToPosition);
+                        }
+
 
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow))
                     {
                         //transform.position += Vector3.right;
+                        //Vector3 currentPosition = transform.position;
+                        //targetMoveToPosition = currentPosition + Vector3.back;
+
+                        //currentMovementRemaining--;
+
+                        //Debug.Log("Current Position: " + currentPosition);
+                        //Debug.Log("New Position: " + targetMoveToPosition);
+
+                        //transform.position += Vector3.right;
                         Vector3 currentPosition = transform.position;
-                        targetMoveToPosition = currentPosition + Vector3.back;
+                        if (OkayToMoveToNextTile(currentPosition + Vector3.back))
+                        {
 
-                        currentMovementRemaining--;
+                            currentMovementRemaining--;
 
-                        Debug.Log("Current Position: " + currentPosition);
-                        Debug.Log("New Position: " + targetMoveToPosition);
-
+                            targetMoveToPosition = currentPosition + Vector3.back;
+                            //Debug("Current Position: " + currentPosition);
+                            //Debug.Log("New Position: " + targetMoveToPosition);
+                        }
                     }
                     else if (Input.GetKeyDown(KeyCode.LeftArrow))
                     {
                         //transform.position += Vector3.right;
+                        //Vector3 currentPosition = transform.position;
+                        //targetMoveToPosition = currentPosition + Vector3.left;
+
+                        //currentMovementRemaining--;
+
+                        //Debug.Log("Current Position: " + currentPosition);
+                        //Debug.Log("New Position: " + targetMoveToPosition);
+
+                        //transform.position += Vector3.right;
                         Vector3 currentPosition = transform.position;
-                        targetMoveToPosition = currentPosition + Vector3.left;
+                        if (OkayToMoveToNextTile(currentPosition + Vector3.left))
+                        {
 
-                        currentMovementRemaining--;
+                            currentMovementRemaining--;
 
-                        Debug.Log("Current Position: " + currentPosition);
-                        Debug.Log("New Position: " + targetMoveToPosition);
+                            targetMoveToPosition = currentPosition + Vector3.left;
+                            //Debug("Current Position: " + currentPosition);
+                            //Debug.Log("New Position: " + targetMoveToPosition);
+                        }
 
                     }
                     else if (Input.GetKeyDown(KeyCode.RightArrow))
                     {
                         //transform.position += Vector3.right;
+                        //Vector3 currentPosition = transform.position;
+                        //targetMoveToPosition = currentPosition + Vector3.right;
+
+                        //currentMovementRemaining--;
+
+                        //Debug.Log("Current Position: " + currentPosition);
+                        //Debug.Log("New Position: " + targetMoveToPosition);
+
+                        //transform.position += Vector3.right;
                         Vector3 currentPosition = transform.position;
-                        targetMoveToPosition = currentPosition + Vector3.right;
+                        if (OkayToMoveToNextTile(currentPosition + Vector3.right))
+                        {
 
-                        currentMovementRemaining--;
+                            currentMovementRemaining--;
 
-                        Debug.Log("Current Position: " + currentPosition);
-                        Debug.Log("New Position: " + targetMoveToPosition);
+                            targetMoveToPosition = currentPosition + Vector3.right;
+                            //Debug("Current Position: " + currentPosition);
+                            //Debug.Log("New Position: " + targetMoveToPosition);
+                        }
 
                     }
                 }
@@ -233,6 +232,59 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 turn.wasTurnPrev = true;
             }
         }
+    }
+
+    //Check if it is OK to move to the next
+    protected bool OkayToMoveToNextTile(Vector3 nextTilePosition)
+    {
+        //Check Walls
+        //Collider[] wallHitColliders = Physics.OverlapSphere(nextTilePosition, .1f);
+        //Collider[] floorHitCollider = Physics.OverlapSphere(nextTilePosition + Vector3.down, .1f);
+        
+        if (FloorIsPresent(nextTilePosition)) //There is a floor
+        {
+            if(NoWallIsPresent(nextTilePosition)) //There is no blocking wall 
+            {
+                return true;
+            }
+            else
+            {
+
+                GameObject wall = Physics.OverlapSphere(nextTilePosition, .1f)[0].gameObject;
+                PushableTurnBasedObject pushableWall = wall.GetComponent<PushableTurnBasedObject>();
+                if(pushableWall != null)
+                {
+                    return pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f);
+                }
+            }
+        }
+        //else //A wall is found
+        //{
+        //    GameObject wall = Physics.OverlapSphere(nextTilePosition, .1f)[0].gameObject;
+        //    PushableTurnBasedObject pushableWall = wall.GetComponent<PushableTurnBasedObject>();
+
+        //    pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f);
+        //}
+        
+        //Either there isa wall, or there is no floor to walk on
+        //Debug.Log("Wall Present: " + (wallHitColliders[0].gameObject.name ));
+        //Debug.Log("Floor present: " + (floorHitCollider[0].gameObject.name));
+        
+        return false;
+        
+    }
+
+    private bool NoWallIsPresent(Vector3 nextTilePosition)
+    {
+        Collider[] wallHitColliders = Physics.OverlapSphere(nextTilePosition, .1f);//1 is purely chosen arbitrarly
+
+        return wallHitColliders.Length == 0 || wallHitColliders[0].gameObject.GetComponent<BoxCollider>().isTrigger;
+    }
+    private bool FloorIsPresent(Vector3 nextTilePosition)
+    {
+        Collider[] floorHitCollider = Physics.OverlapSphere(nextTilePosition + Vector3.down, .1f);
+
+        return floorHitCollider.Length > 0;
     }
 
     private void UpdateTurnForNPC()
