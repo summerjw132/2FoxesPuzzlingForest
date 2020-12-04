@@ -2,12 +2,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelCompleteCondition : MonoBehaviour
 {
     public List<TurnBasedCharacter> registeredPlayerList;
     private int levelCompletePlayerCount = 0;
     private TurnManager turnManager = null;
+    [SerializeField]
+    private String nextLevelName;
     
     [SerializeField]
     private GameObject levelCompletePanel;
@@ -47,10 +50,18 @@ public class LevelCompleteCondition : MonoBehaviour
         if(levelCompletePlayerCount.Equals(registeredPlayerList.Count))
         {
             Debug.Log("You Win!");
+            
             if (levelCompletePanel != null)
             {
                 levelCompletePanel.SetActive(true);
             }
+            
+            if (nextLevelName.Trim().Length > 0 && nextLevelName != null)
+            {
+                SceneManager.LoadScene(nextLevelName);
+            }
         }
     }
+
+    
 }
