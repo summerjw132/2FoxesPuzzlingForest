@@ -14,4 +14,9 @@ public class DefaultTurnBasedCharacter : TurnBasedCharacter
        
          
     }
+
+    private void EndTurn()
+    {
+
+    }
 }
