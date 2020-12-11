@@ -92,7 +92,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             
             if (turn.isTurn)
             {
-                Debug.Log(this.gameObject.name + ": I'm moving");
+                //These msgs are super loud bc they print every update
+                //Debug.Log(this.gameObject.name + ": I'm moving");
             }
         }
         else
@@ -101,7 +102,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
             if (turn.isTurn)
             {
-                Debug.Log(this.gameObject.name + ": I'm standing still");
+                //Debug.Log(this.gameObject.name + ": I'm standing still");
             }
         }
 
@@ -251,7 +252,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         
         if (FloorIsPresent(nextTilePosition)) //There is a floor
         {
-            if(NoWallIsPresent(nextTilePosition)) //There is no blocking wall 
+            //Second parameter is whether or not it's the fox trying to move
+            if(NoWallIsPresent(nextTilePosition, this.gameObject.tag.Equals("Player"))) //There is no blocking wall 
             {
                 return true;
             }
@@ -290,17 +292,55 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         
     }
 
-    protected bool NoWallIsPresent(Vector3 nextTilePosition)
+    //added second parameter to deal with the hut (okay iff player is the object trying to move)
+    protected bool NoWallIsPresent(Vector3 nextTilePosition, bool isPlayer)
     {
         Collider[] wallHitColliders = Physics.OverlapSphere(nextTilePosition, .1f);//1 is purely chosen arbitrarly
 
-        return wallHitColliders.Length == 0 || wallHitColliders[0].gameObject.GetComponent<BoxCollider>().isTrigger;
+        if (wallHitColliders.Length > 0) //there's something here, could be hut or wall etc.
+        {
+            //if it's the player moving, return true iff the collider belongs to the hut
+            if (isPlayer)
+            {
+                return wallHitColliders[0].gameObject.GetComponent<BoxCollider>().isTrigger;
+            }
+            else //if it's not the player moving, return false no matter what since a collider is in front
+            {
+                return false;
+            }
+        }
+        else //no Colliders in front, so wallHitColliders.Length == 0 is true
+        {
+            return true;
+        }
     }
+    //Checks to see if there's floor under the next tile
     protected bool FloorIsPresent(Vector3 nextTilePosition)
     {
         Collider[] floorHitCollider = Physics.OverlapSphere(nextTilePosition + Vector3.down, .1f);
 
-        return floorHitCollider.Length > 0;
+        if (floorHitCollider.Length > 0) //something is there, but is it falling?
+        {
+            //Grass tiles don't have rigidBody, only walls. So if there's no rigidBody, floor is gucci
+            //  If there's a rigidBody, we need to check and make sure wall isn't falling
+            if (floorHitCollider[0].gameObject.TryGetComponent(out Rigidbody potentialFloor))
+            {
+                if (potentialFloor.velocity.y == 0) //if not falling, return true
+                {
+                    return true;
+                }
+                else
+                {
+                    Debug.Log("That floor is falling!");
+                    return false;
+                }
+            }
+            else //no Rigidbody on floor => floor is grass tile => okay
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void UpdateTurnForNPC()
