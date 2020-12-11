@@ -13,7 +13,7 @@ public class ResetScene : MonoBehaviour
             ResetCurrentScene();
         }
 
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             QuitGame();
         }

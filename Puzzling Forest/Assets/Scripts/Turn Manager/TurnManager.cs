@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
     //List of players under turn system
     public List<TurnInstance> playersGroup;
+
+    [SerializeField]
+    private Text moveCountUIText;
     [SerializeField]
     private int turnCycleCount = 0;
 
-    private int currentPlayerMaxMovementRange = 0;
-    private int currentPlayerMovementRangeRemaining = 0;
+
+
 
     private void Start()
     {
@@ -23,6 +27,13 @@ public class TurnManager : MonoBehaviour
         UpdateTurns();
     }
 
+    public void SetMoveCountUIText(string text)
+    {
+        if(moveCountUIText != null)
+        {
+            moveCountUIText.text = text;
+        }
+    }
     //Resets the turn system to start with the first player 
     void ResetTurns()
     {
@@ -58,6 +69,7 @@ public class TurnManager : MonoBehaviour
     {
         for(int i = 0; i < playersGroup.Count; i++)
         {
+
             //Only enabled if the current object is a TurnBasedCharacter AND if its turn is enabled 
             if (playersGroup[i].playerGameObject.GetComponent<TurnBasedCharacter>() && playersGroup[i].isEnabled) 
             {

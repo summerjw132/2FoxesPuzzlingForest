@@ -17,7 +17,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private CharacterType characterType = CharacterType.Player;
     [SerializeField]
     private GameObject turnIndicator = null;
-    private int currentMovementRemaining;
+    protected int currentMovementRemaining;
     private bool isMoving = false;
     protected Vector3 targetMoveToPosition;
     
@@ -69,6 +69,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         if (characterType == CharacterType.Player)
         {
             UpdateTurnForPlayer();
+
 
         }
         if (characterType == CharacterType.NPC)
@@ -128,9 +129,16 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
             if (isTurn && turn.isEnabled)
             {
+                turnManager.SetMoveCountUIText(currentMovementRemaining.ToString());//Update the movement count UI text
+
+                if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
+                {
+                    currentMovementRemaining = 0;
+                }
+
                 if (currentMovementRemaining > 0)
                 {
-                    if (Input.GetKeyDown(KeyCode.UpArrow))
+                    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                     {
                         //transform.position += Vector3.right;
                         Vector3 currentPosition = transform.position;
@@ -146,7 +154,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
 
                     }
-                    else if (Input.GetKeyDown(KeyCode.DownArrow))
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
                     {
                         //transform.position += Vector3.right;
                         //Vector3 currentPosition = transform.position;
@@ -169,7 +177,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                             //Debug.Log("New Position: " + targetMoveToPosition);
                         }
                     }
-                    else if (Input.GetKeyDown(KeyCode.LeftArrow))
+                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                     {
                         //transform.position += Vector3.right;
                         //Vector3 currentPosition = transform.position;
@@ -193,7 +201,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         }
 
                     }
-                    else if (Input.GetKeyDown(KeyCode.RightArrow))
+                    else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
                     {
                         //transform.position += Vector3.right;
                         //Vector3 currentPosition = transform.position;
@@ -249,14 +257,22 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             }
             else
             {
-
                 GameObject wall = Physics.OverlapSphere(nextTilePosition, .1f)[0].gameObject;
                 PushableTurnBasedObject pushableWall = wall.GetComponent<PushableTurnBasedObject>();
+
                 if(pushableWall != null)
                 {
-                    return pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f);
+                 
+                    if (this.gameObject.tag.Equals("Player") || pushableWall.IsStackPushingEnabled()) // If this object is a player OR (if not a player, and) the pushable object has stack pushing
+                    {
+                        return pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f);
+                    }
+           
                 }
             }
+        }else if (!this.gameObject.tag.Equals("Player"))//This ensures that we can push off an edge (no floor)
+        {
+            return true;
         }
         //else //A wall is found
         //{
@@ -274,13 +290,13 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         
     }
 
-    private bool NoWallIsPresent(Vector3 nextTilePosition)
+    protected bool NoWallIsPresent(Vector3 nextTilePosition)
     {
         Collider[] wallHitColliders = Physics.OverlapSphere(nextTilePosition, .1f);//1 is purely chosen arbitrarly
 
         return wallHitColliders.Length == 0 || wallHitColliders[0].gameObject.GetComponent<BoxCollider>().isTrigger;
     }
-    private bool FloorIsPresent(Vector3 nextTilePosition)
+    protected bool FloorIsPresent(Vector3 nextTilePosition)
     {
         Collider[] floorHitCollider = Physics.OverlapSphere(nextTilePosition + Vector3.down, .1f);
 
