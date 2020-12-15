@@ -457,6 +457,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &41275940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -557,6 +558,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &41303642
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -714,6 +716,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &67689905
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1054,6 +1057,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &110399484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1430,6 +1434,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &128945462
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1514,6 +1519,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &136008896
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1958,6 +1964,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5587fba3f225b704e95e68bc89400b0d, type: 3}
+--- !u!1001 &174177028
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2540174764805835777, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_Name
+      value: Game Manager
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 44.178207
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -102.52348
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 64.94553
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_RootOrder
+      value: 256
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
 --- !u!1 &181513644 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1445259418899802, guid: bf382bdae4dd23b428474523b2028c22, type: 3}
@@ -2399,6 +2462,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &235293122
 GameObject:
   m_ObjectHideFlags: 0
@@ -2884,6 +2948,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &303806687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3523,6 +3588,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &357582516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3817,6 +3883,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &362239288 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -4020,6 +4087,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &370994883
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4474,6 +4542,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &401678800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5362,6 +5431,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &490140532
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5542,6 +5612,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &509563143 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -5963,6 +6034,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &546561675
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6143,6 +6215,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &566629295
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6721,6 +6794,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &602718320
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6821,6 +6895,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &605751737 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8900967983584345581, guid: 97355614d1e4c9d428b57d5542fbe9e0, type: 3}
@@ -6848,6 +6923,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &606391381
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6948,6 +7024,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &618667063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7048,6 +7125,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &618956584
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7148,6 +7226,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &632312651
 GameObject:
   m_ObjectHideFlags: 0
@@ -8383,6 +8462,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &694390826
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8815,6 +8895,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &720063314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8995,6 +9076,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &736367044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9095,6 +9177,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &740845499
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9195,6 +9278,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &746340899
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9466,6 +9550,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &750747030
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9846,6 +9931,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &788535940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9946,6 +10032,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &794965745
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10046,6 +10133,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &797867627
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10226,6 +10314,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &799524889
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10439,6 +10528,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &820400142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10836,6 +10926,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &864170695
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11050,6 +11141,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &877128097
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11230,6 +11322,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &895988261
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11660,6 +11753,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &937572471 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1445259418899802, guid: bf382bdae4dd23b428474523b2028c22, type: 3}
@@ -12481,6 +12575,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1003737991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12718,6 +12813,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1015048933
 GameObject:
   m_ObjectHideFlags: 0
@@ -13101,6 +13197,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1042213634 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8900967983584345581, guid: 97355614d1e4c9d428b57d5542fbe9e0, type: 3}
@@ -13128,6 +13225,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1046002341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13228,6 +13326,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1048600079
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13408,6 +13507,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1055891100
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13797,6 +13897,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1086143770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14170,6 +14271,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1106124597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14350,6 +14452,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1112192743
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14507,6 +14610,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1136815936
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14607,6 +14711,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1141886063
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14707,6 +14812,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1148621346
 GameObject:
   m_ObjectHideFlags: 0
@@ -14902,6 +15008,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1152155916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15059,6 +15166,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1171983835
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15371,6 +15479,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1183295954
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15613,6 +15722,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1192816969
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16034,6 +16144,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1233500658
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16248,6 +16359,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1246198207
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16348,6 +16460,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1275337773
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16536,6 +16649,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1280502433
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16840,6 +16954,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1290822290
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17377,6 +17492,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1317250724
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17778,6 +17894,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1380124988
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17958,6 +18075,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1383522840
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18156,6 +18274,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1415615424
 GameObject:
   m_ObjectHideFlags: 0
@@ -18599,6 +18718,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1445650752 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -18928,6 +19048,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1473181816
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19028,6 +19149,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1475586629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19398,6 +19520,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1493978841
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19768,6 +19891,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1512226058 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -19922,6 +20046,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1538746539
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20102,6 +20227,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1542190797
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20985,6 +21111,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1622798615
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21172,6 +21299,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1635176947
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21272,6 +21400,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1639315081
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21570,6 +21699,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1670964373
 GameObject:
   m_ObjectHideFlags: 0
@@ -21982,6 +22112,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1696116662 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -22384,6 +22515,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1719650991
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22621,6 +22753,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1752268456
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22721,6 +22854,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1756514372 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8900967983584345581, guid: 97355614d1e4c9d428b57d5542fbe9e0, type: 3}
@@ -22748,6 +22882,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1762413824
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23088,6 +23223,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!4 &1778345353 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4500155699262478, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -23193,6 +23329,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1781352907
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23413,6 +23550,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1820845789
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23513,6 +23651,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1829896404
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23613,6 +23752,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1835054188
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23900,6 +24040,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1888926395
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24000,6 +24141,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1904829383
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24084,6 +24226,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1914496568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24496,6 +24639,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1935891915
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24795,6 +24939,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1950855293
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24895,6 +25040,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!4 &1952394663 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4500155699262478, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -25057,6 +25203,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!850595691 &1962899202
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -25412,6 +25559,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &1982689235
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25706,6 +25854,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &1995377286
 GameObject:
   m_ObjectHideFlags: 0
@@ -26482,6 +26631,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &2058168021
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26582,6 +26732,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &2058910656
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26819,6 +26970,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &2068012924
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27033,6 +27185,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &2078187413
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27133,6 +27286,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1 &2087610842 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -27269,6 +27423,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &2095849740
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27369,6 +27524,7 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
 --- !u!1001 &2124772710
 PrefabInstance:
   m_ObjectHideFlags: 0
