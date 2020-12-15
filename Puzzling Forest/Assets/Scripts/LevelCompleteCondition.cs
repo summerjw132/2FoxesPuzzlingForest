@@ -55,11 +55,14 @@ public class LevelCompleteCondition : MonoBehaviour
             {
                 levelCompletePanel.SetActive(true);
             }
-            
-            if (nextLevelName.Trim().Length > 0 && nextLevelName != null)
-            {
+
+#if UNITY_EDITOR
                 SceneManager.LoadScene(nextLevelName);
-            }
+#else
+         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+#endif
+
+            
         }
     }
 
