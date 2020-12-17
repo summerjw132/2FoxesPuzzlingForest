@@ -20,8 +20,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected int currentMovementRemaining;
     private bool isMoving = false;
     protected Vector3 targetMoveToPosition;
-    //used for determining if floor is falling
-    protected Vector3 oldPosition;
     
 
     public enum CharacterType
@@ -84,7 +82,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
         //MoveCharacter();
         Fall();
-        oldPosition = this.transform.position;
 
         //If new position is ever updated (via player input or other external factors), move the character to the new position
         if(this.transform.position != targetMoveToPosition)
@@ -92,7 +89,13 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
             this.transform.position = Vector3.MoveTowards(this.transform.position, targetMoveToPosition, 5f * Time.deltaTime);
             isMoving = true;
-            
+
+            //Log whenever a non-player is moving
+            //if (!this.gameObject.tag.Equals("Player") && this.gameObject.transform.position.y >= 0)
+            //{
+            //    Debug.Log(this.gameObject.name + ": I'm moving");
+            //}
+
             if (turn.isTurn)
             {
                 //These msgs are super loud bc they print every update
@@ -328,15 +331,15 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         {
             //Now we need to make sure the potential floor (owner of box collider) isn't falling before it counts as floor
             GameObject potentialFloor = floorHitCollider[0].gameObject;
-            
+
             //Can only be falling if it's a pushable wall, so we'll check for that script
             PushableTurnBasedObject pushableScript = potentialFloor.GetComponent<PushableTurnBasedObject>();
 
             //if pushableScript is NOT null, then the potential floor is a pushable wall, let's check for falling
             if (pushableScript != null)
             {
-                //if curPosition != oldPosition the floor is moving and therefore shouldn't be a floor (oldPosition updated after this check each frame)
-                if (potentialFloor.transform.position != pushableScript.oldPosition)
+                //if the floor is moving, that's no good!
+                if (pushableScript.isMoving)
                 {
                     Debug.Log("That floor is falling!");
                     return false;
