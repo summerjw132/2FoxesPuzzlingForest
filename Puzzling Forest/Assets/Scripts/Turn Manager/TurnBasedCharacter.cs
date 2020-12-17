@@ -20,6 +20,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected int currentMovementRemaining;
     private bool isMoving = false;
     protected Vector3 targetMoveToPosition;
+    //used for determining if floor is falling
+    protected Vector3 oldPosition;
     
 
     public enum CharacterType
@@ -82,6 +84,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
         //MoveCharacter();
         Fall();
+        oldPosition = this.transform.position;
 
         //If new position is ever updated (via player input or other external factors), move the character to the new position
         if(this.transform.position != targetMoveToPosition)
@@ -314,32 +317,41 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             return true;
         }
     }
-    //Checks to see if there's floor under the next tile
+
+    //Checks to see if there's floor under the given tile
     protected bool FloorIsPresent(Vector3 nextTilePosition)
     {
+        //is there a box collider in the tile below the given tile?
         Collider[] floorHitCollider = Physics.OverlapSphere(nextTilePosition + Vector3.down, .1f);
 
-        if (floorHitCollider.Length > 0) //something is there, but is it falling?
+        if (floorHitCollider.Length > 0) //if this array isn't empty, there is a box collider
         {
-            //Grass tiles don't have rigidBody, only walls. So if there's no rigidBody, floor is gucci
-            //  If there's a rigidBody, we need to check and make sure wall isn't falling
-            if (floorHitCollider[0].gameObject.TryGetComponent(out Rigidbody potentialFloor))
+            //Now we need to make sure the potential floor (owner of box collider) isn't falling before it counts as floor
+            GameObject potentialFloor = floorHitCollider[0].gameObject;
+            
+            //Can only be falling if it's a pushable wall, so we'll check for that script
+            PushableTurnBasedObject pushableScript = potentialFloor.GetComponent<PushableTurnBasedObject>();
+
+            //if pushableScript is NOT null, then the potential floor is a pushable wall, let's check for falling
+            if (pushableScript != null)
             {
-                if (potentialFloor.velocity.y == 0) //if not falling, return true
-                {
-                    return true;
-                }
-                else
+                //if curPosition != oldPosition the floor is moving and therefore shouldn't be a floor (oldPosition updated after this check each frame)
+                if (potentialFloor.transform.position != pushableScript.oldPosition)
                 {
                     Debug.Log("That floor is falling!");
                     return false;
                 }
+                else //floor is stationary, good!
+                {
+                    return true;
+                }
             }
-            else //no Rigidbody on floor => floor is grass tile => okay
+            else //floor isn't pushable and therefore can't be falling so this is also good
             {
                 return true;
             }
         }
+        //there was no box collider in the first place; no floor
         return false;
     }
 
