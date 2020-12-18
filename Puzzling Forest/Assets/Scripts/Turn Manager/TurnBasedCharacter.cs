@@ -20,6 +20,9 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected int currentMovementRemaining;
     private bool isMoving = false;
     protected Vector3 targetMoveToPosition;
+    //animation
+    Animator foxAnim;
+    Transform foxTransform;
     
 
     public enum CharacterType
@@ -61,6 +64,19 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
         ResetMovement();
 
+        if (characterType == CharacterType.Player)
+        {
+            foxAnim = GetComponent<Animator>();
+            for (int i = 0; i < this.gameObject.transform.childCount - 1; i++)
+            {
+                Debug.Log(this.gameObject.transform.GetChild(i).transform.name);
+                if (this.gameObject.transform.GetChild(i).transform.name == "Fox")
+                {
+                    foxTransform = this.gameObject.transform.GetChild(i).transform;
+                }
+            }
+        }
+
     }
 
     // Update is called once per frame
@@ -89,19 +105,30 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
             this.transform.position = Vector3.MoveTowards(this.transform.position, targetMoveToPosition, 5f * Time.deltaTime);
             isMoving = true;
+
+            if (characterType == CharacterType.Player)
+            {
+                foxAnim.SetInteger("fwd", 1);
+            }
             
             if (turn.isTurn)
             {
-                Debug.Log(this.gameObject.name + ": I'm moving");
+                //Debug.Log(this.gameObject.name + ": I'm moving");
             }
         }
         else
         {
             isMoving = false;
 
+            //if it's a fox, idle animation
+            if (characterType == CharacterType.Player)
+            {
+                foxAnim.SetInteger("fwd", 0);
+            }
+
             if (turn.isTurn)
             {
-                Debug.Log(this.gameObject.name + ": I'm standing still");
+                //Debug.Log(this.gameObject.name + ": I'm standing still");
             }
         }
 
@@ -148,6 +175,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                             currentMovementRemaining--;
 
                             targetMoveToPosition = currentPosition + Vector3.forward;
+                            foxTransform.LookAt(new Vector3(0,0,100));
                             //Debug("Current Position: " + currentPosition);
                             //Debug.Log("New Position: " + targetMoveToPosition);
                         }
@@ -173,6 +201,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                             currentMovementRemaining--;
 
                             targetMoveToPosition = currentPosition + Vector3.back;
+                            foxTransform.LookAt(new Vector3(0, 0, -100));
                             //Debug("Current Position: " + currentPosition);
                             //Debug.Log("New Position: " + targetMoveToPosition);
                         }
@@ -196,6 +225,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                             currentMovementRemaining--;
 
                             targetMoveToPosition = currentPosition + Vector3.left;
+                            foxTransform.LookAt(new Vector3(-100, 0, 0));
                             //Debug("Current Position: " + currentPosition);
                             //Debug.Log("New Position: " + targetMoveToPosition);
                         }
@@ -220,6 +250,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                             currentMovementRemaining--;
 
                             targetMoveToPosition = currentPosition + Vector3.right;
+                            foxTransform.LookAt(new Vector3(100, 0, 0));
                             //Debug("Current Position: " + currentPosition);
                             //Debug.Log("New Position: " + targetMoveToPosition);
                         }
