@@ -248,6 +248,7 @@ GameObject:
   - component: {fileID: 7045160852408786491}
   - component: {fileID: 7045160852408786495}
   - component: {fileID: -4691761666310564150}
+  - component: {fileID: 577549032585775114}
   m_Layer: 0
   m_Name: Turn-Based Player
   m_TagString: Player
@@ -354,7 +355,7 @@ MonoBehaviour:
     wasTurnPrev: 0
     isEnabled: 1
   isTurn: 0
-  maxMovementRange: 5
+  maxMovementRange: 10
   characterType: 0
   turnIndicator: {fileID: 0}
 --- !u!54 &-4691761666310564150
@@ -373,6 +374,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!95 &577549032585775114
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7045160852408786490}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 91e4778cdfb185d4d9bfe81556dc4333, type: 3}
+  m_Controller: {fileID: 9100000, guid: 0c5b7ffa0a986b24ea0ddfc7e545c76b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &4846917662285799069
 PrefabInstance:
   m_ObjectHideFlags: 0
