@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 59f000c0d8cc61543a75b6ecdfe0d0d1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -4918,18 +4918,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turn-Based System
       objectReference: {fileID: 0}
-    - target: {fileID: 1576112975740957449, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
-      propertyPath: playersGroup.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1576112975740957449, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
-      propertyPath: playersGroup.Array.data[0].playerGameObject
-      value: 
-      objectReference: {fileID: 1941686966}
-    - target: {fileID: 1576112975740957449, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
-      propertyPath: playersGroup.Array.data[1].playerGameObject
-      value: 
-      objectReference: {fileID: 1187475221}
     - target: {fileID: 1576112975740957454, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 29.581774
@@ -5747,6 +5735,10 @@ PrefabInstance:
     - target: {fileID: 7045160852408786494, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7045160852408786495, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
+      propertyPath: maxMovementRange
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
@@ -14974,11 +14966,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.9969912, y: 0.99586296, z: 0.90747225}
   m_Center: {x: 0.007742496, y: 0.0009924918, z: 0.0035479972}
---- !u!1 &1187475221 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7045160852408786490, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-  m_PrefabInstance: {fileID: 454715185}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1191218039
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19921,6 +19908,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7045160852408786495, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
+      propertyPath: maxMovementRange
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
 --- !u!1 &1573047137 stripped
@@ -24727,11 +24718,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.000024, y: 1.0013161, z: 1.000024}
   m_Center: {x: 0, y: -0.0047070086, z: 0}
---- !u!1 &1941686966 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7045160852408786490, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-  m_PrefabInstance: {fileID: 1566778654}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1943904450 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}

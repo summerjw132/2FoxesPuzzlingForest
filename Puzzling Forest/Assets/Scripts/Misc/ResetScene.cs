@@ -18,12 +18,13 @@ public class ResetScene : MonoBehaviour
             QuitGame();
         }
     }
-    private void ResetCurrentScene()
+    public void ResetCurrentScene()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    private void QuitGame()
+
+    public void QuitGame()
     {
         // save any game data here
         #if UNITY_EDITOR
