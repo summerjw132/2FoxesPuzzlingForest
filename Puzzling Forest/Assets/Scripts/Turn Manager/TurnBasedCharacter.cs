@@ -23,6 +23,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     //animation
     Animator foxAnim;
     Transform foxTransform;
+    private bool thisMoveIsAPush = false;
     
 
     public enum CharacterType
@@ -102,6 +103,13 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         //If new position is ever updated (via player input or other external factors), move the character to the new position
         if(this.transform.position != targetMoveToPosition)
         {
+            if (characterType == CharacterType.Player)
+            {
+                if (thisMoveIsAPush)
+                    foxAnim.SetInteger("push", 1);
+                else
+                    foxAnim.SetInteger("fwd", 1);
+            }
 
             this.transform.position = Vector3.MoveTowards(this.transform.position, targetMoveToPosition, 5f * Time.deltaTime);
             isMoving = true;
@@ -117,10 +125,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 //            {
 //                //These msgs are super loud bc they print every update
 //=======
-            if (characterType == CharacterType.Player)
-            {
-                foxAnim.SetInteger("fwd", 1);
-            }
+           
             
             if (turn.isTurn)
             {
@@ -135,7 +140,13 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             //if it's a fox, idle animation
             if (characterType == CharacterType.Player)
             {
-                foxAnim.SetInteger("fwd", 0);
+                if (thisMoveIsAPush)
+                {
+                    foxAnim.SetInteger("push", 0);
+                    thisMoveIsAPush = false;
+                }
+                else
+                    foxAnim.SetInteger("fwd", 0);
             }
 
             if (turn.isTurn)
@@ -309,7 +320,13 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                  
                     if (this.gameObject.tag.Equals("Player") || pushableWall.IsStackPushingEnabled()) // If this object is a player OR (if not a player, and) the pushable object has stack pushing
                     {
-                        return pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f);
+                        if (this.gameObject.tag.Equals("Player"))
+                        {
+                            //This just uses the result to determine if the fox needs to do a pushing animation
+                            return pushAnim(pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f));
+                        }
+                        else
+                            return pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f);
                     }
            
                 }
@@ -392,6 +409,15 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
         //there was no box collider in the first place; no floor
         return false;
+    }
+
+    protected bool pushAnim(bool pushed)
+    {
+        if (pushed)
+        {
+            thisMoveIsAPush = true;
+        }
+        return pushed;
     }
 
     private void UpdateTurnForNPC()
