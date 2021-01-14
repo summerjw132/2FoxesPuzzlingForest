@@ -111,6 +111,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   TurnSpeed: 0.5
   CameraPivot: {fileID: 5066198756215620835}
+  Zoom: 0
+  cam: {fileID: 7027430617553730210}
+  zoomSpeed: 3
+  Max: 0
+  Min: 0
+  ZoomLerp: 10
 --- !u!1 &7027430617553730204
 GameObject:
   m_ObjectHideFlags: 0

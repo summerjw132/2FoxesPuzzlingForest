@@ -9,8 +9,8 @@ public class CameraMovement : MonoBehaviour
     public GameObject CameraPivot;
     public float Zoom;
     public Camera cam;
-    public float zoomSpeed = 3f;
-    public float Max, Min;
+    public float zoomSpeed = 20f;
+    public float Max = 60, Min = 40;
     public float ZoomLerp = 10;
     // Start is called before the first frame update
     void Start()
@@ -25,7 +25,7 @@ public class CameraMovement : MonoBehaviour
         float scrollData;
         scrollData = Input.GetAxis("Mouse ScrollWheel");
         Zoom -= scrollData * zoomSpeed;
-        Zoom = Mathf.Clamp(Zoom, 40, 60);
+        Zoom = Mathf.Clamp(Zoom, Min, Max);
         cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, Zoom, Time.deltaTime * ZoomLerp);
         if (Input.GetKey(KeyCode.Z))
         {
