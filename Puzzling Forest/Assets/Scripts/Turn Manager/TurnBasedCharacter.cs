@@ -37,6 +37,16 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         return characterType;
     }
 
+    public bool GetIsMoving()
+    {
+        return isMoving;
+    }
+
+    public void SetTargetMoveToPosition(Vector3 newTargetMoveToPosition)
+    {
+        this.targetMoveToPosition = newTargetMoveToPosition;
+    }
+
 
     void Start()
     {
@@ -78,6 +88,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
 
     }
+
 
     // Update is called once per frame
     void Update()
@@ -309,7 +320,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                  
                     if (this.gameObject.tag.Equals("Player") || pushableWall.IsStackPushingEnabled()) // If this object is a player OR (if not a player, and) the pushable object has stack pushing
                     {
-                        return pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f);
+                        return pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f, this.gameObject);
                     }
            
                 }
@@ -429,4 +440,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             turnIndicator.SetActive(isTurn);
         }
     }
+
+
 }
