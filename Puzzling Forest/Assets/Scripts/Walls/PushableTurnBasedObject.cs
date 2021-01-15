@@ -9,8 +9,8 @@ public class PushableTurnBasedObject : TurnBasedCharacter
     [SerializeField]
     private CharacterConstraint characterConstraint = CharacterConstraint.None;
 
-    private string Fox_1 = "Turn-Based Player";
-    private string Fox_2 = "Turn-Based Player (1)";
+    private List<string> Fox_1_names = new List<string> { "Turn-Based Player", "Turn-Based Player #1" };
+    private List<string> Fox_2_names = new List<string> { "Turn-Based Player (1)", "Turn-Based Player #2" };
 
     public enum CharacterConstraint
     {
@@ -38,7 +38,7 @@ public class PushableTurnBasedObject : TurnBasedCharacter
         switch (characterConstraint)
         {
             case CharacterConstraint.Fox_1:
-                if (pusher.name == Fox_1)
+                if (Fox_1_names.Contains(pusher.name))
                     break;
                 else
                 {
@@ -47,7 +47,7 @@ public class PushableTurnBasedObject : TurnBasedCharacter
                 }
 
             case CharacterConstraint.Fox_2:
-                if (pusher.name == Fox_2)
+                if (Fox_2_names.Contains(pusher.name))
                     break;
                 else
                 {
