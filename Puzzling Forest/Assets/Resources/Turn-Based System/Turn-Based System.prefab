@@ -306,7 +306,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6142749719602915835
 RectTransform:
   m_ObjectHideFlags: 0
@@ -387,7 +387,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &722414094954703426
 RectTransform:
   m_ObjectHideFlags: 0
@@ -466,7 +466,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &107566230560562872
 RectTransform:
   m_ObjectHideFlags: 0
@@ -545,7 +545,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6409373826432368981
 RectTransform:
   m_ObjectHideFlags: 0
@@ -663,6 +663,8 @@ MonoBehaviour:
     isEnabled: 1
   moveCountUIText: {fileID: 3313891022667235846}
   turnCycleCount: 0
+  totalMoveCount: 0
+  isLevelComplete: 0
 --- !u!1 &4240299950047079102
 GameObject:
   m_ObjectHideFlags: 0
@@ -1084,19 +1086,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1755419841877342092, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -47
+      value: 0.000011444
       objectReference: {fileID: 0}
     - target: {fileID: 1755419841877342092, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 19.3
+      value: -0.0000076294
       objectReference: {fileID: 0}
     - target: {fileID: 1755419842175648978, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -47.00002
+      value: 0.000011444
       objectReference: {fileID: 0}
     - target: {fileID: 1755419842175648978, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 185.29999
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: 2499758384261605623, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 3153869542149152619, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
