@@ -14,6 +14,7 @@ public class PushableTurnBasedObject : TurnBasedCharacter
         None,
         Constrained_to_X,
         Constrained_to_Z
+    }
 
     private CharacterConstraint characterConstraint = CharacterConstraint.None;
 
