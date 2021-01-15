@@ -1151,6 +1151,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1 &96634966 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -3585,6 +3586,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1 &306853329 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -8261,6 +8263,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1 &606645254 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -10148,6 +10151,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1001 &722087586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10522,6 +10526,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1001 &740592067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11404,39 +11409,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97355614d1e4c9d428b57d5542fbe9e0, type: 3}
---- !u!1 &800918567 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1000533656573468, guid: c36050967e3280d47920c1d8bf28af92, type: 3}
-  m_PrefabInstance: {fileID: 67689905}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &800918571
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 800918567}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.1153519, y: 1.84232, z: 1.1225691}
-  m_Center: {x: 0.028982013, y: 1.370606, z: 0.011517495}
---- !u!114 &800918572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 800918567}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be133162c0506b449809a95214ccd56b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  registeredPlayerList: []
-  nextLevelName: 
-  levelCompletePanel: {fileID: 0}
 --- !u!1 &802153313
 GameObject:
   m_ObjectHideFlags: 0
@@ -13496,6 +13468,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1 &945052246
 GameObject:
   m_ObjectHideFlags: 0
@@ -15563,6 +15536,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1 &1048162982
 GameObject:
   m_ObjectHideFlags: 0
@@ -16269,6 +16243,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1001 &1085509571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16542,6 +16517,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1 &1129197949
 GameObject:
   m_ObjectHideFlags: 0
@@ -17786,6 +17762,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!4 &1222417967 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4500155699262478, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -18265,6 +18242,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1001 &1256729298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23346,6 +23324,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1001 &1536841632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28782,6 +28761,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1 &1920230829
 GameObject:
   m_ObjectHideFlags: 0
@@ -32029,6 +32009,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  characterConstraint: 0
 --- !u!1 &2095313133 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
