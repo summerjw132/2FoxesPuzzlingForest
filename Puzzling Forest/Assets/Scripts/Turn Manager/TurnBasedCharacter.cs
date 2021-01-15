@@ -37,6 +37,16 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         return characterType;
     }
 
+    public bool GetIsMoving()
+    {
+        return isMoving;
+    }
+
+    public void SetTargetMoveToPosition(Vector3 newTargetMoveToPosition)
+    {
+        this.targetMoveToPosition = newTargetMoveToPosition;
+    }
+
 
     void Start()
     {
@@ -78,6 +88,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
 
     }
+
 
     // Update is called once per frame
     void Update()
@@ -429,4 +440,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             turnIndicator.SetActive(isTurn);
         }
     }
+
+
 }
