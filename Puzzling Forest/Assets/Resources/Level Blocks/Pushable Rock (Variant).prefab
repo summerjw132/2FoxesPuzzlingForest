@@ -51,6 +51,8 @@ MonoBehaviour:
   maxMovementRange: 5
   characterType: 2
   turnIndicator: {fileID: 0}
+  stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &4315661688591506625
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -60,7 +62,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1441977150295452, guid: 32f76d6f92327804aac5a09301211639, type: 3}
       propertyPath: m_Name
-      value: Rock (4)
+      value: Pushable Rock (Variant)
       objectReference: {fileID: 0}
     - target: {fileID: 4298408093304298, guid: 32f76d6f92327804aac5a09301211639, type: 3}
       propertyPath: m_LocalPosition.x
