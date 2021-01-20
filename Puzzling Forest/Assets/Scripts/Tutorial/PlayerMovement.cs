@@ -93,7 +93,6 @@ public class PlayerMovement : MonoBehaviour
                 {
                     transform.position += Vector3.forward;
                     currentMovementRemaining--;
-                    turnManager.totalMoveCount++;
                     
                 }
             }

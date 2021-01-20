@@ -196,6 +196,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         {
 
                             currentMovementRemaining--;
+                            turnManager.totalMoveCount++;
 
                             targetMoveToPosition = currentPosition + Vector3.forward;
                             foxTransform.LookAt(new Vector3(0,0,100));
@@ -222,6 +223,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         {
 
                             currentMovementRemaining--;
+                            turnManager.totalMoveCount++;
 
                             targetMoveToPosition = currentPosition + Vector3.back;
                             foxTransform.LookAt(new Vector3(0, 0, -100));
@@ -246,6 +248,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         {
 
                             currentMovementRemaining--;
+                            turnManager.totalMoveCount++;
 
                             targetMoveToPosition = currentPosition + Vector3.left;
                             foxTransform.LookAt(new Vector3(-100, 0, 0));
@@ -271,6 +274,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         {
 
                             currentMovementRemaining--;
+                            turnManager.totalMoveCount++;
 
                             targetMoveToPosition = currentPosition + Vector3.right;
                             foxTransform.LookAt(new Vector3(100, 0, 0));
