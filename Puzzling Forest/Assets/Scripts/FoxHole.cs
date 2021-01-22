@@ -40,9 +40,9 @@ public class FoxHole : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
 
-        if (other.gameObject.tag.Equals("Player") 
-            && destinationFoxhole != null 
-            && destinationFoxhole.GetIsActivated())
+        if (other.gameObject.tag.Equals("Player")       //If This is the player...
+            && destinationFoxhole != null               //..AND the other foxhole is NOT null...
+            && destinationFoxhole.GetIsActivated())     //..AND if the other foxhole is active
         {
             Debug.Log("Player Entered " + this.gameObject.name);
             GameObject player = other.gameObject;
