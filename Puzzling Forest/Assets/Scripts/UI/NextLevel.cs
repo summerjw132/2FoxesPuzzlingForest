@@ -7,7 +7,7 @@ public class NextLevel : MonoBehaviour
 {
 
     [SerializeField]
-    private string nextLevel = "level";
+    public string nextLevel = "level";
 
     public void GoToNextLevel()
     {
