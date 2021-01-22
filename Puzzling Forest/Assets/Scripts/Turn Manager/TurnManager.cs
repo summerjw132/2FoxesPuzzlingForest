@@ -88,7 +88,6 @@ public class TurnManager : MonoBehaviour
                 {
                     ResetTurns();
                     turnCycleCount++;
-                    totalMoveCount += 6;
                 }
             }
             else
