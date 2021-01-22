@@ -14,4 +14,7 @@ public class MyLevel : ScriptableObject
 
     [Tooltip("Boolean to check if the level has been completed")]
     public bool isLevelComplete;
+
+    [Tooltip("Determines if the level is unlocked")]
+    public bool isUnlocked;
 }
