@@ -15,7 +15,23 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
+        //So that the instance of this class persists between scenes
+        DontDestroyOnLoad(this.gameObject);
+
         PopulateLevels();
+
+        LevelProgress progress = SaveSystem.LoadLevelProgress();
+        if (progress == null)
+        {
+            //new game
+            SetLevelPermission();
+        }
+        else
+        {
+            //not a new game, has some saved file
+            updateScriptableObjects(progress);
+            SetLevelPermission();
+        }
     }
     /// <summary>
     /// This method will populate levels based on the number of SO levels and then instantiate buttons per SO and write all information on the
@@ -39,5 +55,62 @@ public class LevelManager : MonoBehaviour
         GameObject lastButton = scrollViewContainer.transform.GetChild(0).gameObject;
         lastButton.transform.SetParent(null);
         lastButton.transform.SetParent(scrollViewContainer.transform);
+    }
+
+    /// <summary>
+    /// This method sets the buttons to active or inactive depending on whether or not the corresponding Scriptable
+    /// Object in the allLevels list indicates the level isUnlocked or not.
+    /// </summary>
+    private void SetLevelPermission()
+    {
+        Button curButton;
+        for (int i = 0; i < scrollViewContainer.transform.childCount; i++)
+        {
+            curButton = scrollViewContainer.transform.GetChild(i).GetComponent<Button>();
+            if (allLevels[i].isUnlocked)
+            {
+                curButton.interactable = true;
+            }
+            else
+            {
+                curButton.interactable = false;
+            }
+        }
+    }
+
+    private void updateScriptableObjects(LevelProgress progress)
+    {
+        //these better be the same (# of levels)
+        if (progress.listOfLevelData.Length == allLevels.Count)
+        {
+            for (int i = 0; i < allLevels.Count; i++)
+            {
+                allLevels[i].LevelName = progress.listOfLevelData[i].LevelName;
+                allLevels[i].BestMoveCount = progress.listOfLevelData[i].BestMoveCount;
+                allLevels[i].isLevelComplete = progress.listOfLevelData[i].isLevelComplete;
+                allLevels[i].isUnlocked = progress.listOfLevelData[i].isUnlocked;
+            }
+        }
+        else
+        {
+            Debug.LogError("Tried to update SOs using the save file but they were of uneven length...");
+        }
+    }
+
+    void Test()
+    {
+        LevelProgress progress = new LevelProgress(allLevels);
+        SaveSystem.SaveLevelProgress(progress);
+        SaveSystem.LoadLevelProgress().Print();
+    }
+
+    public List<MyLevel> giveList()
+    {
+        return allLevels;
+    }
+
+    public void Save()
+    {
+        SaveSystem.SaveLevelProgress(new LevelProgress(allLevels));
     }
 }

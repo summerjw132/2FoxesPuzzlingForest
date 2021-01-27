@@ -5,7 +5,6 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MyLevel")]
 public class MyLevel : ScriptableObject
 {
-
     [Tooltip("Name of the Level you want to load")]
     public string LevelName;
 
