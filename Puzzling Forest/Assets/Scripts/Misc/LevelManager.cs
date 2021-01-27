@@ -12,27 +12,25 @@ public class LevelManager : MonoBehaviour
 
     private List<MyLevel> allLevels = new List<MyLevel>();
 
+    private static GameObject instance;
+
 
     private void Awake()
     {
         //So that the instance of this class persists between scenes
         DontDestroyOnLoad(this.gameObject);
+        if (instance == null)
+            instance = this.gameObject;
+        else
+            Destroy(this.gameObject);
 
         PopulateLevels();
 
-        LevelProgress progress = SaveSystem.LoadLevelProgress();
-        if (progress == null)
-        {
-            //new game
-            SetLevelPermission();
-        }
-        else
-        {
-            //not a new game, has some saved file
-            updateScriptableObjects(progress);
-            SetLevelPermission();
-        }
+        Load();
+
+        SetLevelPermission();
     }
+
     /// <summary>
     /// This method will populate levels based on the number of SO levels and then instantiate buttons per SO and write all information on the
     /// buttons to load the proper level.
@@ -70,6 +68,8 @@ public class LevelManager : MonoBehaviour
             if (allLevels[i].isUnlocked)
             {
                 curButton.interactable = true;
+                if (allLevels[i].isLevelComplete)
+                    curButton.GetComponentInChildren<Text>().text = allLevels[i].name + "\nScore: " + allLevels[i].BestMoveCount;
             }
             else
             {
@@ -78,6 +78,11 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// This method takes a LevelProgress and updates the SOs found in allLevels to reflect the
+    ///  data in the parameter. So, after loading the save file as "progress," this method updates
+    ///  allLevels to use that information
+    /// </summary>
     private void updateScriptableObjects(LevelProgress progress)
     {
         //these better be the same (# of levels)
@@ -97,20 +102,100 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    void Test()
-    {
-        LevelProgress progress = new LevelProgress(allLevels);
-        SaveSystem.SaveLevelProgress(progress);
-        SaveSystem.LoadLevelProgress().Print();
-    }
-
+    //This is just a getter fxn for the private list allLevels
     public List<MyLevel> giveList()
     {
         return allLevels;
     }
 
+    //This method is a wrapper. It just calls SaveLevelProgress from the SaveSystem class,
+    // but is nice because it automatically passes it allLevels.
     public void Save()
     {
         SaveSystem.SaveLevelProgress(new LevelProgress(allLevels));
+    }
+
+    //This method is another wrapper. It does 2 things in order:
+    // 1) Loads the save file as "progress"
+    // 2) Uses "progress" to update the "allLevels" list in this class
+    public void Load()
+    {
+        LevelProgress progress = SaveSystem.LoadLevelProgress();
+        if (progress == null)
+        {
+            Debug.Log("No Save File");
+            return;
+        }
+        //Debug.Log("Loaded successfully");
+        //progress.Print();
+        updateScriptableObjects(progress);
+    }
+
+    //This method takes a string "name" (which is the name of the level being referred to
+    // and sets that level to unlocked in allLevels. Does not update buttons
+    public void unlockLevel(string name)
+    {
+        for (int i = 0; i < allLevels.Count; i++)
+        {
+            if (allLevels[i].LevelName == name)
+            {
+                allLevels[i].isUnlocked = true;
+            }
+        }
+    }
+
+    //Overloaded method from above. Uses an index instead of a name
+    public void unlockLevel(int index)
+    {
+        if (index < allLevels.Count)
+            allLevels[index].isUnlocked = true;
+        else
+            Debug.LogError("Tried to unlock a level with an index out of bounds for the list allLevels");
+    }
+
+    //Sets the level given by name to complete, and handle bestScore
+    // Also unlocks the next level
+    public void completeLevel(string name, string moveCount)
+    {
+        int curScore = 0;
+        int newScore = -1;
+        int curLevelIndex = -1;
+        int nextLevelIndex;
+        for (int i = 0; i < allLevels.Count; i++)
+        {
+            if (allLevels[i].LevelName == name)
+            {
+                allLevels[i].isLevelComplete = true;
+                int.TryParse(allLevels[i].BestMoveCount, out curScore);
+                int.TryParse(moveCount, out newScore);
+                if (newScore < curScore)
+                {
+                    allLevels[i].BestMoveCount = moveCount;
+                }
+                curLevelIndex = i;
+            }
+        }
+        nextLevelIndex = curLevelIndex + 1;
+        unlockLevel(nextLevelIndex);
+
+        Save();
+    }
+
+    //This method resets the SOs in allLevels to their defaults...
+    // ie only level one is unlocked and nothing is completed.
+    private void resetLevelProgress()
+    {
+        allLevels[0].isLevelComplete = false;
+        allLevels[0].isUnlocked = true;
+        allLevels[0].BestMoveCount = "";
+
+        for (int i = 1; i < allLevels.Count; i++)
+        {
+            allLevels[i].isLevelComplete = false;
+            allLevels[i].isUnlocked = false;
+            allLevels[i].BestMoveCount = "";
+        }
+
+        Save();
     }
 }

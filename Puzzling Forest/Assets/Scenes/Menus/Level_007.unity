@@ -2844,6 +2844,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &233297411 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7045160852408786490, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
+  m_PrefabInstance: {fileID: 454715185}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &234550692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3888,6 +3893,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &303806687
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4918,6 +4924,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Turn-Based System
       objectReference: {fileID: 0}
+    - target: {fileID: 1576112975740957449, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: totalMoveCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1576112975740957449, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: playersGroup.Array.data[0].playerGameObject
+      value: 
+      objectReference: {fileID: 1890311734}
+    - target: {fileID: 1576112975740957449, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: playersGroup.Array.data[1].playerGameObject
+      value: 
+      objectReference: {fileID: 233297411}
     - target: {fileID: 1576112975740957454, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 29.581774
@@ -13272,6 +13290,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1043743867
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15382,6 +15401,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5587fba3f225b704e95e68bc89400b0d, type: 3}
+--- !u!1 &1224508755 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7909369615882147861, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+  m_PrefabInstance: {fileID: 373404492}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1253393360
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17076,7 +17100,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1389221536
 AudioListener:
   m_ObjectHideFlags: 0
@@ -22331,6 +22355,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2540174764805835777, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.x
       value: 44.178207
@@ -23894,6 +23922,11 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.000024, y: 1.0013161, z: 1.000024}
   m_Center: {x: 0, y: -0.0047070086, z: 0}
+--- !u!1 &1890311734 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7045160852408786490, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
+  m_PrefabInstance: {fileID: 1566778654}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1891367150 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -24137,6 +24170,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1914496568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27898,6 +27932,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2295815160219363479, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
+      propertyPath: timeUI
+      value: 
+      objectReference: {fileID: 1224508755}
     - target: {fileID: 2540174764805835777, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_Name
       value: Game Manager
