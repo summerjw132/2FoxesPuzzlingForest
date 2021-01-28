@@ -45,16 +45,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         return characterType;
     }
 
-    public bool GetIsMoving()
-    {
-        return isMoving;
-    }
-
-    public void SetTargetMoveToPosition(Vector3 newTargetMoveToPosition)
-    {
-        this.targetMoveToPosition = newTargetMoveToPosition;
-    }
-
 
     void Start()
     {
@@ -89,7 +79,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
         ResetMovement();
     }
-
 
     // Update is called once per frame
     void Update()
@@ -199,7 +188,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         {
 
                             currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
 
                             targetMoveToPosition = currentPosition + Vector3.forward;
                             //This call simply points the Fox in the new direction
@@ -227,7 +215,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         {
 
                             currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
 
                             targetMoveToPosition = currentPosition + Vector3.back;
                             animController.faceSouth();
@@ -252,7 +239,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         {
 
                             currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
 
                             targetMoveToPosition = currentPosition + Vector3.left;
                             animController.faceWest();
@@ -278,7 +264,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         {
 
                             currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
 
                             targetMoveToPosition = currentPosition + Vector3.right;
                             animController.faceEast();
@@ -338,7 +323,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         }
                         else
                             return false;
-                        //return pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f, this.gameObject);
                     }
 
                 }
