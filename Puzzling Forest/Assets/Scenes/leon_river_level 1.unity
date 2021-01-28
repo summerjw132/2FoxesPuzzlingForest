@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 59f000c0d8cc61543a75b6ecdfe0d0d1, type: 2}
+  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -3389,13 +3389,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 705507993}
-  m_LocalRotation: {x: 0.56642586, y: 0.17686227, z: 0.045461453, w: 0.80362594}
+  m_LocalRotation: {x: 0.38975698, y: 0.0059261126, z: 0.030938344, w: 0.92037886}
   m_LocalPosition: {x: -2.66, y: 4.78, z: 8.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 63.42, y: 48.624, z: 37.667}
+  m_LocalEulerAnglesHint: {x: 45.814, y: 2.88, z: 5.068}
 --- !u!1001 &748211046
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3465,22 +3465,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1262305634368010525, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1262305634368010528, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 12.44
-      objectReference: {fileID: 0}
-    - target: {fileID: 1262305634368010528, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 1262305634368010528, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 6.28
-      objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835777, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_Name
       value: Game Manager
@@ -9455,10 +9439,6 @@ PrefabInstance:
     - target: {fileID: 4910076611370933315, guid: 3552a26fbf995f74ea49a8d707d97425, type: 3}
       propertyPath: m_Name
       value: New_camera
-      objectReference: {fileID: 0}
-    - target: {fileID: 4910076611370933315, guid: 3552a26fbf995f74ea49a8d707d97425, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4910076611370933374, guid: 3552a26fbf995f74ea49a8d707d97425, type: 3}
       propertyPath: m_LocalPosition.x

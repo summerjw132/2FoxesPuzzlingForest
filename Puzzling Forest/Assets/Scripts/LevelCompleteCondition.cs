@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class LevelCompleteCondition : MonoBehaviour
 {
@@ -15,20 +14,10 @@ public class LevelCompleteCondition : MonoBehaviour
     
     [SerializeField]
     private GameObject levelCompletePanel;
-    [SerializeField]
-    private Text totalMoveCount;
-    [SerializeField]
-    private Text totalTime;
-
-    private Timer tm;
 
     private void Start()
     {
         GetPlayersFromTurnManager();
-        tm = GameObject.Find("GameManager").GetComponent<Timer>();
-        levelCompletePanel.SetActive(false);
-        tm.isLevelComplete = false;
-        turnManager.isLevelComplete = false;
     }
 
     private void GetPlayersFromTurnManager()
@@ -64,9 +53,7 @@ public class LevelCompleteCondition : MonoBehaviour
             
             if (levelCompletePanel != null)
             {
-                VictoryData();
                 levelCompletePanel.SetActive(true);
-                
             }
 
 #if UNITY_EDITOR
@@ -79,11 +66,5 @@ public class LevelCompleteCondition : MonoBehaviour
         }
     }
 
-    private void VictoryData()
-    {
-        tm.isLevelComplete = true;
-        turnManager.isLevelComplete = true;
-        totalMoveCount.text = turnManager.totalMoveCount.ToString();
-        totalTime.text = tm.totaltime.ToString();
-    }
+    
 }

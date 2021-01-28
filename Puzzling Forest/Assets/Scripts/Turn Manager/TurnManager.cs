@@ -12,10 +12,8 @@ public class TurnManager : MonoBehaviour
     [SerializeField]
     private Text moveCountUIText;
     [SerializeField]
-    public int turnCycleCount = 0;
-    public int totalMoveCount;
-    [HideInInspector]
-    public bool isLevelComplete;
+    private int turnCycleCount = 0;
+
 
 
 
@@ -26,8 +24,7 @@ public class TurnManager : MonoBehaviour
     }
     private void Update()
     {
-        if(!isLevelComplete)
-            UpdateTurns();
+        UpdateTurns();
     }
 
     public void SetMoveCountUIText(string text)
@@ -40,7 +37,6 @@ public class TurnManager : MonoBehaviour
     //Resets the turn system to start with the first player 
     void ResetTurns()
     {
-
         bool firstEnabledPlayerWasFound = false; //The logic will continue to look for the first enabled player as long as this is false
         for(int i = -0; i < playersGroup.Count; i++)
         {
@@ -81,7 +77,6 @@ public class TurnManager : MonoBehaviour
                 {
                     playersGroup[i].isTurn = true;
                     break;
-                    
                 }
                 else if(i >= playersGroup.Count - 1 &&
                         playersGroup[i].wasTurnPrev)
