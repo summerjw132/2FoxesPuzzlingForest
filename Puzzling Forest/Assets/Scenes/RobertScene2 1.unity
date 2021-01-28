@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 59f000c0d8cc61543a75b6ecdfe0d0d1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -234,6 +234,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &11857092
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2921,6 +2922,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &267116295 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8856936868660958151, guid: 3c0bd6f977eb3dc44b45eaacebe0b647, type: 3}
@@ -3562,6 +3564,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &360458428 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6720558420661323768, guid: 3c0bd6f977eb3dc44b45eaacebe0b647, type: 3}
@@ -4598,6 +4601,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &471544053
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5512,6 +5516,67 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.000024, y: 1.000024, z: 1.000024}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1001 &607966698
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.62179184
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 16.77652
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.745533
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_RootOrder
+      value: 208
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620835, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_Name
+      value: Camera (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5066198756215620835, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
 --- !u!1001 &616418607
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5761,6 +5826,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &636891161
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6028,6 +6094,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &659183989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8052,6 +8119,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &989303771
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9221,6 +9289,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1171343601
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9314,6 +9383,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1172075720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9529,6 +9599,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1179705516 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6720558420661323768, guid: 3c0bd6f977eb3dc44b45eaacebe0b647, type: 3}
@@ -10862,6 +10933,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1336864344 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1526499860666122, guid: 5587fba3f225b704e95e68bc89400b0d, type: 3}
@@ -11378,6 +11450,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1397159886 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1526499860666122, guid: 5587fba3f225b704e95e68bc89400b0d, type: 3}
@@ -11622,6 +11695,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1427578631 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4615348735674652527, guid: 3c0bd6f977eb3dc44b45eaacebe0b647, type: 3}
@@ -11808,6 +11882,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1438766348 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7861714869858221350, guid: 3c0bd6f977eb3dc44b45eaacebe0b647, type: 3}
@@ -11919,6 +11994,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1468437494
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13507,7 +13583,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &1709147356
 AudioListener:
   m_ObjectHideFlags: 0
@@ -13684,6 +13760,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1731553252 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7878806366300867102, guid: 3c0bd6f977eb3dc44b45eaacebe0b647, type: 3}
@@ -14222,6 +14299,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1813707618 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7861714869858221350, guid: 3c0bd6f977eb3dc44b45eaacebe0b647, type: 3}
@@ -15031,6 +15109,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1930155910 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7878806366300867102, guid: 3c0bd6f977eb3dc44b45eaacebe0b647, type: 3}
@@ -15142,6 +15221,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1947556247 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1526499860666122, guid: 5587fba3f225b704e95e68bc89400b0d, type: 3}
@@ -15271,6 +15351,7 @@ MonoBehaviour:
   characterType: 0
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1964541997
 PrefabInstance:
   m_ObjectHideFlags: 0
