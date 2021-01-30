@@ -1152,7 +1152,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1 &96634966 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -3502,17 +3501,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.000024, y: 1.0013161, z: 1.000024}
   m_Center: {x: 0, y: -0.0047070086, z: 0}
---- !u!114 &296562322 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1316905916338824138, guid: c36050967e3280d47920c1d8bf28af92, type: 3}
-  m_PrefabInstance: {fileID: 67689905}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &297450892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3598,7 +3586,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1 &306853329 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -5507,7 +5494,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1 &421057832
 GameObject:
   m_ObjectHideFlags: 0
@@ -6166,7 +6152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7045160852408786495, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
       propertyPath: maxMovementRange
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
@@ -8320,7 +8306,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1 &606645254 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -10121,7 +10106,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1001 &722087586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10496,7 +10480,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1001 &740592067
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11484,9 +11467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   registeredPlayerList: []
   nextLevelName: 
-  levelCompletePanel: {fileID: 1796336376}
-  totalMoveCount: {fileID: 296562322}
-  totalTime: {fileID: 1806413803}
+  levelCompletePanel: {fileID: 0}
 --- !u!1 &802153313
 GameObject:
   m_ObjectHideFlags: 0
@@ -13546,7 +13527,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1 &945052246
 GameObject:
   m_ObjectHideFlags: 0
@@ -15614,7 +15594,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1 &1048162982
 GameObject:
   m_ObjectHideFlags: 0
@@ -16321,7 +16300,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1001 &1085509571
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16595,7 +16573,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1 &1129197949
 GameObject:
   m_ObjectHideFlags: 0
@@ -17840,7 +17817,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!4 &1222417967 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4500155699262478, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -18320,7 +18296,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1001 &1256729298
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20311,7 +20286,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!81 &1389221536
 AudioListener:
   m_ObjectHideFlags: 0
@@ -23337,7 +23312,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1001 &1536841632
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24002,7 +23976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7045160852408786495, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
       propertyPath: maxMovementRange
-      value: 10
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
@@ -27306,11 +27280,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1786974746}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1796336376 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1247132871375989729, guid: c36050967e3280d47920c1d8bf28af92, type: 3}
-  m_PrefabInstance: {fileID: 67689905}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1798137705
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27661,17 +27630,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1805087548}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1806413803 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4163070603162986794, guid: c36050967e3280d47920c1d8bf28af92, type: 3}
-  m_PrefabInstance: {fileID: 67689905}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1807200412 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -28790,7 +28748,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1 &1920230829
 GameObject:
   m_ObjectHideFlags: 0
@@ -30870,11 +30827,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.000024, y: 1.0013161, z: 1.000024}
   m_Center: {x: 0, y: -0.0047070086, z: 0}
---- !u!1 &2040696118 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7909369615882147861, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
-  m_PrefabInstance: {fileID: 373404492}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2045107471
 GameObject:
   m_ObjectHideFlags: 0
@@ -32043,7 +31995,6 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
-  directionConstraint: 0
 --- !u!1 &2095313133 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1081189039308660, guid: d853c5ba406ab2449b57a72ebcf7e84b, type: 3}
@@ -32211,25 +32162,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1262305634368010525, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1262305634368010528, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -61.64
-      objectReference: {fileID: 0}
-    - target: {fileID: 1262305634368010528, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 117.47
-      objectReference: {fileID: 0}
-    - target: {fileID: 2295815160219363479, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
-      propertyPath: timeUI
-      value: 
-      objectReference: {fileID: 2040696118}
     - target: {fileID: 2540174764805835777, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_Name
-      value: GameManager
+      value: Game Manager
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.x
