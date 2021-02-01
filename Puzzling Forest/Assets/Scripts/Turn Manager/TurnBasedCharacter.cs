@@ -315,7 +315,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
                     if (this.gameObject.tag.Equals("Player") || pushableWall.IsStackPushingEnabled()) // If this object is a player OR (if not a player, and) the pushable object has stack pushing
                     {
-                        if (pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f))
+                        if (pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f, this.gameObject))
                         {
                             //This move is into a wall therefore it is a push, not a walk
                             setPushFlagTrue();
