@@ -23,6 +23,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     //Move speed. Used like Vector3.MoveTowards(... , moveSpeed * Time.deltaTime)
     //  original value was 5f
     private float moveSpeed = 2.5f;
+    private int maxDepth = 15; //This is how deep to check for a fox before pushing a block that could crush it
 
     //animation stuff
     // animation controller script
@@ -32,6 +33,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private bool thisMoveIsAWalk;
     // bool to lock controls away from player while animation is going
     private bool isAnimating = false;
+
+    //UI Warn Message Stuff
+    private WarningMessagesController warnController = null;
+    private static string vertStackWarnMessage = "One of the blocks you tried to move is weighed down!";
+    private static string crushFoxWarnMessage = "Be careful! This move would crush a fox!";
 
     public enum CharacterType
     {
@@ -60,12 +66,15 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     {
         targetMoveToPosition = this.transform.position;
 
-        //If this is a fox, get a reference to the animation controller class which handles
-        // rotating the fox(es) and also triggering the animations
+        //Fox/PlayerCharacter specific stuff
         if (characterType == CharacterType.Player)
         {
+            //animation controller
             animController = GetComponent<foxAnimationStateController>();
         }
+
+        //a reference to the WarningController script that handles UI warning messages
+        warnController = GameObject.Find("UI Canvas").GetComponent<WarningMessagesController>();
 
         //Find the turn manager in game; use it to
         turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
@@ -132,7 +141,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                     setPushFlagFalse();
                 }
             }
-            
+
             this.transform.position = Vector3.MoveTowards(this.transform.position, targetMoveToPosition, moveSpeed * Time.deltaTime);
             isMoving = true;
 
@@ -162,7 +171,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
     private void Fall()
     {
-        if (!FloorIsPresent(this.transform.position) && !isMoving)
+        if (!FloorIsPresent(this.transform.position, out string uneededHere) && !isMoving)
         {
             targetMoveToPosition = this.transform.position + Vector3.down;
         }
@@ -310,11 +319,18 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         //Check Walls
         //Collider[] wallHitColliders = Physics.OverlapSphere(nextTilePosition, .1f);
         //Collider[] floorHitCollider = Physics.OverlapSphere(nextTilePosition + Vector3.down, .1f);
+        string potentialFloorTag;
 
-        if (FloorIsPresent(nextTilePosition)) //There is a floor
+        if (FloorIsPresent(nextTilePosition, out potentialFloorTag)) //There is a floor
         {
+            //Check to make sure we're not walking onto a Fox! That's bad for their backs!
+            if (potentialFloorTag == "Player")
+            {
+                warnController.Warn(crushFoxWarnMessage);
+                return false;
+            }
             //Second parameter is whether or not it's the fox trying to move
-            if (NoWallIsPresent(nextTilePosition, this.gameObject.tag.Equals("Player"))) //There is no blocking wall 
+            else if (NoWallIsPresent(nextTilePosition, this.gameObject.tag.Equals("Player"))) //There is no blocking wall 
             {
                 //This move is into open space therefore it is a walk, not a push
                 setWalkFlagTrue();
@@ -325,8 +341,22 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 GameObject wall = Physics.OverlapSphere(nextTilePosition, .1f)[0].gameObject;
                 PushableTurnBasedObject pushableWall = wall.GetComponent<PushableTurnBasedObject>();
 
+                //this stuff is used to make sure the wall doesn't have another block weighting it on top
+                Collider[] checkForWeightZone = Physics.OverlapSphere(nextTilePosition + Vector3.up, .1f);
+                GameObject stackedWall = null;
+                if (checkForWeightZone.Length > 0)
+                {
+                    stackedWall = checkForWeightZone[0].gameObject;
+                }
+
                 if (pushableWall != null)
                 {
+                    //This checks to see if the wall is vertically stacked and prevents the move if so!
+                    if (stackedWall != null) //there is some gameobject on top of the pushableWall!
+                    {
+                        warnController.Warn(vertStackWarnMessage);
+                        return false;
+                    }
 
                     if (this.gameObject.tag.Equals("Player") || pushableWall.IsStackPushingEnabled()) // If this object is a player OR (if not a player, and) the pushable object has stack pushing
                     {
@@ -345,7 +375,13 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             }
         } else if (!this.gameObject.tag.Equals("Player"))//This ensures that we can push off an edge (no floor)
         {
-            return true;
+            if (potentialFloorTag == "Player")
+            {
+                warnController.Warn(crushFoxWarnMessage);
+                return false;
+            }
+            else
+                return true;
         }
         //else //A wall is found
         //{
@@ -387,7 +423,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     }
 
     //Checks to see if there's floor under the given tile
-    protected bool FloorIsPresent(Vector3 nextTilePosition)
+    protected bool FloorIsPresent(Vector3 nextTilePosition, out string potentialFloorTag)
     {
         //is there a box collider in the tile below the given tile?
         Collider[] floorHitCollider = Physics.OverlapSphere(nextTilePosition + Vector3.down, .1f);
@@ -396,6 +432,9 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         {
             //Now we need to make sure the potential floor (owner of box collider) isn't falling before it counts as floor
             GameObject potentialFloor = floorHitCollider[0].gameObject;
+
+            //Make sure it's not a Fox, that shouldn't count as a floor for crushing concerns!
+            potentialFloorTag = potentialFloor.tag;
 
             //Can only be falling if it's a pushable wall, so we'll check for that script
             PushableTurnBasedObject pushableScript = potentialFloor.GetComponent<PushableTurnBasedObject>();
@@ -419,7 +458,30 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 return true;
             }
         }
-        //there was no box collider in the first place; no floor
+        //there was no box collider in the first place; no floor, but we must check multiple depths to avoid crushing foxies
+        return crushedObjectCheck(nextTilePosition + Vector3.down, out potentialFloorTag);
+    }
+
+    //This is a lil fxn to check the fallzone for maxDepth blocks and returns the first floor found
+    // returns false no matter what bc "floorIsPresent" is most helpful referring to only depth_1 stuff
+    // the string returns the tag which is helpful for blocking moves that crush Foxes
+    private bool crushedObjectCheck(Vector3 startPosition, out string potentialFloorTag)
+    {
+        Vector3 curPosition = startPosition;
+        Collider[] floorHitCollider;
+        GameObject curFloor;
+        for (int i = 0; i < maxDepth; i++)
+        {
+            floorHitCollider = Physics.OverlapSphere(curPosition, .1f);
+            if (floorHitCollider.Length > 0) //found an object in this position
+            {
+                curFloor = floorHitCollider[0].gameObject;
+                potentialFloorTag = curFloor.tag;
+                return false;
+            }
+            curPosition = curPosition + Vector3.down;
+        }
+        potentialFloorTag = "NoFloor";
         return false;
     }
 

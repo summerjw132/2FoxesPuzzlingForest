@@ -197,5 +197,7 @@ public class LevelManager : MonoBehaviour
         }
 
         Save();
+        Load();
+        SetLevelPermission();
     }
 }
