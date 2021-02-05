@@ -36,8 +36,10 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
     //UI Warn Message Stuff
     private WarningMessagesController warnController = null;
-    private static string vertStackWarnMessage = "One of the blocks you tried to move is weighed down!";
-    private static string crushFoxWarnMessage = "Be careful! This move would crush a fox!";
+    //In the string below, the warning message is cut off immediately after "Twelve" That's your max length
+    //                                            "One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen";
+    private static string vertStackWarnMessage  = "One of the blocks you tried to move is weighed down!";
+    private static string crushFoxWarnMessage   = "Be careful! This move would crush a fox!";
 
     public enum CharacterType
     {
