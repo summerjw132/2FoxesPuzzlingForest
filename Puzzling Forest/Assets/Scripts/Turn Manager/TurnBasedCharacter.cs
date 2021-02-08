@@ -20,6 +20,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected int currentMovementRemaining;
     private bool isMoving = false;
     protected Vector3 targetMoveToPosition;
+    private Transform foxTransform = null;
     //Move speed. Used like Vector3.MoveTowards(... , moveSpeed * Time.deltaTime)
     //  original value was 5f
     private float moveSpeed = 2.5f;
@@ -65,6 +66,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         if (characterType == CharacterType.Player)
         {
             animController = GetComponent<foxAnimationStateController>();
+            foxTransform = this.gameObject.transform.Find("Fox");
         }
 
         //Find the turn manager in game; use it to
@@ -189,103 +191,48 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                     currentMovementRemaining = 0;
                 }
 
+                //Movement input/controls happens here!
+                // UP/W moves fox *forwards* which is dependent on the orientation of the fox
+                // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
+                // DOWN/S makes the fox do a 180 in-place
+                // So to *move* left, the user should press 'A' to turn, then 'W' to move
                 if (currentMovementRemaining > 0)
                 {
+                    //The foxes current facing direction used for any input
+                    Vector3 curFacing = foxTransform.forward.normalized;
                     if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                     {
-                        //transform.position += Vector3.right;
                         Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + Vector3.forward))
+                        if (OkayToMoveToNextTile(currentPosition + curFacing))
                         {
-
+                            //move count stuff
                             currentMovementRemaining--;
                             turnManager.totalMoveCount++;
 
-                            targetMoveToPosition = currentPosition + Vector3.forward;
-                            //This call simply points the Fox in the new direction
-                            animController.faceNorth();
-                            //Debug("Current Position: " + currentPosition);
-                            //Debug.Log("New Position: " + targetMoveToPosition);
+                            //moving stuff
+                            targetMoveToPosition = currentPosition + curFacing;
                         }
 
 
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
                     {
-                        //transform.position += Vector3.right;
-                        //Vector3 currentPosition = transform.position;
-                        //targetMoveToPosition = currentPosition + Vector3.back;
-
+                        //unsure if turning is supposed to count as a move...
                         //currentMovementRemaining--;
-
-                        //Debug.Log("Current Position: " + currentPosition);
-                        //Debug.Log("New Position: " + targetMoveToPosition);
-
-                        //transform.position += Vector3.right;
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + Vector3.back))
-                        {
-
-                            currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
-
-                            targetMoveToPosition = currentPosition + Vector3.back;
-                            animController.faceSouth();
-                            //Debug("Current Position: " + currentPosition);
-                            //Debug.Log("New Position: " + targetMoveToPosition);
-                        }
+                        //turnManager.totalMoveCount++;
+                        Turn("back", curFacing);
                     }
                     else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                     {
-                        //transform.position += Vector3.right;
-                        //Vector3 currentPosition = transform.position;
-                        //targetMoveToPosition = currentPosition + Vector3.left;
-
                         //currentMovementRemaining--;
-
-                        //Debug.Log("Current Position: " + currentPosition);
-                        //Debug.Log("New Position: " + targetMoveToPosition);
-
-                        //transform.position += Vector3.right;
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + Vector3.left))
-                        {
-
-                            currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
-
-                            targetMoveToPosition = currentPosition + Vector3.left;
-                            animController.faceWest();
-                            //Debug("Current Position: " + currentPosition);
-                            //Debug.Log("New Position: " + targetMoveToPosition);
-                        }
-
+                        //turnManager.totalMoveCount++;
+                        Turn("left", curFacing);
                     }
                     else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
                     {
-                        //transform.position += Vector3.right;
-                        //Vector3 currentPosition = transform.position;
-                        //targetMoveToPosition = currentPosition + Vector3.right;
-
                         //currentMovementRemaining--;
-
-                        //Debug.Log("Current Position: " + currentPosition);
-                        //Debug.Log("New Position: " + targetMoveToPosition);
-
-                        //transform.position += Vector3.right;
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + Vector3.right))
-                        {
-
-                            currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
-
-                            targetMoveToPosition = currentPosition + Vector3.right;
-                            animController.faceEast();
-                            //Debug("Current Position: " + currentPosition);
-                            //Debug.Log("New Position: " + targetMoveToPosition);
-                        }
-
+                        //turnManager.totalMoveCount++;
+                        Turn("right", curFacing);
                     }
                 }
                 else
@@ -301,6 +248,31 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 turn.isTurn = isTurn;
                 turn.wasTurnPrev = true;
             }
+        }
+    }
+
+    private void Turn(string dir, Vector3 curFacing)
+    {
+        switch (dir)
+        {
+            case "back":
+                //add animation for turning around here
+                foxTransform.Rotate(0f, 180f, 0f, Space.Self);
+                break;
+
+            case "left":
+                //add animation for turning left here
+                foxTransform.Rotate(0f, -90f, 0f, Space.Self);
+                break;
+
+            case "right":
+                //add animation for turning right here
+                foxTransform.Rotate(0f, 90f, 0f, Space.Self);
+                break;
+
+            default:
+                Debug.Log("Turn method was given a direction it doesn't recognize");
+                break;
         }
     }
 
