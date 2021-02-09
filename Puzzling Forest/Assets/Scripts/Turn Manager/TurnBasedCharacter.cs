@@ -29,10 +29,12 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     // animation controller script
     protected foxAnimationStateController animController;
     // flags for knowing which type of animation to call each move
-    private bool thisMoveIsAPush;
-    private bool thisMoveIsAWalk;
+    private enum MoveOptions { Walk, Push, Left, Right, None };
+    private MoveOptions thisMove = MoveOptions.None;
     // bool to lock controls away from player while animation is going
     private bool isAnimating = false;
+    //this must be the time the turning animations take. Can be found in animation controller
+    private float turnDuration = 1.0f;
 
     public enum CharacterType
     {
@@ -67,6 +69,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         {
             animController = GetComponent<foxAnimationStateController>();
             foxTransform = this.gameObject.transform.Find("Fox");
+
         }
 
         //Find the turn manager in game; use it to
@@ -119,19 +122,20 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             //This is the only way a fox can move ^
             if (characterType == CharacterType.Player)
             {
-                //One of these flags was set when the Fox was deciding if it is OkayToMoveToNextTile depending
-                // on whether or not it moved into open space or into a wall.
-                if (thisMoveIsAWalk)
+                switch (thisMove)
                 {
-                    //Triggers the corresponding animation
-                    animController.startWalking();
-                    //Reset the flag in this class so a new decision can be made for the next move
-                    setWalkFlagFalse();
-                }
-                else if (thisMoveIsAPush)
-                {
-                    animController.startPushing();
-                    setPushFlagFalse();
+                    case MoveOptions.Walk:
+                        animController.startWalking();
+                        thisMove = MoveOptions.None;
+                        break;
+
+                    case MoveOptions.Push:
+                        animController.startPushing();
+                        thisMove = MoveOptions.None;
+                        break;
+
+                    default:
+                        break;
                 }
             }
             
@@ -200,6 +204,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 {
                     //The foxes current facing direction used for any input
                     Vector3 curFacing = foxTransform.forward.normalized;
+                    Quaternion curRotation = foxTransform.rotation;
                     if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                     {
                         Vector3 currentPosition = transform.position;
@@ -217,22 +222,15 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
                     {
-                        //unsure if turning is supposed to count as a move...
-                        //currentMovementRemaining--;
-                        //turnManager.totalMoveCount++;
-                        Turn("back", curFacing);
+                        Turn("back", curRotation);
                     }
                     else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                     {
-                        //currentMovementRemaining--;
-                        //turnManager.totalMoveCount++;
-                        Turn("left", curFacing);
+                        Turn("left", curRotation);
                     }
                     else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
                     {
-                        //currentMovementRemaining--;
-                        //turnManager.totalMoveCount++;
-                        Turn("right", curFacing);
+                        Turn("right", curRotation);
                     }
                 }
                 else
@@ -251,23 +249,20 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
     }
 
-    private void Turn(string dir, Vector3 curFacing)
+    private void Turn(string dir, Quaternion curRotation)
     {
         switch (dir)
         {
             case "back":
-                //add animation for turning around here
-                foxTransform.Rotate(0f, 180f, 0f, Space.Self);
+                //no back/180 turn currently implemented
                 break;
 
             case "left":
-                //add animation for turning left here
-                foxTransform.Rotate(0f, -90f, 0f, Space.Self);
+                animController.startTurningLeft(curRotation);
                 break;
 
             case "right":
-                //add animation for turning right here
-                foxTransform.Rotate(0f, 90f, 0f, Space.Self);
+                animController.startTurningRight(curRotation);
                 break;
 
             default:
@@ -289,7 +284,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             if (NoWallIsPresent(nextTilePosition, this.gameObject.tag.Equals("Player"))) //There is no blocking wall 
             {
                 //This move is into open space therefore it is a walk, not a push
-                setWalkFlagTrue();
+                thisMove = MoveOptions.Walk;
                 return true;
             }
             else
@@ -305,7 +300,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         if (pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f, this.gameObject))
                         {
                             //This move is into a wall therefore it is a push, not a walk
-                            setPushFlagTrue();
+                            thisMove = MoveOptions.Push;
                             return true;
                         }
                         else
@@ -368,6 +363,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         {
             //Now we need to make sure the potential floor (owner of box collider) isn't falling before it counts as floor
             GameObject potentialFloor = floorHitCollider[0].gameObject;
+            //Do not count the collider that handles destroying falling blocks as a floor
+            if (potentialFloor.CompareTag("DestroyBounds"))
+            {
+                return false;
+            }
 
             //Can only be falling if it's a pushable wall, so we'll check for that script
             PushableTurnBasedObject pushableScript = potentialFloor.GetComponent<PushableTurnBasedObject>();
@@ -429,29 +429,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         {
             turnIndicator.SetActive(isTurn);
         }
-    }
-
-    //These functions are setters for various flags. Basically, when a Fox is
-    // deciding if it is OkayToMoveToNextTile, depending on whether or not the
-    // fox is moving or pushing, the corresponding flag will be set. Then,
-    // once the update function actually sets the fox moving, depending on which
-    // flag is set, the corresponding animation is started using the animController
-    // class and the flag is unset before the next move.
-    public void setPushFlagTrue()
-    {
-        thisMoveIsAPush = true;
-    }
-    public void setPushFlagFalse()
-    {
-        thisMoveIsAPush = false;
-    }
-    public void setWalkFlagTrue()
-    {
-        thisMoveIsAWalk = true;
-    }
-    public void setWalkFlagFalse()
-    {
-        thisMoveIsAWalk = false;
     }
 
     //These are just wrapper functions to set/reset an "isAnimating" flag.
