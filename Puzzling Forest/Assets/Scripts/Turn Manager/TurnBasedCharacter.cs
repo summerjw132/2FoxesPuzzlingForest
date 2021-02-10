@@ -20,6 +20,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected int currentMovementRemaining;
     private bool isMoving = false;
     protected Vector3 targetMoveToPosition;
+    private Transform foxTransform = null;
     //Move speed. Used like Vector3.MoveTowards(... , moveSpeed * Time.deltaTime)
     //  original value was 5f
     private float moveSpeed = 2.5f;
@@ -29,10 +30,12 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     // animation controller script
     protected foxAnimationStateController animController;
     // flags for knowing which type of animation to call each move
-    private bool thisMoveIsAPush;
-    private bool thisMoveIsAWalk;
+    private enum MoveOptions { Walk, Push, Left, Right, None };
+    private MoveOptions thisMove = MoveOptions.None;
     // bool to lock controls away from player while animation is going
     private bool isAnimating = false;
+    //this must be the time the turning animations take. Can be found in animation controller
+    private float turnDuration = 1.0f;
 
     //UI Warn Message Stuff
     private WarningMessagesController warnController = null;
@@ -73,6 +76,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         {
             //animation controller
             animController = GetComponent<foxAnimationStateController>();
+            foxTransform = this.gameObject.transform.Find("Fox");
+
         }
 
         //a reference to the WarningController script that handles UI warning messages
@@ -128,19 +133,20 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             //This is the only way a fox can move ^
             if (characterType == CharacterType.Player)
             {
-                //One of these flags was set when the Fox was deciding if it is OkayToMoveToNextTile depending
-                // on whether or not it moved into open space or into a wall.
-                if (thisMoveIsAWalk)
+                switch (thisMove)
                 {
-                    //Triggers the corresponding animation
-                    animController.startWalking();
-                    //Reset the flag in this class so a new decision can be made for the next move
-                    setWalkFlagFalse();
-                }
-                else if (thisMoveIsAPush)
-                {
-                    animController.startPushing();
-                    setPushFlagFalse();
+                    case MoveOptions.Walk:
+                        animController.startWalking();
+                        thisMove = MoveOptions.None;
+                        break;
+
+                    case MoveOptions.Push:
+                        animController.startPushing();
+                        thisMove = MoveOptions.None;
+                        break;
+
+                    default:
+                        break;
                 }
             }
 
@@ -200,103 +206,42 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                     currentMovementRemaining = 0;
                 }
 
+                //Movement input/controls happens here!
+                // UP/W moves fox *forwards* which is dependent on the orientation of the fox
+                // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
+                // DOWN/S makes the fox do a 180 in-place
+                // So to *move* left, the user should press 'A' to turn, then 'W' to move
                 if (currentMovementRemaining > 0)
                 {
+                    //The foxes current facing direction used for any input
+                    Vector3 curFacing = foxTransform.forward.normalized;
+                    Quaternion curRotation = foxTransform.rotation;
                     if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                     {
-                        //transform.position += Vector3.right;
                         Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + Vector3.forward))
+                        if (OkayToMoveToNextTile(currentPosition + curFacing))
                         {
-
+                            //move count stuff
                             currentMovementRemaining--;
                             turnManager.totalMoveCount++;
 
-                            targetMoveToPosition = currentPosition + Vector3.forward;
-                            //This call simply points the Fox in the new direction
-                            animController.faceNorth();
-                            //Debug("Current Position: " + currentPosition);
-                            //Debug.Log("New Position: " + targetMoveToPosition);
+                            //moving stuff
+                            targetMoveToPosition = currentPosition + curFacing;
                         }
 
 
                     }
                     else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
                     {
-                        //transform.position += Vector3.right;
-                        //Vector3 currentPosition = transform.position;
-                        //targetMoveToPosition = currentPosition + Vector3.back;
-
-                        //currentMovementRemaining--;
-
-                        //Debug.Log("Current Position: " + currentPosition);
-                        //Debug.Log("New Position: " + targetMoveToPosition);
-
-                        //transform.position += Vector3.right;
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + Vector3.back))
-                        {
-
-                            currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
-
-                            targetMoveToPosition = currentPosition + Vector3.back;
-                            animController.faceSouth();
-                            //Debug("Current Position: " + currentPosition);
-                            //Debug.Log("New Position: " + targetMoveToPosition);
-                        }
+                        Turn("back", curRotation);
                     }
                     else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
                     {
-                        //transform.position += Vector3.right;
-                        //Vector3 currentPosition = transform.position;
-                        //targetMoveToPosition = currentPosition + Vector3.left;
-
-                        //currentMovementRemaining--;
-
-                        //Debug.Log("Current Position: " + currentPosition);
-                        //Debug.Log("New Position: " + targetMoveToPosition);
-
-                        //transform.position += Vector3.right;
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + Vector3.left))
-                        {
-
-                            currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
-
-                            targetMoveToPosition = currentPosition + Vector3.left;
-                            animController.faceWest();
-                            //Debug("Current Position: " + currentPosition);
-                            //Debug.Log("New Position: " + targetMoveToPosition);
-                        }
-
+                        Turn("left", curRotation);
                     }
                     else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
                     {
-                        //transform.position += Vector3.right;
-                        //Vector3 currentPosition = transform.position;
-                        //targetMoveToPosition = currentPosition + Vector3.right;
-
-                        //currentMovementRemaining--;
-
-                        //Debug.Log("Current Position: " + currentPosition);
-                        //Debug.Log("New Position: " + targetMoveToPosition);
-
-                        //transform.position += Vector3.right;
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + Vector3.right))
-                        {
-
-                            currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
-
-                            targetMoveToPosition = currentPosition + Vector3.right;
-                            animController.faceEast();
-                            //Debug("Current Position: " + currentPosition);
-                            //Debug.Log("New Position: " + targetMoveToPosition);
-                        }
-
+                        Turn("right", curRotation);
                     }
                 }
                 else
@@ -312,6 +257,28 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 turn.isTurn = isTurn;
                 turn.wasTurnPrev = true;
             }
+        }
+    }
+
+    private void Turn(string dir, Quaternion curRotation)
+    {
+        switch (dir)
+        {
+            case "back":
+                //no back/180 turn currently implemented
+                break;
+
+            case "left":
+                animController.startTurningLeft(curRotation);
+                break;
+
+            case "right":
+                animController.startTurningRight(curRotation);
+                break;
+
+            default:
+                Debug.Log("Turn method was given a direction it doesn't recognize");
+                break;
         }
     }
 
@@ -335,7 +302,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             else if (NoWallIsPresent(nextTilePosition, this.gameObject.tag.Equals("Player"))) //There is no blocking wall 
             {
                 //This move is into open space therefore it is a walk, not a push
-                setWalkFlagTrue();
+                thisMove = MoveOptions.Walk;
                 return true;
             }
             else
@@ -365,7 +332,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                         if (pushableWall.PushForwardInDirectionOnGridTile(nextTilePosition - this.targetMoveToPosition, .2f, this.gameObject))
                         {
                             //This move is into a wall therefore it is a push, not a walk
-                            setPushFlagTrue();
+                            thisMove = MoveOptions.Push;
                             return true;
                         }
                         else
@@ -434,6 +401,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         {
             //Now we need to make sure the potential floor (owner of box collider) isn't falling before it counts as floor
             GameObject potentialFloor = floorHitCollider[0].gameObject;
+            //Do not count the collider that handles destroying falling blocks as a floor
+            if (potentialFloor.CompareTag("DestroyBounds"))
+            {
+                return false;
+            }
 
             //Make sure it's not a Fox, that shouldn't count as a floor for crushing concerns!
             potentialFloorTag = potentialFloor.tag;
@@ -521,29 +493,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         {
             turnIndicator.SetActive(isTurn);
         }
-    }
-
-    //These functions are setters for various flags. Basically, when a Fox is
-    // deciding if it is OkayToMoveToNextTile, depending on whether or not the
-    // fox is moving or pushing, the corresponding flag will be set. Then,
-    // once the update function actually sets the fox moving, depending on which
-    // flag is set, the corresponding animation is started using the animController
-    // class and the flag is unset before the next move.
-    public void setPushFlagTrue()
-    {
-        thisMoveIsAPush = true;
-    }
-    public void setPushFlagFalse()
-    {
-        thisMoveIsAPush = false;
-    }
-    public void setWalkFlagTrue()
-    {
-        thisMoveIsAWalk = true;
-    }
-    public void setWalkFlagFalse()
-    {
-        thisMoveIsAWalk = false;
     }
 
     //These are just wrapper functions to set/reset an "isAnimating" flag.
