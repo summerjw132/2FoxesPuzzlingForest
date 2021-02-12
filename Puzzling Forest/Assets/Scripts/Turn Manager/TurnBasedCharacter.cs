@@ -396,21 +396,20 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     {
         //is there a box collider in the tile below the given tile?
         Collider[] floorHitCollider = Physics.OverlapSphere(nextTilePosition + Vector3.down, .1f);
-        
 
         if (floorHitCollider.Length > 0) //if this array isn't empty, there is a box collider
         {
             //Now we need to make sure the potential floor (owner of box collider) isn't falling before it counts as floor
             GameObject potentialFloor = floorHitCollider[0].gameObject;
+
+            //Make sure it's not a Fox, that shouldn't count as a floor for crushing concerns!
             potentialFloorTag = potentialFloor.tag;
+
             //Do not count the collider that handles destroying falling blocks as a floor
             if (potentialFloor.CompareTag("DestroyBounds"))
             {
                 return false;
             }
-
-            //Make sure it's not a Fox, that shouldn't count as a floor for crushing concerns!
-            potentialFloorTag = potentialFloor.tag;
 
             //Can only be falling if it's a pushable wall, so we'll check for that script
             PushableTurnBasedObject pushableScript = potentialFloor.GetComponent<PushableTurnBasedObject>();
