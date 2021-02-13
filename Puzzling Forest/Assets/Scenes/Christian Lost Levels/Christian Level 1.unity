@@ -1492,6 +1492,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &190260388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6163,6 +6164,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &907323629
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7993,6 +7995,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1153745657
 GameObject:
   m_ObjectHideFlags: 0
@@ -9007,6 +9010,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1287218182
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11305,6 +11309,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1596293324
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14179,6 +14184,8 @@ MonoBehaviour:
   registeredPlayerList: []
   nextLevelName: 
   levelCompletePanel: {fileID: 0}
+  totalMoveCount: {fileID: 0}
+  totalTime: {fileID: 0}
 --- !u!65 &1932594782
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -15094,7 +15101,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2031991653}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.8799996, y: 1, z: -8.34}
+  m_LocalPosition: {x: -4, y: 1, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
