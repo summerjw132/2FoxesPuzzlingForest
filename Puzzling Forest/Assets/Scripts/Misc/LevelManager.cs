@@ -14,6 +14,11 @@ public class LevelManager : MonoBehaviour
 
     private static GameObject instance;
 
+    //These booleans, editable from editor, can be used to control level progress for demos etc.
+    [SerializeField]
+    private bool ShouldIUnlockAllLevels;
+    [SerializeField]
+    private bool ShouldIResetLevelProgress;
 
     private void Awake()
     {
@@ -29,6 +34,12 @@ public class LevelManager : MonoBehaviour
         Load();
 
         SetLevelPermission();
+
+        if (ShouldIUnlockAllLevels)
+            unlockAllLevels();
+
+        if (ShouldIResetLevelProgress)
+            resetLevelProgress();
     }
 
     /// <summary>
@@ -168,7 +179,7 @@ public class LevelManager : MonoBehaviour
                 allLevels[i].isLevelComplete = true;
                 int.TryParse(allLevels[i].BestMoveCount, out curScore);
                 int.TryParse(moveCount, out newScore);
-                if (newScore < curScore)
+                if (newScore < curScore || curScore == 0)
                 {
                     allLevels[i].BestMoveCount = moveCount;
                 }
@@ -183,7 +194,7 @@ public class LevelManager : MonoBehaviour
 
     //This method resets the SOs in allLevels to their defaults...
     // ie only level one is unlocked and nothing is completed.
-    private void resetLevelProgress()
+    public void resetLevelProgress()
     {
         allLevels[0].isLevelComplete = false;
         allLevels[0].isUnlocked = true;
@@ -193,6 +204,21 @@ public class LevelManager : MonoBehaviour
         {
             allLevels[i].isLevelComplete = false;
             allLevels[i].isUnlocked = false;
+            allLevels[i].BestMoveCount = "";
+        }
+
+        Save();
+        Load();
+        SetLevelPermission();
+    }
+
+    //This unlocks all levels for demo/testing/whatever purposes
+    public void unlockAllLevels()
+    {
+        for (int i = 0; i < allLevels.Count; i++)
+        {
+            allLevels[i].isLevelComplete = false;
+            allLevels[i].isUnlocked = true;
             allLevels[i].BestMoveCount = "";
         }
 
