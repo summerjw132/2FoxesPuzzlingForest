@@ -547,6 +547,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1630293877882607847}
   - component: {fileID: 6416498664672312288}
+  - component: {fileID: 7553256288095999967}
   m_Layer: 0
   m_Name: Audio Manager
   m_TagString: Untagged
@@ -664,6 +665,20 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7553256288095999967
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8230706014533279175}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83ad24505ceb5b84cbdfa793b76fddf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BackgroundMusicSlider: {fileID: 6066876577343562744}
+  BackgroundMusicAudio: {fileID: 6416498664672312288}
 --- !u!1001 &3864597934052116181
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -671,9 +686,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1576112975740957454}
     m_Modifications:
+    - target: {fileID: 205463245568792045, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 418690407645017854, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 583746663941426991, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_RootOrder
@@ -681,7 +700,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 783432169494979099, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1755419841574083432, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -831,13 +850,69 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 3098491662743645181, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3153869542149152619, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_RootOrder
       value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4233520796239069219, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5824118676859152609, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5824118676859152609, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5824118676859152609, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 236.76868
+      objectReference: {fileID: 0}
+    - target: {fileID: 5824118676859152609, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -80.748474
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030170979012830509, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 7553256288095999967}
+    - target: {fileID: 7030170979012830509, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: AudioManager, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030170979012830509, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetBackgroundMusicValue
+      objectReference: {fileID: 0}
+    - target: {fileID: 7030170979012830509, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967768807279428117, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967768807279428117, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967768807279428117, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 236.76868
+      objectReference: {fileID: 0}
+    - target: {fileID: 7967768807279428117, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -183.24542
+      objectReference: {fileID: 0}
+    - target: {fileID: 8234151805442737556, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
@@ -862,3 +937,14 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1755419841718699051, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
   m_PrefabInstance: {fileID: 3864597934052116181}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &6066876577343562744 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7030170979012830509, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+  m_PrefabInstance: {fileID: 3864597934052116181}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
