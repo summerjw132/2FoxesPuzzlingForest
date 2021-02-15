@@ -98,8 +98,8 @@ public class CameraMovement : MonoBehaviour
             if (CameraPivot != null)
             {
                  cam.transform.Translate(new Vector3(xAxisValue, yAxisValue, 0.0f) *Speed * Time.deltaTime);
-                Mathf.Clamp(cam.transform.position.x,Forwards, Backwards);
-                Mathf.Clamp(cam.transform.position.y, Forwards, Backwards);
+                Mathf.Clamp(xAxisValue,Forwards, Backwards);
+                Mathf.Clamp(yAxisValue, Forwards, Backwards);
             }
             
         }
