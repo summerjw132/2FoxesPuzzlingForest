@@ -33,8 +33,6 @@ public class TurnManager : MonoBehaviour
     [HideInInspector]
     public bool isLevelComplete;
 
-
-
     private void Start()
     {
         SetUpPlayerGroup();
@@ -42,11 +40,8 @@ public class TurnManager : MonoBehaviour
         GiveTurn(curTurnIndex);
     }
 
-    private void Update()
-    {
-
-    }
-
+    //Sets up the PlayerGroup field using either the designer-specified stuff from the level editor or,
+    // uses the default 2-player set up with basic names if nothing is specified!
     private void SetUpPlayerGroup()
     {
         //Designer manually-set up the PlayerGroup
@@ -81,6 +76,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    //Increments the current turn index whilst keeping an eye on going out of bounds
     private void incrementIDX()
     {
         curTurnIndex++;
@@ -88,6 +84,7 @@ public class TurnManager : MonoBehaviour
             curTurnIndex = 0;
     }
 
+    //Enables the turn of the player from the PlayerGroup[idx]
     private void GiveTurn(int idx)
     {
         TurnBasedCharacter curScript = PlayerScripts[idx];
@@ -98,6 +95,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    //Disables the turn of the player from the PlayerGroup[idx]
     private void TakeTurn(int idx)
     {
         TurnBasedCharacter curScript = PlayerScripts[idx];
@@ -108,6 +106,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    //Increments curIDX, disables the current fox's turn, enables the next valid fox's turn
     public void EndTurn()
     {
         TakeTurn(curTurnIndex);
@@ -128,6 +127,7 @@ public class TurnManager : MonoBehaviour
         GiveTurn(curTurnIndex);
     }
 
+    //Lil' helper getter setter stuff
     public int GetNumPlayers()
     {
         return numPlayers;
@@ -138,6 +138,7 @@ public class TurnManager : MonoBehaviour
         return PlayerScripts[idx];
     }
 
+    //Updates the UI text "total Moves"
     public void UpdateMoveCount()
     {
         moveCountUIText.text = totalMoveCount.ToString();

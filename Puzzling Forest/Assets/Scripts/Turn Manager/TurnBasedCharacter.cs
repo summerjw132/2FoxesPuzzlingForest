@@ -6,7 +6,7 @@ using UnityEngine.UIElements;
 
 public abstract class TurnBasedCharacter : MonoBehaviour
 {
-
+    //turn-system stuff
     private TurnManager turnManager;
     private bool isMyTurn = false;
     private bool isTakingTurns = true;
