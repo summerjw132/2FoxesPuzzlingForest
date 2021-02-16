@@ -7,33 +7,30 @@ using UnityEngine.UIElements;
 public abstract class TurnBasedCharacter : MonoBehaviour
 {
 
-    public TurnManager turnManager;
-    public TurnManager.TurnInstance turn;
-    public bool isTurn = false;
-    //public KeyCode moveKey;
-    [SerializeField]
-    private int maxMovementRange = 5;
+    private TurnManager turnManager;
+    private bool isMyTurn = false;
+    private bool isTakingTurns = true;
+
     [SerializeField]
     private CharacterType characterType = CharacterType.Player;
     [SerializeField]
     private GameObject turnIndicator = null;
-    protected int currentMovementRemaining;
+
     private bool isMoving = false;
     protected Vector3 targetMoveToPosition;
     private Transform foxTransform = null;
-    //Move speed. Used like Vector3.MoveTowards(... , moveSpeed * Time.deltaTime)
-    //  original value was 5f
+ 
     private float moveSpeed = 2.5f;
     private int maxDepth = 15; //This is how deep to check for a fox before pushing a block that could crush it
 
     //animation stuff
     // animation controller script
     protected foxAnimationStateController animController;
-    // flags for knowing which type of animation to call each move
+    // used as flags for knowing which type of animation to call each move
     private enum MoveOptions { Walk, Push, Left, Right, None };
     private MoveOptions thisMove = MoveOptions.None;
-    // bool to lock controls away from player while animation is going
     private bool isAnimating = false;
+
     //this must be the time the turning animations take. Can be found in animation controller
     private float turnDuration = 1.0f;
 
@@ -44,28 +41,10 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private static string vertStackWarnMessage  = "One of the blocks you tried to move is weighed down!";
     private static string crushFoxWarnMessage   = "Be careful! This move would crush a fox!";
 
-    public enum CharacterType
-    {
-        Player,
-        NPC,
-        Wall
-    }
-
-    public CharacterType GetCharacterType()
-    {
-        return characterType;
-    }
-
-    public bool GetIsMoving()
-    {
-        return isMoving;
-    }
-
-    public void SetTargetMoveToPosition(Vector3 newTargetMoveToPosition)
-    {
-        this.targetMoveToPosition = newTargetMoveToPosition;
-    }
-
+    //For finding and bringing up the pause menu!
+    private GameObject UI_Canvas;
+    private string PauseMenuString = "PauseMenu";
+    private GameObject PauseMenu;
 
     void Start()
     {
@@ -78,6 +57,14 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             animController = GetComponent<foxAnimationStateController>();
             foxTransform = this.gameObject.transform.Find("Fox");
 
+            UI_Canvas = GameObject.Find("UI Canvas");
+            for (int i = 0; i < UI_Canvas.transform.childCount; i++)
+            {
+                if (UI_Canvas.transform.GetChild(i).name == PauseMenuString)
+                {
+                    PauseMenu = UI_Canvas.transform.GetChild(i).gameObject;
+                }
+            }
         }
 
         //a reference to the WarningController script that handles UI warning messages
@@ -94,16 +81,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 break;
             }
         }
-
-        //Set the turn value to that established by the turn manager
-        foreach (TurnManager.TurnInstance currentTurn in turnManager.playersGroup)
-        {
-            if (currentTurn.playerGameObject.name == gameObject.name)
-            {
-                turn = currentTurn;
-            }
-        }
-        ResetMovement();
     }
 
 
@@ -113,15 +90,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         if (characterType == CharacterType.Player)
         {
             UpdateTurnForPlayer();
-
-
         }
         if (characterType == CharacterType.NPC)
         {
-            UpdateTurnForNPC();
-
+            //No NPC implemented yet
         }
-
         UpdateTurnIndicator();
 
         //MoveCharacter();
@@ -152,29 +125,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
             this.transform.position = Vector3.MoveTowards(this.transform.position, targetMoveToPosition, moveSpeed * Time.deltaTime);
             isMoving = true;
-
-            //Log whenever a non-player is moving
-            //if (!this.gameObject.tag.Equals("Player") && this.gameObject.transform.position.y >= 0)
-            //{
-            //    Debug.Log(this.gameObject.name + ": I'm moving");
-            //}
-
-            if (turn.isTurn)
-            {
-                //These msgs are super loud bc they print every update
-                //Debug.Log(this.gameObject.name + ": I'm moving");
-            }
         }
         else
         {
             isMoving = false;
-
-            if (turn.isTurn)
-            {
-                //Debug.Log(this.gameObject.name + ": I'm standing still");
-            }
         }
-
     }
 
     private void Fall()
@@ -185,77 +140,60 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
     }
 
-
     public abstract void SpecialAction();
-
 
     private void UpdateTurnForPlayer()
     {
-        //Deactivate controls if character isMoving from point to point or if an animation is going
-        if (!isMoving && !isAnimating)
+        //Deactivates controls if it's the other players turn.
+        if (isMyTurn)
         {
-
-            isTurn = turn.isTurn;
-
-            if (isTurn && turn.isEnabled)
+            //Deactivate controls if character isMoving from point to point or if an animation is going
+            if (!isMoving && !isAnimating)
             {
-                turnManager.SetMoveCountUIText(currentMovementRemaining.ToString());//Update the movement count UI text
-
                 if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
                 {
-                    currentMovementRemaining = 0;
+                    StartCoroutine("EndMyTurn");
                 }
 
+                if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
+                {
+                    PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
+                }
+
+
+                //The foxes current facing direction used for any input
+                Vector3 curFacing = foxTransform.forward.normalized;
+                Quaternion curRotation = foxTransform.rotation;
                 //Movement input/controls happens here!
                 // UP/W moves fox *forwards* which is dependent on the orientation of the fox
                 // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
                 // DOWN/S makes the fox do a 180 in-place
                 // So to *move* left, the user should press 'A' to turn, then 'W' to move
-                if (currentMovementRemaining > 0)
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                 {
-                    //The foxes current facing direction used for any input
-                    Vector3 curFacing = foxTransform.forward.normalized;
-                    Quaternion curRotation = foxTransform.rotation;
-                    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+                    Vector3 currentPosition = transform.position;
+                    if (OkayToMoveToNextTile(currentPosition + curFacing))
                     {
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + curFacing))
-                        {
-                            //move count stuff
-                            currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
+                        //move count stuff
+                        turnManager.totalMoveCount++;
+                        turnManager.UpdateMoveCount();
 
-                            //moving stuff
-                            targetMoveToPosition = currentPosition + curFacing;
-                        }
-
-
-                    }
-                    else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-                    {
-                        Turn("back", curRotation);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-                    {
-                        Turn("left", curRotation);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-                    {
-                        Turn("right", curRotation);
+                        //moving stuff
+                        targetMoveToPosition = currentPosition + curFacing;
                     }
                 }
-                else
+                else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
                 {
-                    isTurn = false;
-                    turn.isTurn = isTurn;
-                    turn.wasTurnPrev = true;
+                    Turn("back", curRotation);
                 }
-            }
-            else if (!turn.isEnabled)
-            {
-                isTurn = false;
-                turn.isTurn = isTurn;
-                turn.wasTurnPrev = true;
+                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                {
+                    Turn("left", curRotation);
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                {
+                    Turn("right", curRotation);
+                }
             }
         }
     }
@@ -460,31 +398,44 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         return false;
     }
 
-    private void UpdateTurnForNPC()
+   
+    //Lil' getters and setters
+    public bool GetIsMoving()
     {
-        isTurn = turn.isTurn;
-
-        if (isTurn)
-        {
-            StartCoroutine("WaitAndMove");
-        }
+        return isMoving;
     }
 
-    IEnumerator WaitAndMove()
+    public void SetTargetMoveToPosition(Vector3 newTargetMoveToPosition)
     {
-        yield return new WaitForSeconds(1f);
-        transform.position += Vector3.forward;
-        isTurn = false;
-        turn.isTurn = isTurn;
-        turn.wasTurnPrev = true;
-
-        StopCoroutine("WaitAndMove");
-
+        this.targetMoveToPosition = newTargetMoveToPosition;
     }
-    public void ResetMovement()
-    {
 
-        currentMovementRemaining = maxMovementRange;
+    public bool CheckTurn()
+    {
+        return isMyTurn;
+    }
+
+    public void SetTurnActive(bool value)
+    {
+        isMyTurn = value;
+    }
+
+    public bool CheckIfTakingTurns()
+    {
+        return isTakingTurns;
+    }
+
+    public void StopTakingTurns()
+    {
+        isTakingTurns = false;
+        turnManager.EndTurn();
+    }
+
+    //if you don't have this delay, it ends the turn so quickly that the other fox gets the same input so it swaps back
+    private IEnumerator EndMyTurn()
+    {
+        yield return new WaitForSeconds(0.05f);
+        turnManager.EndTurn();
     }
 
     //This updates the turn indicator to active if it is this character's turn
@@ -492,7 +443,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     {
         if(turnIndicator != null)
         {
-            turnIndicator.SetActive(isTurn);
+            turnIndicator.SetActive(isMyTurn);
         }
     }
 
@@ -506,5 +457,17 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     public void completeAnimation()
     {
         isAnimating = false;
+    }
+
+    public enum CharacterType
+    {
+        Player,
+        NPC,
+        Wall
+    }
+
+    public CharacterType GetCharacterType()
+    {
+        return characterType;
     }
 }
