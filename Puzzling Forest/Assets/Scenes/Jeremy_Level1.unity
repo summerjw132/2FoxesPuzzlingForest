@@ -20,13 +20,13 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.21176471, g: 0.25560275, b: 0.25882354, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
-  m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_AmbientMode: 3
+  m_SubtractiveShadowColor: {r: 0.5613208, g: 0.96114385, b: 1, a: 1}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 59f000c0d8cc61543a75b6ecdfe0d0d1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -37,8 +37,8 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_Sun: {fileID: 2138484362}
+  m_IndirectSpecularColor: {r: 0.35249323, g: 0.61712724, b: 0.7738825, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,8 +97,8 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: a509d390fff1b6f49a37f163de964705, type: 2}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: 8f4bc26f27312d6499112dbd2993ed30, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1487,15 +1487,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 44.178207
+      value: 46.25
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -102.52348
+      value: -111.38
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 64.94553
+      value: 68.17
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalRotation.x
@@ -11781,6 +11781,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e8d8cdaca474ce540bc7856b6740489b, type: 3}
+--- !u!108 &2138484362 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 2096372282632867767, guid: e8d8cdaca474ce540bc7856b6740489b, type: 3}
+  m_PrefabInstance: {fileID: 2138484361}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2138561915
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -677,7 +677,7 @@ GameObject:
   - component: {fileID: 8755558925083297696}
   - component: {fileID: 8574361196769573387}
   m_Layer: 5
-  m_Name: Panel
+  m_Name: Controls Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -701,7 +701,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 184.14508, y: 123.90135}
+  m_SizeDelta: {x: 198.47568, y: 153.57845}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &8755558925083297696
 CanvasRenderer:
@@ -775,8 +775,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -0}
-  m_SizeDelta: {x: 173.51868, y: 123.90135}
+  m_AnchoredPosition: {x: 6.9, y: -0}
+  m_SizeDelta: {x: 184.93005, y: 149.41713}
   m_Pivot: {x: 0, y: 0}
 --- !u!222 &8195206351206613266
 CanvasRenderer:
@@ -819,13 +819,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'WASD - Move
-
-    E - Switch Fox
-
-    R - Reset Level
-
-    Esc - Exit Game'
+  m_Text: "W - Move Forward\nA, D - Turn \nE - Switch Fox\nR - Reset Level\nEsc -
+    Exit Game"
 --- !u!1 &8230706014533279175
 GameObject:
   m_ObjectHideFlags: 0
@@ -960,6 +955,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1576112975740957454}
     m_Modifications:
+    - target: {fileID: 783432169494979099, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 1755419841574083432, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
@@ -1102,11 +1101,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2499758384261605623, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 3153869542149152619, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}

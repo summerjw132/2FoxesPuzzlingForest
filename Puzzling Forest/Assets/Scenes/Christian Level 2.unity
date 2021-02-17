@@ -24,9 +24,9 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 59f000c0d8cc61543a75b6ecdfe0d0d1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -842,6 +842,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &90363378
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3388,15 +3389,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 11.3
+      value: 45.9
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -102.52348
+      value: -107.2
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 45.3
+      value: 66.9
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3608,6 +3609,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &531285839
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4236,6 +4238,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &600966750
 GameObject:
   m_ObjectHideFlags: 0
@@ -4847,6 +4850,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &735193608
 GameObject:
   m_ObjectHideFlags: 0
@@ -5816,6 +5820,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &808763209
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8076,6 +8081,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1325049816
 GameObject:
   m_ObjectHideFlags: 0
@@ -9085,6 +9091,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1 &1465479986
 GameObject:
   m_ObjectHideFlags: 0
@@ -10972,6 +10979,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1833410953
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11225,6 +11233,7 @@ MonoBehaviour:
   characterType: 2
   turnIndicator: {fileID: 0}
   stackPushingIsEnabled: 1
+  directionConstraint: 0
 --- !u!1001 &1872782686
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12180,6 +12189,8 @@ MonoBehaviour:
   registeredPlayerList: []
   nextLevelName: 
   levelCompletePanel: {fileID: 0}
+  totalMoveCount: {fileID: 0}
+  totalTime: {fileID: 0}
 --- !u!65 &2073266471
 BoxCollider:
   m_ObjectHideFlags: 0

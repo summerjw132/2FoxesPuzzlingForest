@@ -24,9 +24,9 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 59f000c0d8cc61543a75b6ecdfe0d0d1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -1434,15 +1434,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 44.178207
+      value: 47.7
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -102.52348
+      value: -106.8
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 64.94553
+      value: 66.3
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalRotation.x
@@ -18230,14 +18230,14 @@ Transform:
   - {fileID: 442385510}
   - {fileID: 125599966}
   - {fileID: 1497442123}
-  - {fileID: 471595299}
-  - {fileID: 1424862461}
   - {fileID: 788520386}
-  - {fileID: 1751143318}
   - {fileID: 975672858}
+  - {fileID: 471595299}
+  - {fileID: 1751143318}
   - {fileID: 1823698595}
-  - {fileID: 624520773}
   - {fileID: 1841632849}
+  - {fileID: 624520773}
+  - {fileID: 1424862461}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -26547,8 +26547,8 @@ Transform:
   - {fileID: 750206954}
   - {fileID: 1630974838}
   - {fileID: 1662684901}
-  - {fileID: 6525699}
   - {fileID: 231404000}
+  - {fileID: 6525699}
   - {fileID: 1196587046}
   - {fileID: 372237329}
   - {fileID: 700385428}

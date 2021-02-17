@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 59f000c0d8cc61543a75b6ecdfe0d0d1, type: 2}
   m_HaloStrength: 0.5
@@ -339,67 +339,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5587fba3f225b704e95e68bc89400b0d, type: 3}
---- !u!1001 &61755680
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.62179184
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 16.77652
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 2.745533
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_RootOrder
-      value: 76
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620830, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620835, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_Name
-      value: Camera (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 5066198756215620835, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 02259f655c17dc64aaae2cf2b0541f5c, type: 3}
 --- !u!1 &67141866 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8900967983584345581, guid: 97355614d1e4c9d428b57d5542fbe9e0, type: 3}
@@ -2788,15 +2727,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 44.178207
+      value: 49.3
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -102.52348
+      value: -109.5
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 64.94553
+      value: 69.7
       objectReference: {fileID: 0}
     - target: {fileID: 2540174764805835783, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
       propertyPath: m_LocalRotation.x
