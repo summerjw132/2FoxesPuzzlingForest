@@ -99,7 +99,11 @@ public class PushableTurnBasedObject : TurnBasedCharacter
         
         if (OkayToMoveToNextTile(targetPosition))
         {
-            Debug.Log(this.gameObject.name + " is being pushed to " + targetPosition);
+            //Debug.Log(this.gameObject.name + " is being pushed to " + targetPosition);
+
+            //undo stuff
+            undoManager.LogState(this.gameObject);
+
             targetMoveToPosition = targetPosition;
             return true;
         }

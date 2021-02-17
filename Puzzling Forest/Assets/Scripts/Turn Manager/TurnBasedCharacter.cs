@@ -7,9 +7,13 @@ using UnityEngine.UIElements;
 public abstract class TurnBasedCharacter : MonoBehaviour
 {
     //turn-system stuff
-    private TurnManager turnManager;
+    protected TurnManager turnManager;
     private bool isMyTurn = false;
     private bool isTakingTurns = true;
+
+    //undo-system stuff
+    protected UndoManager undoManager;
+    private bool needToWrite = false;
 
     [SerializeField]
     private CharacterType characterType = CharacterType.Player;
@@ -46,6 +50,9 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private string PauseMenuString = "PauseMenu";
     private GameObject PauseMenu;
 
+    private bool isPauseMenuOpen = false;
+    private bool isCameraModeOpen = false;
+
     void Start()
     {
         targetMoveToPosition = this.transform.position;
@@ -81,6 +88,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 break;
             }
         }
+
+        undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
     }
 
 
@@ -128,6 +137,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
         else
         {
+            if (needToWrite)
+            {
+                needToWrite = false;
+                undoManager.WriteTurnState();
+            }
             isMoving = false;
         }
     }
@@ -147,19 +161,27 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         //Deactivates controls if it's the other players turn.
         if (isMyTurn)
         {
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
+            {
+                PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
+                isPauseMenuOpen = !isPauseMenuOpen;
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                isCameraModeOpen = !isCameraModeOpen;
+            }
             //Deactivate controls if character isMoving from point to point or if an animation is going
-            if (!isMoving && !isAnimating)
+            if (!isMoving && !isAnimating && !isPauseMenuOpen && !isCameraModeOpen)
             {
                 if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
                 {
                     StartCoroutine("EndMyTurn");
                 }
 
-                if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
+                if (Input.GetKeyDown(KeyCode.U))
                 {
-                    PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
+                    undoManager.UndoTurn();
                 }
-
 
                 //The foxes current facing direction used for any input
                 Vector3 curFacing = foxTransform.forward.normalized;
@@ -174,6 +196,10 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                     Vector3 currentPosition = transform.position;
                     if (OkayToMoveToNextTile(currentPosition + curFacing))
                     {
+                        //undo stuff
+                        undoManager.LogState(this.gameObject);
+                        needToWrite = true;
+
                         //move count stuff
                         turnManager.totalMoveCount++;
                         turnManager.UpdateMoveCount();
@@ -396,6 +422,20 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
         potentialFloorTag = "NoFloor";
         return false;
+    }
+
+    public void UndoMyTurn(Vector3 oldPosition, Quaternion oldRotation)
+    {
+        this.gameObject.transform.position = oldPosition;
+        targetMoveToPosition = oldPosition;
+
+        if (characterType == CharacterType.Player)
+            this.gameObject.transform.Find("Fox").rotation = oldRotation;
+        else
+            this.gameObject.transform.rotation = oldRotation;
+        
+        if (!this.gameObject.activeInHierarchy)
+            this.gameObject.SetActive(true);
     }
 
    
