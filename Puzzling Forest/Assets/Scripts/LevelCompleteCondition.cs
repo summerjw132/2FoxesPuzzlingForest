@@ -43,7 +43,14 @@ public class LevelCompleteCondition : MonoBehaviour
         //Save/Load stuff
         curScene = SceneManager.GetActiveScene();
         curLevelName = curScene.name;
-        levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        try
+        {
+            levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        }
+        catch
+        {
+            Debug.Log("levelManager not found. Expected if you loaded a scene/level directly");
+        }
     }
 
     private void GetPlayersFromTurnManager()
@@ -51,25 +58,25 @@ public class LevelCompleteCondition : MonoBehaviour
 
         turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
 
-        for(int i = 0; i< turnManager.playersGroup.Count; i++)
+        for (int i = 0; i < turnManager.GetNumPlayers(); i++)
         {
-            TurnBasedCharacter characterInstance = turnManager.playersGroup[i].playerGameObject.GetComponent<TurnBasedCharacter>();
+            TurnBasedCharacter characterInstance = turnManager.GetPlayerScript(i);
 
-            if(characterInstance.GetCharacterType() == TurnBasedCharacter.CharacterType.Player)
+            if (characterInstance.GetCharacterType() == TurnBasedCharacter.CharacterType.Player)
             {
                 registeredPlayerList.Add(characterInstance);
             }
         }
-       
+
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(registeredPlayerList.Contains(other.gameObject.GetComponent<TurnBasedCharacter>()) && other.gameObject.GetComponent<TurnBasedCharacter>().turn.isEnabled)
+        if(registeredPlayerList.Contains(other.gameObject.GetComponent<TurnBasedCharacter>()) && other.gameObject.GetComponent<TurnBasedCharacter>().CheckTurn())
         {
             Debug.Log(other.gameObject.name + "Has reached the level finish!");
             levelCompletePlayerCount++;
-            other.gameObject.GetComponent<TurnBasedCharacter>().turn.isEnabled = false;
+            other.gameObject.GetComponent<TurnBasedCharacter>().StopTakingTurns();
             other.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
 
@@ -88,15 +95,6 @@ public class LevelCompleteCondition : MonoBehaviour
             //This completeLevel fxn sets the current level to complete, stores the score if its best
             levelManager.completeLevel(curLevelName, turnManager.totalMoveCount.ToString());
             Debug.LogFormat("Called completeLevel");
-
-//This doesn't appear to be being used (nextLevelName is never set) so I've commented it out for now
-//#if UNITY_EDITOR
-//                SceneManager.LoadScene(nextLevelName);
-//#else
-//         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-//#endif
-
-            
         }
     }
 
