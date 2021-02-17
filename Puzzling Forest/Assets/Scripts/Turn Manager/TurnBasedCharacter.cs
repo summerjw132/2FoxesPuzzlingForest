@@ -32,7 +32,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private bool isAnimating = false;
 
     //this must be the time the turning animations take. Can be found in animation controller
-    private float turnDuration = 1.0f;
+    private readonly float turnDuration = 1.0f;
 
     //UI Warn Message Stuff
     private WarningMessagesController warnController = null;
