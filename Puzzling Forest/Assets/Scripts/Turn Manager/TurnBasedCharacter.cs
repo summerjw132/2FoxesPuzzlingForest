@@ -32,7 +32,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private bool isAnimating = false;
 
     //this must be the time the turning animations take. Can be found in animation controller
-    private float turnDuration = 1.0f;
+    private readonly float turnDuration = 1.0f;
 
     //UI Warn Message Stuff
     private WarningMessagesController warnController = null;
@@ -144,55 +144,58 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
     private void UpdateTurnForPlayer()
     {
-        //Deactivates controls if it's the other players turn.
-        if (isMyTurn)
+        if (CameraMovement.CamOn == false)
         {
-            //Deactivate controls if character isMoving from point to point or if an animation is going
-            if (!isMoving && !isAnimating)
+            //Deactivates controls if it's the other players turn.
+            if (isMyTurn)
             {
-                if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
+                //Deactivate controls if character isMoving from point to point or if an animation is going
+                if (!isMoving && !isAnimating)
                 {
-                    StartCoroutine("EndMyTurn");
-                }
-
-                if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
-                {
-                    PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
-                }
-
-
-                //The foxes current facing direction used for any input
-                Vector3 curFacing = foxTransform.forward.normalized;
-                Quaternion curRotation = foxTransform.rotation;
-                //Movement input/controls happens here!
-                // UP/W moves fox *forwards* which is dependent on the orientation of the fox
-                // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
-                // DOWN/S makes the fox do a 180 in-place
-                // So to *move* left, the user should press 'A' to turn, then 'W' to move
-                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-                {
-                    Vector3 currentPosition = transform.position;
-                    if (OkayToMoveToNextTile(currentPosition + curFacing))
+                    if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
                     {
-                        //move count stuff
-                        turnManager.totalMoveCount++;
-                        turnManager.UpdateMoveCount();
-
-                        //moving stuff
-                        targetMoveToPosition = currentPosition + curFacing;
+                        StartCoroutine("EndMyTurn");
                     }
-                }
-                else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-                {
-                    Turn("back", curRotation);
-                }
-                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-                {
-                    Turn("left", curRotation);
-                }
-                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-                {
-                    Turn("right", curRotation);
+
+                    if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
+                    {
+                        PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
+                    }
+
+
+                    //The foxes current facing direction used for any input
+                    Vector3 curFacing = foxTransform.forward.normalized;
+                    Quaternion curRotation = foxTransform.rotation;
+                    //Movement input/controls happens here!
+                    // UP/W moves fox *forwards* which is dependent on the orientation of the fox
+                    // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
+                    // DOWN/S makes the fox do a 180 in-place
+                    // So to *move* left, the user should press 'A' to turn, then 'W' to move
+                    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+                    {
+                        Vector3 currentPosition = transform.position;
+                        if (OkayToMoveToNextTile(currentPosition + curFacing))
+                        {
+                            //move count stuff
+                            turnManager.totalMoveCount++;
+                            turnManager.UpdateMoveCount();
+
+                            //moving stuff
+                            targetMoveToPosition = currentPosition + curFacing;
+                        }
+                    }
+                    else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+                    {
+                        Turn("back", curRotation);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                    {
+                        Turn("left", curRotation);
+                    }
+                    else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                    {
+                        Turn("right", curRotation);
+                    }
                 }
             }
         }
