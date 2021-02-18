@@ -10,6 +10,11 @@ public class DestroyBounds : MonoBehaviour
 {
     void OnTriggerEnter(Collider other)
     {
-        Destroy(other.gameObject);
+        Hide(other.gameObject);
+    }
+
+    private void Hide(GameObject GO)
+    {
+        GO.SetActive(false);
     }
 }
