@@ -10,17 +10,11 @@ public class LevelCompleteCondition : MonoBehaviour
     public List<TurnBasedCharacter> registeredPlayerList;
     private int levelCompletePlayerCount = 0;
     private TurnManager turnManager = null;
-    [SerializeField]
-    private String nextLevelName;
     
-    [SerializeField]
-    private GameObject levelCompletePanel;
-    [SerializeField]
-    private Text totalMoveCount;
-    [SerializeField]
-    private Text totalTime;
+    [SerializeField] private GameObject levelCompletePanel = null;
+    [SerializeField] private Text totalMoveCount = null;
+    [SerializeField] private Text totalTime = null;
 
-    private GameObject GM;
     private Timer tm;
 
     //Save/Load, permanent progress stuff
@@ -30,15 +24,13 @@ public class LevelCompleteCondition : MonoBehaviour
 
     private void Start()
     {
-        GetPlayersFromTurnManager();
-        GM = GameObject.Find("GameManager");
-        if (GM == null)
-            GM = GameObject.Find("Game Manager");
-        tm = GM.GetComponent<Timer>();
-
         levelCompletePanel.SetActive(false);
+        tm = GameObject.Find("Turn-Based System").GetComponent<Timer>();
         tm.isLevelComplete = false;
+
+        turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
         turnManager.isLevelComplete = false;
+        GetPlayersFromTurnManager();
 
         //Save/Load stuff
         curScene = SceneManager.GetActiveScene();
@@ -55,9 +47,6 @@ public class LevelCompleteCondition : MonoBehaviour
 
     private void GetPlayersFromTurnManager()
     {
-
-        turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
-
         for (int i = 0; i < turnManager.GetNumPlayers(); i++)
         {
             TurnBasedCharacter characterInstance = turnManager.GetPlayerScript(i);
@@ -77,7 +66,6 @@ public class LevelCompleteCondition : MonoBehaviour
             Debug.Log(other.gameObject.name + "Has reached the level finish!");
             levelCompletePlayerCount++;
             other.gameObject.GetComponent<TurnBasedCharacter>().StopTakingTurns();
-            other.gameObject.GetComponent<BoxCollider>().enabled = false;
         }
 
         if(levelCompletePlayerCount.Equals(registeredPlayerList.Count))
@@ -93,9 +81,23 @@ public class LevelCompleteCondition : MonoBehaviour
 
             //Save/Load stuff
             //This completeLevel fxn sets the current level to complete, stores the score if its best
-            levelManager.completeLevel(curLevelName, turnManager.totalMoveCount.ToString());
-            Debug.LogFormat("Called completeLevel");
+            try
+            {
+                levelManager.completeLevel(curLevelName, turnManager.totalMoveCount, turnManager.undoCount);
+                Debug.LogFormat("Called completeLevel");
+            }
+            catch (NullReferenceException nre)
+            {
+                Debug.LogFormat("Level Manager not set, expected iff you loaded a level directly\nerror: {0}", nre);
+            }
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        Debug.Log("Elvis has left the building by undo");
+        levelCompletePlayerCount--;
+        other.gameObject.GetComponent<TurnBasedCharacter>().StartTakingTurns();
     }
 
     private void VictoryData()

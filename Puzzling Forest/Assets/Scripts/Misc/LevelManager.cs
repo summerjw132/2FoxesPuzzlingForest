@@ -5,20 +5,14 @@ using UnityEngine.UI;
 public class LevelManager : MonoBehaviour
 {
     [SerializeField]
-    private Button buttonLevel;
+    private Button buttonLevel = null;
 
     [SerializeField]
-    private GameObject scrollViewContainer;
+    private GameObject scrollViewContainer = null;
 
     private List<MyLevel> allLevels = new List<MyLevel>();
 
     private static GameObject instance;
-
-    //These booleans, editable from editor, can be used to control level progress for demos etc.
-    [SerializeField]
-    private bool ShouldIUnlockAllLevels;
-    [SerializeField]
-    private bool ShouldIResetLevelProgress;
 
     private void Awake()
     {
@@ -34,12 +28,6 @@ public class LevelManager : MonoBehaviour
         Load();
 
         SetLevelPermission();
-
-        if (ShouldIUnlockAllLevels)
-            unlockAllLevels();
-
-        if (ShouldIResetLevelProgress)
-            resetLevelProgress();
     }
 
     /// <summary>
@@ -80,7 +68,7 @@ public class LevelManager : MonoBehaviour
             {
                 curButton.interactable = true;
                 if (allLevels[i].isLevelComplete)
-                    curButton.GetComponentInChildren<Text>().text = allLevels[i].name + "\nScore: " + allLevels[i].BestMoveCount;
+                    curButton.GetComponentInChildren<Text>().text = allLevels[i].name + "\nMoves: " + allLevels[i].BestMoveCount + "\nUndos: " + allLevels[i].UndoMoveCount;
             }
             else
             {
@@ -101,10 +89,12 @@ public class LevelManager : MonoBehaviour
         {
             for (int i = 0; i < allLevels.Count; i++)
             {
-                allLevels[i].LevelName = progress.listOfLevelData[i].LevelName;
-                allLevels[i].BestMoveCount = progress.listOfLevelData[i].BestMoveCount;
-                allLevels[i].isLevelComplete = progress.listOfLevelData[i].isLevelComplete;
-                allLevels[i].isUnlocked = progress.listOfLevelData[i].isUnlocked;
+                LevelData curLevel = progress.listOfLevelData[i];
+                allLevels[i].LevelName = curLevel.LevelName;
+                allLevels[i].BestMoveCount = curLevel.BestMoveCount;
+                allLevels[i].UndoMoveCount = curLevel.BestUndoCount;
+                allLevels[i].isLevelComplete = curLevel.isLevelComplete;
+                allLevels[i].isUnlocked = curLevel.isUnlocked;
             }
         }
         else
@@ -166,10 +156,12 @@ public class LevelManager : MonoBehaviour
 
     //Sets the level given by name to complete, and handle bestScore
     // Also unlocks the next level
-    public void completeLevel(string name, string moveCount)
+    public void completeLevel(string name, int moveCount, int undoCount)
     {
         int curScore = 0;
-        int newScore = -1;
+
+        int curUndoScore = 0;
+
         int curLevelIndex = -1;
         int nextLevelIndex;
         for (int i = 0; i < allLevels.Count; i++)
@@ -178,11 +170,17 @@ public class LevelManager : MonoBehaviour
             {
                 allLevels[i].isLevelComplete = true;
                 int.TryParse(allLevels[i].BestMoveCount, out curScore);
-                int.TryParse(moveCount, out newScore);
-                if (newScore < curScore || curScore == 0)
+                if (moveCount < curScore || curScore == 0)
                 {
-                    allLevels[i].BestMoveCount = moveCount;
+                    allLevels[i].BestMoveCount = moveCount.ToString();
                 }
+
+                int.TryParse(allLevels[i].UndoMoveCount, out curUndoScore);
+                if (undoCount < curUndoScore || curUndoScore == 0)
+                {
+                    allLevels[i].UndoMoveCount = undoCount.ToString();
+                }
+
                 curLevelIndex = i;
             }
         }

@@ -7,9 +7,13 @@ using UnityEngine.UIElements;
 public abstract class TurnBasedCharacter : MonoBehaviour
 {
     //turn-system stuff
-    private TurnManager turnManager;
+    protected TurnManager turnManager;
     private bool isMyTurn = false;
     private bool isTakingTurns = true;
+
+    //undo-system stuff
+    protected UndoManager undoManager;
+    private bool needToWrite = false;
 
     [SerializeField]
     private CharacterType characterType = CharacterType.Player;
@@ -31,9 +35,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private MoveOptions thisMove = MoveOptions.None;
     private bool isAnimating = false;
 
-    //this must be the time the turning animations take. Can be found in animation controller
-    private readonly float turnDuration = 1.0f;
-
     //UI Warn Message Stuff
     private WarningMessagesController warnController = null;
     //In the string below, the warning message is cut off immediately after "Twelve" That's your max length
@@ -43,8 +44,10 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
     //For finding and bringing up the pause menu!
     private GameObject UI_Canvas;
-    private string PauseMenuString = "PauseMenu";
-    private GameObject PauseMenu;
+    private PauseMenuManager pauseManager;
+
+    private bool isPauseMenuOpen = false;
+    private bool isCameraModeOpen = false;
 
     void Start()
     {
@@ -58,13 +61,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             foxTransform = this.gameObject.transform.Find("Fox");
 
             UI_Canvas = GameObject.Find("UI Canvas");
-            for (int i = 0; i < UI_Canvas.transform.childCount; i++)
-            {
-                if (UI_Canvas.transform.GetChild(i).name == PauseMenuString)
-                {
-                    PauseMenu = UI_Canvas.transform.GetChild(i).gameObject;
-                }
-            }
+            pauseManager = UI_Canvas.GetComponent<PauseMenuManager>();
         }
 
         //a reference to the WarningController script that handles UI warning messages
@@ -81,6 +78,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 break;
             }
         }
+
+        undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
     }
 
 
@@ -128,6 +127,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
         else
         {
+            if (needToWrite)
+            {
+                needToWrite = false;
+                undoManager.WriteTurnState();
+            }
             isMoving = false;
         }
     }
@@ -144,58 +148,66 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
     private void UpdateTurnForPlayer()
     {
-        if (CameraMovement.CamOn == false)
+        //Deactivates controls if it's the other players turn.
+        if (isMyTurn)
         {
-            //Deactivates controls if it's the other players turn.
-            if (isMyTurn)
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
             {
-                //Deactivate controls if character isMoving from point to point or if an animation is going
-                if (!isMoving && !isAnimating)
+                pauseManager.togglePauseMenu();
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                isCameraModeOpen = !isCameraModeOpen;
+            }
+            //Deactivate controls if character isMoving from point to point or if an animation is going
+            if (!isMoving && !isAnimating && !isPauseMenuOpen && !isCameraModeOpen)
+            {
+                if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
                 {
-                    if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
-                    {
-                        StartCoroutine("EndMyTurn");
-                    }
+                    StartCoroutine("EndMyTurn");
+                }
 
-                    if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
-                    {
-                        PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
-                    }
+                if (Input.GetKeyDown(KeyCode.U))
+                {
+                    undoManager.UndoTurn();
+                }
 
+                //The foxes current facing direction used for any input
+                Vector3 curFacing = foxTransform.forward.normalized;
+                Quaternion curRotation = foxTransform.rotation;
+                //Movement input/controls happens here!
+                // UP/W moves fox *forwards* which is dependent on the orientation of the fox
+                // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
+                // DOWN/S makes the fox do a 180 in-place
+                // So to *move* left, the user should press 'A' to turn, then 'W' to move
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+                {
+                    Vector3 currentPosition = transform.position;
+                    if (OkayToMoveToNextTile(currentPosition + curFacing))
+                    {
+                        //undo stuff
+                        undoManager.LogState(this.gameObject);
+                        needToWrite = true;
 
-                    //The foxes current facing direction used for any input
-                    Vector3 curFacing = foxTransform.forward.normalized;
-                    Quaternion curRotation = foxTransform.rotation;
-                    //Movement input/controls happens here!
-                    // UP/W moves fox *forwards* which is dependent on the orientation of the fox
-                    // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
-                    // DOWN/S makes the fox do a 180 in-place
-                    // So to *move* left, the user should press 'A' to turn, then 'W' to move
-                    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-                    {
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + curFacing))
-                        {
-                            //move count stuff
-                            turnManager.totalMoveCount++;
-                            turnManager.UpdateMoveCount();
+                        //move count stuff
+                        turnManager.totalMoveCount++;
+                        turnManager.UpdateMoveCount();
 
-                            //moving stuff
-                            targetMoveToPosition = currentPosition + curFacing;
-                        }
+                        //moving stuff
+                        targetMoveToPosition = currentPosition + curFacing;
                     }
-                    else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-                    {
-                        Turn("back", curRotation);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-                    {
-                        Turn("left", curRotation);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-                    {
-                        Turn("right", curRotation);
-                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+                {
+                    Turn("back", curRotation);
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                {
+                    Turn("left", curRotation);
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                {
+                    Turn("right", curRotation);
                 }
             }
         }
@@ -319,6 +331,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             //if it's the player moving, return true iff the collider belongs to the hut
             if (isPlayer)
             {
+                if (wallHitColliders.Length > 1) //can only happen if a fox and a house are overlapped
+                    return true;
                 return wallHitColliders[0].gameObject.GetComponent<BoxCollider>().isTrigger;
             }
             else //if it's not the player moving, return false no matter what since a collider is in front
@@ -401,6 +415,21 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         return false;
     }
 
+    public void UndoMyTurn(Vector3 oldPosition, Quaternion oldRotation)
+    {
+        //for blocks that were "destroyed" from falling
+        if (!this.gameObject.activeInHierarchy)
+            this.gameObject.SetActive(true);
+
+        if (characterType == CharacterType.Player)
+            this.gameObject.transform.Find("Fox").rotation = oldRotation;
+        else
+            this.gameObject.transform.rotation = oldRotation;
+        
+        this.gameObject.transform.position = oldPosition;
+        targetMoveToPosition = oldPosition;
+    }
+
    
     //Lil' getters and setters
     public bool GetIsMoving()
@@ -432,6 +461,16 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     {
         isTakingTurns = false;
         turnManager.EndTurn();
+    }
+
+    public void StartTakingTurns()
+    {
+        isTakingTurns = true;
+    }
+
+    public void togglePauseMenuBlock()
+    {
+        isPauseMenuOpen = !isPauseMenuOpen;
     }
 
     //if you don't have this delay, it ends the turn so quickly that the other fox gets the same input so it swaps back
