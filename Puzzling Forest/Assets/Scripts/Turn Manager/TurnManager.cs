@@ -6,112 +6,106 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
-    //List of players under turn system
-    public List<TurnInstance> playersGroup;
+    private GameObject[] PlayerGroup;
+    private TurnBasedCharacter[] PlayerScripts;
+
+    static private int numPlayers;
+
+    private int curTurnIndex = 0;
 
     [SerializeField]
     private Text moveCountUIText;
     [SerializeField]
     public int turnCycleCount = 0;
-    public int totalMoveCount;
+    public int totalMoveCount = 0;
     [HideInInspector]
     public bool isLevelComplete;
 
-
-
     private void Start()
     {
-        ResetTurns();
+        SetUpPlayerGroup();
 
-    }
-    private void Update()
-    {
-        if(!isLevelComplete)
-            UpdateTurns();
+        GiveTurn(curTurnIndex);
     }
 
-    public void SetMoveCountUIText(string text)
+    //Sets up the PlayerGroup by finding all game objects with the "Player" tag in the scene.
+    private void SetUpPlayerGroup()
     {
-        if(moveCountUIText != null)
+        PlayerGroup = GameObject.FindGameObjectsWithTag("Player");
+        numPlayers = PlayerGroup.Length;
+        PlayerScripts = new TurnBasedCharacter[numPlayers];
+
+        for (int i = 0; i < numPlayers; i++)
         {
-            moveCountUIText.text = text;
-        }
-    }
-    //Resets the turn system to start with the first player 
-    void ResetTurns()
-    {
-
-        bool firstEnabledPlayerWasFound = false; //The logic will continue to look for the first enabled player as long as this is false
-        for(int i = -0; i < playersGroup.Count; i++)
-        {
-            if(!firstEnabledPlayerWasFound)
-            {
-                if (playersGroup[i].isEnabled) //If true, we have found the first enabled player in the turn list
-                {
-                    playersGroup[i].isTurn = true;
-                    playersGroup[i].wasTurnPrev = false;
-                    playersGroup[i].playerGameObject.GetComponent<TurnBasedCharacter>().ResetMovement();
-                    firstEnabledPlayerWasFound = true;
-                }
-                else //If not true, skip this player and go to the next
-                {
-                    Debug.Log("The player object named '" + playersGroup[i].playerGameObject.name + "' is not enabled.  Skipping...");
-                }
-            }
-            else //For every other player in the list, set their turns to false
-            {
-
-                playersGroup[i].isTurn = false;
-                playersGroup[i].wasTurnPrev = false;
-                playersGroup[i].playerGameObject.GetComponent<TurnBasedCharacter>().ResetMovement();
-            }
+            PlayerScripts[i] = PlayerGroup[i].GetComponent<TurnBasedCharacter>();
         }
     }
 
-    // Cycles to the next turn
-    void UpdateTurns()
+    //Increments the current turn index whilst keeping an eye on going out of bounds
+    private void incrementIDX()
     {
-        for(int i = 0; i < playersGroup.Count; i++)
-        {
-
-            //Only enabled if the current object is a TurnBasedCharacter AND if its turn is enabled 
-            if (playersGroup[i].playerGameObject.GetComponent<TurnBasedCharacter>() && playersGroup[i].isEnabled) 
-            {
-                if (!playersGroup[i].wasTurnPrev)
-                {
-                    playersGroup[i].isTurn = true;
-                    break;
-                    
-                }
-                else if(i >= playersGroup.Count - 1 &&
-                        playersGroup[i].wasTurnPrev)
-                {
-                    ResetTurns();
-                    turnCycleCount++;
-                }
-            }
-            else
-            {
-                Debug.LogWarning("The player object named '" + playersGroup[i].playerGameObject.name + "' is disabled or does not have 'Turn Based Character' component.  Skipping...");
-                
-                if (i >= playersGroup.Count - 1)//If this is the last turn-based character and it is not enabled, skip and reset the turn order
-                {
-                    ResetTurns();
-                    turnCycleCount++;
-                }
-            }
-
-        }
-
+        curTurnIndex++;
+        if (curTurnIndex > numPlayers - 1)
+            curTurnIndex = 0;
     }
 
-    //The instance of each turn for each player
-    [System.Serializable]
-    public class TurnInstance
+    //Enables the turn of the player from the PlayerGroup[idx]
+    private void GiveTurn(int idx)
     {
-        public GameObject playerGameObject;
-        public bool isTurn = false; //True when a player's turn is active, false before and after the player's turn
-        public bool wasTurnPrev = false; //Once a player's turn has ended, this will be set to true (unless Reset turn is called
-        public bool isEnabled = true; // Turn will only activate if it is enabled; otherwise, the turn will be skipped (i.e. if one player makes ti to the goal); default = true.
+        TurnBasedCharacter curScript = PlayerScripts[idx];
+
+        if (curScript.CheckIfTakingTurns())
+        {
+            curScript.SetTurnActive(true);
+        }
+    }
+
+    //Disables the turn of the player from the PlayerGroup[idx]
+    private void TakeTurn(int idx)
+    {
+        TurnBasedCharacter curScript = PlayerScripts[idx];
+
+        if (curScript.CheckTurn())
+        {
+            curScript.SetTurnActive(false);
+        }
+    }
+
+    //Increments curIDX, disables the current fox's turn, enables the next valid fox's turn
+    public void EndTurn()
+    {
+        TakeTurn(curTurnIndex);
+
+        int loopIDX = 0;
+        incrementIDX();
+        while (!PlayerScripts[curTurnIndex].CheckIfTakingTurns())
+        {
+            incrementIDX();
+            loopIDX++;
+            if (loopIDX >= numPlayers)
+            {
+                Debug.Log("No players found taking turns.");
+                return;
+            }
+        }
+
+        GiveTurn(curTurnIndex);
+    }
+
+    //Lil' helper getter setter stuff
+    public int GetNumPlayers()
+    {
+        return numPlayers;
+    }
+
+    public TurnBasedCharacter GetPlayerScript(int idx)
+    {
+        return PlayerScripts[idx];
+    }
+
+    //Updates the UI text "total Moves"
+    public void UpdateMoveCount()
+    {
+        moveCountUIText.text = totalMoveCount.ToString();
     }
 }
