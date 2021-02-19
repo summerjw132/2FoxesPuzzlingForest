@@ -102,7 +102,7 @@ public class PushableTurnBasedObject : TurnBasedCharacter
             //Debug.Log(this.gameObject.name + " is being pushed to " + targetPosition);
 
             //undo stuff
-            undoManager.LogState(this.gameObject);
+            //undoManager.LogState(this.gameObject);
 
             targetMoveToPosition = targetPosition;
             return true;
