@@ -95,7 +95,7 @@ public class UndoManager : MonoBehaviour
 
             foreach (StateInfo state in prevState.turnState)
             {
-               // state.GO.GetComponent<TurnBasedCharacter>().UndoMyTurn(state.position, state.rotation);
+               state.GO.GetComponent<TurnBasedCharacter>().UndoMyTurn(state.position, state.rotation);
             }
         }
         else
