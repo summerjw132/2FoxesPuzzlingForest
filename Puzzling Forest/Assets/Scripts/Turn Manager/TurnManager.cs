@@ -13,10 +13,10 @@ public class TurnManager : MonoBehaviour
 
     private int curTurnIndex = 0;
 
-    [SerializeField]
-    private Text moveCountUIText;
-    [SerializeField]
-    public int turnCycleCount = 0;
+    [SerializeField] private Text moveCountUIText = null;
+    [SerializeField] private Text undoCountUIText = null;
+
+    public int undoCount = 0;
     public int totalMoveCount = 0;
     [HideInInspector]
     public bool isLevelComplete;
@@ -103,9 +103,15 @@ public class TurnManager : MonoBehaviour
         return PlayerScripts[idx];
     }
 
+    public GameObject[] GetPlayers()
+    {
+        return PlayerGroup;
+    }
+
     //Updates the UI text "total Moves"
     public void UpdateMoveCount()
     {
         moveCountUIText.text = totalMoveCount.ToString();
+        undoCountUIText.text = undoCount.ToString();
     }
 }
