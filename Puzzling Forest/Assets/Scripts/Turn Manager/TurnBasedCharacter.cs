@@ -7,9 +7,13 @@ using UnityEngine.UIElements;
 public abstract class TurnBasedCharacter : MonoBehaviour
 {
     //turn-system stuff
-    private TurnManager turnManager;
+    protected TurnManager turnManager;
     private bool isMyTurn = false;
     private bool isTakingTurns = true;
+
+    //undo-system stuff
+    protected UndoManager undoManager;
+    private bool needToWrite = false;
 
     [SerializeField]
     private CharacterType characterType = CharacterType.Player;
@@ -46,6 +50,9 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private string PauseMenuString = "PauseMenu";
     private GameObject PauseMenu;
 
+    private bool isPauseMenuOpen = false;
+    private bool isCameraModeOpen = false;
+
     void Start()
     {
         targetMoveToPosition = this.transform.position;
@@ -81,6 +88,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 break;
             }
         }
+
+        undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
     }
 
 
@@ -128,6 +137,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
         else
         {
+            if (needToWrite)
+            {
+                needToWrite = false;
+                undoManager.WriteTurnState();
+            }
             isMoving = false;
         }
     }
@@ -144,58 +158,67 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
     private void UpdateTurnForPlayer()
     {
-        if (CameraMovement.CamOn == false)
+        //Deactivates controls if it's the other players turn.
+        if (isMyTurn)
         {
-            //Deactivates controls if it's the other players turn.
-            if (isMyTurn)
+            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
             {
-                //Deactivate controls if character isMoving from point to point or if an animation is going
-                if (!isMoving && !isAnimating)
+                PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
+                isPauseMenuOpen = !isPauseMenuOpen;
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                isCameraModeOpen = !isCameraModeOpen;
+            }
+            //Deactivate controls if character isMoving from point to point or if an animation is going
+            if (!isMoving && !isAnimating && !isPauseMenuOpen && !isCameraModeOpen)
+            {
+                if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
                 {
-                    if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
-                    {
-                        StartCoroutine("EndMyTurn");
-                    }
+                    StartCoroutine("EndMyTurn");
+                }
 
-                    if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
-                    {
-                        PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
-                    }
+                if (Input.GetKeyDown(KeyCode.U))
+                {
+                    undoManager.UndoTurn();
+                }
 
+                //The foxes current facing direction used for any input
+                Vector3 curFacing = foxTransform.forward.normalized;
+                Quaternion curRotation = foxTransform.rotation;
+                //Movement input/controls happens here!
+                // UP/W moves fox *forwards* which is dependent on the orientation of the fox
+                // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
+                // DOWN/S makes the fox do a 180 in-place
+                // So to *move* left, the user should press 'A' to turn, then 'W' to move
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+                {
+                    Vector3 currentPosition = transform.position;
+                    if (OkayToMoveToNextTile(currentPosition + curFacing))
+                    {
+                        //undo stuff
+                        undoManager.LogState(this.gameObject);
+                        needToWrite = true;
 
-                    //The foxes current facing direction used for any input
-                    Vector3 curFacing = foxTransform.forward.normalized;
-                    Quaternion curRotation = foxTransform.rotation;
-                    //Movement input/controls happens here!
-                    // UP/W moves fox *forwards* which is dependent on the orientation of the fox
-                    // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
-                    // DOWN/S makes the fox do a 180 in-place
-                    // So to *move* left, the user should press 'A' to turn, then 'W' to move
-                    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
-                    {
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + curFacing))
-                        {
-                            //move count stuff
-                            turnManager.totalMoveCount++;
-                            turnManager.UpdateMoveCount();
+                        //move count stuff
+                        turnManager.totalMoveCount++;
+                        turnManager.UpdateMoveCount();
 
-                            //moving stuff
-                            targetMoveToPosition = currentPosition + curFacing;
-                        }
+                        //moving stuff
+                        targetMoveToPosition = currentPosition + curFacing;
                     }
-                    else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-                    {
-                        Turn("back", curRotation);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-                    {
-                        Turn("left", curRotation);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-                    {
-                        Turn("right", curRotation);
-                    }
+                }
+                else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
+                {
+                    Turn("back", curRotation);
+                }
+                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                {
+                    Turn("left", curRotation);
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                {
+                    Turn("right", curRotation);
                 }
             }
         }
@@ -399,6 +422,20 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
         potentialFloorTag = "NoFloor";
         return false;
+    }
+
+    public void UndoMyTurn(Vector3 oldPosition, Quaternion oldRotation)
+    {
+        this.gameObject.transform.position = oldPosition;
+        targetMoveToPosition = oldPosition;
+
+        if (characterType == CharacterType.Player)
+            this.gameObject.transform.Find("Fox").rotation = oldRotation;
+        else
+            this.gameObject.transform.rotation = oldRotation;
+        
+        if (!this.gameObject.activeInHierarchy)
+            this.gameObject.SetActive(true);
     }
 
    
