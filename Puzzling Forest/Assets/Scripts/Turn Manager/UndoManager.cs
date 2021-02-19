@@ -71,9 +71,15 @@ public class UndoManager : MonoBehaviour
             return retString;
         }
     }
+    private TurnManager turnManager;
 
     private Stack<SingleTurnState> undoStack = new Stack<SingleTurnState>();
     private SingleTurnState curTurnState = new SingleTurnState();
+
+    void Start()
+    {
+        turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
+    }
 
     public void LogState(GameObject incomingGO)
     {
@@ -97,6 +103,10 @@ public class UndoManager : MonoBehaviour
             {
                 state.GO.GetComponent<TurnBasedCharacter>().UndoMyTurn(state.position, state.rotation);
             }
+
+            turnManager.totalMoveCount--;
+            turnManager.undoCount++;
+            turnManager.UpdateMoveCount();
         }
         else
         {
