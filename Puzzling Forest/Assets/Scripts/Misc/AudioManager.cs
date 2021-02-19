@@ -6,10 +6,10 @@ using UnityEngine.UI;
 public class AudioManager : MonoBehaviour
 {
     [SerializeField]
-    private Slider BackgroundMusicSlider;
+    private Slider BackgroundMusicSlider = null;
 
     [SerializeField]
-    private AudioSource BackgroundMusicAudio;
+    private AudioSource BackgroundMusicAudio = null;
 
 
     // Start is called before the first frame update
