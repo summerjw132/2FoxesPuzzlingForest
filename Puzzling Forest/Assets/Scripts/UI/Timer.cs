@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
     [SerializeField]
-    private GameObject timeUI;
+    private GameObject timeUI = null;
 
     private int timer;
     private float rt;

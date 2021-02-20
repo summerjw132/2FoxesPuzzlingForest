@@ -35,9 +35,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private MoveOptions thisMove = MoveOptions.None;
     private bool isAnimating = false;
 
-    //this must be the time the turning animations take. Can be found in animation controller
-    private readonly float turnDuration = 1.0f;
-
     //UI Warn Message Stuff
     private WarningMessagesController warnController = null;
     //In the string below, the warning message is cut off immediately after "Twelve" That's your max length
@@ -47,8 +44,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
     //For finding and bringing up the pause menu!
     private GameObject UI_Canvas;
-    private string PauseMenuString = "PauseMenu";
-    private GameObject PauseMenu;
+    private PauseMenuManager pauseManager;
 
     private bool isPauseMenuOpen = false;
     private bool isCameraModeOpen = false;
@@ -65,13 +61,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             foxTransform = this.gameObject.transform.Find("Fox");
 
             UI_Canvas = GameObject.Find("UI Canvas");
-            for (int i = 0; i < UI_Canvas.transform.childCount; i++)
-            {
-                if (UI_Canvas.transform.GetChild(i).name == PauseMenuString)
-                {
-                    PauseMenu = UI_Canvas.transform.GetChild(i).gameObject;
-                }
-            }
+            pauseManager = UI_Canvas.GetComponent<PauseMenuManager>();
         }
 
         //a reference to the WarningController script that handles UI warning messages
@@ -163,8 +153,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
             {
-                PauseMenu.SetActive(!PauseMenu.activeInHierarchy);
-                isPauseMenuOpen = !isPauseMenuOpen;
+                pauseManager.togglePauseMenu();
             }
             else if (Input.GetKeyDown(KeyCode.C))
             {
@@ -342,6 +331,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             //if it's the player moving, return true iff the collider belongs to the hut
             if (isPlayer)
             {
+                if (wallHitColliders.Length > 1) //can only happen if a fox and a house are overlapped
+                    return true;
                 return wallHitColliders[0].gameObject.GetComponent<BoxCollider>().isTrigger;
             }
             else //if it's not the player moving, return false no matter what since a collider is in front
@@ -426,16 +417,17 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
     public void UndoMyTurn(Vector3 oldPosition, Quaternion oldRotation)
     {
-        this.gameObject.transform.position = oldPosition;
-        targetMoveToPosition = oldPosition;
+        //for blocks that were "destroyed" from falling
+        if (!this.gameObject.activeInHierarchy)
+            this.gameObject.SetActive(true);
 
         if (characterType == CharacterType.Player)
             this.gameObject.transform.Find("Fox").rotation = oldRotation;
         else
             this.gameObject.transform.rotation = oldRotation;
         
-        if (!this.gameObject.activeInHierarchy)
-            this.gameObject.SetActive(true);
+        this.gameObject.transform.position = oldPosition;
+        targetMoveToPosition = oldPosition;
     }
 
    
@@ -469,6 +461,16 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     {
         isTakingTurns = false;
         turnManager.EndTurn();
+    }
+
+    public void StartTakingTurns()
+    {
+        isTakingTurns = true;
+    }
+
+    public void togglePauseMenuBlock()
+    {
+        isPauseMenuOpen = !isPauseMenuOpen;
     }
 
     //if you don't have this delay, it ends the turn so quickly that the other fox gets the same input so it swaps back
