@@ -15,7 +15,7 @@ public class CameraMovement : MonoBehaviour
     public float zoomSpeed = 20f;
     public float Max = 70, Min = 40;
     public float ZoomLerp = 10;
-    static public bool CamOn = false;
+    public bool CamOn = false;
     public bool ImThere = false;
     float Step;
 
