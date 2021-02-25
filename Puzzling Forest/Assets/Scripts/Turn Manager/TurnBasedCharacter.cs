@@ -49,6 +49,24 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private bool isPauseMenuOpen = false;
     private bool isCameraModeOpen = false;
 
+    //GUI stuff for foxholes
+    // script so that we can call initiate warp on the foxhole we're standing on
+    private FoxHole curFoxholeScript = null;
+    // for toggling when to display the button
+    private bool displayButton;
+    // for styling/sizing the button. Look in OnGUI() for how these are set
+    private float butX;
+    private float butY;
+    private float butWidth;
+    private float butHeight;
+    private float butOffsetX;
+    private float butOffsetY;
+    private GUIStyle guiStyle;
+    // reference to the camera so that we can display the button in screen coords
+    Camera cam = null;
+    // a flag so that the style stuff isn't set every frame
+    private bool setFontSize = true;
+
     void Start()
     {
         targetMoveToPosition = this.transform.position;
@@ -62,6 +80,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
             UI_Canvas = GameObject.Find("UI Canvas");
             pauseManager = UI_Canvas.GetComponent<PauseMenuManager>();
+
+            cam = GameObject.Find("GameManager").GetComponentInChildren<Camera>();
         }
 
         //a reference to the WarningController script that handles UI warning messages
@@ -133,6 +153,34 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 undoManager.WriteTurnState();
             }
             isMoving = false;
+        }
+    }
+
+    void OnGUI()
+    {
+        //does this stuff once, sets the font size and button size relative to screen size
+        if (setFontSize && this.characterType == CharacterType.Player)
+        {
+            guiStyle = GUI.skin.button;
+            guiStyle.fontSize = (int)(cam.pixelHeight / 35f);
+            butWidth = cam.pixelWidth / 20f;
+            butHeight = cam.pixelHeight / 20f;
+            butOffsetX = butWidth / 2f;
+            butOffsetY = cam.pixelHeight / 10f;
+
+            setFontSize = false;
+        }
+        //displays the button and calls the warp if it's clicked
+        if (displayButton && !isMoving)
+        {
+            Vector3 screenPos = cam.WorldToScreenPoint(this.transform.position);
+            butX = screenPos.x - butOffsetX;
+            butY = (cam.pixelHeight - screenPos.y) - butOffsetY;
+
+            if (GUI.Button(new Rect(butX, butY, butWidth, butHeight), "Warp", guiStyle))
+            {
+                curFoxholeScript.InitiateWarp();
+            }
         }
     }
 
@@ -415,6 +463,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         return false;
     }
 
+    //This just moves the fox to the position and rotation given as args
     public void UndoMyTurn(Vector3 oldPosition, Quaternion oldRotation)
     {
         //for blocks that were "destroyed" from falling
@@ -430,6 +479,29 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         targetMoveToPosition = oldPosition;
     }
 
+    //Now that warping is an interactive button, we need to write this action to the
+    // undo stack. This is simply called every time a foxhole initiates a warp
+    public void WriteFoxholeToUndoStack()
+    {
+        undoManager.LogState(this.gameObject);
+        undoManager.WriteTurnState();
+    }
+
+    //This is just a public method for incrementing the movement counter. Foxholes
+    // will call this when they initiate the warp
+    public void IncrementMoveCounter()
+    {
+        turnManager.totalMoveCount++;
+        turnManager.UpdateMoveCount();
+    }
+
+    //This is used by foxholes to tell the foxes when they should and shouldn't display the
+    // "Warp" button
+    public void ShowFoxholeButton(bool enabled, FoxHole curScript)
+    {
+        displayButton = enabled;
+        curFoxholeScript = curScript;
+    }
    
     //Lil' getters and setters
     public bool GetIsMoving()
@@ -494,10 +566,12 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
+        //Debug.Log("begin anim");
         isAnimating = true;
     }
     public void completeAnimation()
     {
+        //Debug.Log("complete anim");
         isAnimating = false;
     }
 
