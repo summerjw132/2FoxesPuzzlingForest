@@ -109,6 +109,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a0790afb885a3b48bd5ab5b7f27a603, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Turning: 70
+  CameraUI: {fileID: 0}
+  Speed: 10
   TurnSpeed: 0.5
   CameraPivot: {fileID: 5066198756215620835}
   Zoom: 0
@@ -117,6 +120,9 @@ MonoBehaviour:
   Max: 50
   Min: 0
   ZoomLerp: 10
+  ImThere: 0
+  Forwards: 0
+  Backwards: 4
 --- !u!1 &7027430617553730204
 GameObject:
   m_ObjectHideFlags: 0
@@ -142,7 +148,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7027430617553730204}
-  m_LocalRotation: {x: 0.50581616, y: 0.22609822, z: -0.13933253, w: 0.82074124}
+  m_LocalRotation: {x: 0.46193916, y: -0.33141324, z: 0.19134109, w: 0.80010384}
   m_LocalPosition: {x: -3.9828372, y: 0, z: -7.755991}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
