@@ -159,7 +159,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     void OnGUI()
     {
         //does this stuff once, sets the font size and button size relative to screen size
-        if (setFontSize)
+        if (setFontSize && this.characterType == CharacterType.Player)
         {
             guiStyle = GUI.skin.button;
             guiStyle.fontSize = (int)(cam.pixelHeight / 35f);
