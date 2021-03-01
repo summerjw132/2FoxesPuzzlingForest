@@ -61,7 +61,6 @@ public class LevelManager : MonoBehaviour
     //TEMPORARY LOAD FROM WHERE STUFF
     public void GoToMenu()
     {
-        Debug.Log("HERE");
         LevelSelectMenu.SetActive(true);
         LoadFromWhereMenu.SetActive(false);
 
