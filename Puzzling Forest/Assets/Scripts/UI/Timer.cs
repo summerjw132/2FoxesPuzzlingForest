@@ -10,16 +10,19 @@ public class Timer : MonoBehaviour
     private GameObject timeUI = null;
 
     private int timer;
-    private float rt;
     [HideInInspector]
     public bool isLevelComplete;
+
+    private float timeAtStartOfThisLevel;
+
+    private float curTime;
 
     public int totaltime {get{return timer;} set{}}
 
     // Start is called before the first frame update
     void Start()
     {
-        timer = 0;      
+        timeAtStartOfThisLevel = Time.time;
     }
 
     // Update is called once per frame
@@ -27,8 +30,8 @@ public class Timer : MonoBehaviour
     {
         if (!isLevelComplete)
         {
-            rt = Time.time;
-            timer = (int)rt;
+            curTime = Time.time - timeAtStartOfThisLevel;
+            timer = (int)curTime;
         }
         timeUI.GetComponent<Text>().text = timer.ToString();
     }
