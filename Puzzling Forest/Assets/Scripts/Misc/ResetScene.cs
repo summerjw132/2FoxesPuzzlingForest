@@ -13,7 +13,7 @@ public class ResetScene : MonoBehaviour
             ResetCurrentScene();
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Tab))
         {
             QuitGame();
         }
@@ -32,7 +32,7 @@ public class ResetScene : MonoBehaviour
         // UnityEditor.EditorApplication.isPlaying need to be set to false to end the game
         UnityEditor.EditorApplication.isPlaying = false;
         #else
-         Application.Quit();
+         
         #endif
     }
 }

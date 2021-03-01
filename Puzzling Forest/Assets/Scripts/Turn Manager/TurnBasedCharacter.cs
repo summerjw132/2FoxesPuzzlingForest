@@ -199,7 +199,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         //Deactivates controls if it's the other players turn.
         if (isMyTurn)
         {
-            if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Tab))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 pauseManager.togglePauseMenu();
             }
