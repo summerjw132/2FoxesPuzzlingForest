@@ -63,7 +63,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private float butOffsetY;
     private GUIStyle guiStyle;
     // reference to the camera so that we can display the button in screen coords
-    Camera cam = null;
+    static Camera cam = null;
     // a flag so that the style stuff isn't set every frame
     private bool setFontSize = true;
 
