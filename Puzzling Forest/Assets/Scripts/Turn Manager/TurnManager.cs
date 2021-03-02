@@ -21,7 +21,7 @@ public class TurnManager : MonoBehaviour
     [HideInInspector]
     public bool isLevelComplete;
 
-    private void Start()
+    private void Awake()
     {
         SetUpPlayerGroup();
 
