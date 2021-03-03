@@ -250,6 +250,7 @@ GameObject:
   - component: {fileID: -4691761666310564150}
   - component: {fileID: 577549032585775114}
   - component: {fileID: 8794680015913185173}
+  - component: {fileID: 3252620117497715553}
   m_Layer: 0
   m_Name: Turn-Based Player
   m_TagString: Player
@@ -349,14 +350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5eac97f78f9fc446b81122ad4ac51d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnManager: {fileID: 0}
-  turn:
-    playerGameObject: {fileID: 0}
-    isTurn: 0
-    wasTurnPrev: 0
-    isEnabled: 1
-  isTurn: 0
-  maxMovementRange: 10
   characterType: 0
   turnIndicator: {fileID: 0}
 --- !u!54 &-4691761666310564150
@@ -406,6 +399,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a735c3ef4154f9347b86fe82285e546b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3252620117497715553
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7045160852408786490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d6217bf8952eae419ae73b1ebcbdaf0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterType: 0
+  turnIndicator: {fileID: 0}
 --- !u!1001 &4846917662285799069
 PrefabInstance:
   m_ObjectHideFlags: 0

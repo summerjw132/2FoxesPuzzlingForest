@@ -6,36 +6,34 @@ using UnityEngine.UIElements;
 
 public abstract class TurnBasedCharacter : MonoBehaviour
 {
+    //turn-system stuff
+    protected TurnManager turnManager;
+    private bool isMyTurn = false;
+    private bool isTakingTurns = true;
 
-    public TurnManager turnManager;
-    public TurnManager.TurnInstance turn;
-    public bool isTurn = false;
-    //public KeyCode moveKey;
-    [SerializeField]
-    private int maxMovementRange = 5;
+    //undo-system stuff
+    protected UndoManager undoManager;
+    private bool needToWrite = false;
+
     [SerializeField]
     private CharacterType characterType = CharacterType.Player;
     [SerializeField]
     private GameObject turnIndicator = null;
-    protected int currentMovementRemaining;
+
     private bool isMoving = false;
     protected Vector3 targetMoveToPosition;
     private Transform foxTransform = null;
-    //Move speed. Used like Vector3.MoveTowards(... , moveSpeed * Time.deltaTime)
-    //  original value was 5f
+ 
     private float moveSpeed = 2.5f;
     private int maxDepth = 15; //This is how deep to check for a fox before pushing a block that could crush it
 
     //animation stuff
     // animation controller script
     protected foxAnimationStateController animController;
-    // flags for knowing which type of animation to call each move
+    // used as flags for knowing which type of animation to call each move
     private enum MoveOptions { Walk, Push, Left, Right, None };
     private MoveOptions thisMove = MoveOptions.None;
-    // bool to lock controls away from player while animation is going
     private bool isAnimating = false;
-    //this must be the time the turning animations take. Can be found in animation controller
-    private float turnDuration = 1.0f;
 
     //UI Warn Message Stuff
     private WarningMessagesController warnController = null;
@@ -44,28 +42,30 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     private static string vertStackWarnMessage  = "One of the blocks you tried to move is weighed down!";
     private static string crushFoxWarnMessage   = "Be careful! This move would crush a fox!";
 
-    public enum CharacterType
-    {
-        Player,
-        NPC,
-        Wall
-    }
+    //For finding and bringing up the pause menu!
+    private GameObject UI_Canvas;
+    private PauseMenuManager pauseManager;
 
-    public CharacterType GetCharacterType()
-    {
-        return characterType;
-    }
+    private bool isPauseMenuOpen = false;
+    private bool isCameraModeOpen = false;
 
-    public bool GetIsMoving()
-    {
-        return isMoving;
-    }
-
-    public void SetTargetMoveToPosition(Vector3 newTargetMoveToPosition)
-    {
-        this.targetMoveToPosition = newTargetMoveToPosition;
-    }
-
+    //GUI stuff for foxholes
+    // script so that we can call initiate warp on the foxhole we're standing on
+    private FoxHole curFoxholeScript = null;
+    // for toggling when to display the button
+    private bool displayButton;
+    // for styling/sizing the button. Look in OnGUI() for how these are set
+    private float butX;
+    private float butY;
+    private float butWidth;
+    private float butHeight;
+    private float butOffsetX;
+    private float butOffsetY;
+    private GUIStyle guiStyle;
+    // reference to the camera so that we can display the button in screen coords
+    static Camera cam = null;
+    // a flag so that the style stuff isn't set every frame
+    private bool setFontSize = true;
 
     void Start()
     {
@@ -78,6 +78,10 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             animController = GetComponent<foxAnimationStateController>();
             foxTransform = this.gameObject.transform.Find("Fox");
 
+            UI_Canvas = GameObject.Find("UI Canvas");
+            pauseManager = UI_Canvas.GetComponent<PauseMenuManager>();
+
+            cam = GameObject.Find("GameManager").GetComponentInChildren<Camera>();
         }
 
         //a reference to the WarningController script that handles UI warning messages
@@ -95,15 +99,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             }
         }
 
-        //Set the turn value to that established by the turn manager
-        foreach (TurnManager.TurnInstance currentTurn in turnManager.playersGroup)
-        {
-            if (currentTurn.playerGameObject.name == gameObject.name)
-            {
-                turn = currentTurn;
-            }
-        }
-        ResetMovement();
+        undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
     }
 
 
@@ -113,15 +109,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         if (characterType == CharacterType.Player)
         {
             UpdateTurnForPlayer();
-
-
         }
         if (characterType == CharacterType.NPC)
         {
-            UpdateTurnForNPC();
-
+            //No NPC implemented yet
         }
-
         UpdateTurnIndicator();
 
         //MoveCharacter();
@@ -152,29 +144,44 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
             this.transform.position = Vector3.MoveTowards(this.transform.position, targetMoveToPosition, moveSpeed * Time.deltaTime);
             isMoving = true;
-
-            //Log whenever a non-player is moving
-            //if (!this.gameObject.tag.Equals("Player") && this.gameObject.transform.position.y >= 0)
-            //{
-            //    Debug.Log(this.gameObject.name + ": I'm moving");
-            //}
-
-            if (turn.isTurn)
-            {
-                //These msgs are super loud bc they print every update
-                //Debug.Log(this.gameObject.name + ": I'm moving");
-            }
         }
         else
         {
-            isMoving = false;
-
-            if (turn.isTurn)
+            if (needToWrite)
             {
-                //Debug.Log(this.gameObject.name + ": I'm standing still");
+                needToWrite = false;
+                undoManager.WriteTurnState();
+            }
+            isMoving = false;
+        }
+    }
+
+    void OnGUI()
+    {
+        //does this stuff once, sets the font size and button size relative to screen size
+        if (setFontSize && this.characterType == CharacterType.Player)
+        {
+            guiStyle = GUI.skin.button;
+            guiStyle.fontSize = (int)(cam.pixelHeight / 35f);
+            butWidth = cam.pixelWidth / 20f;
+            butHeight = cam.pixelHeight / 20f;
+            butOffsetX = butWidth / 2f;
+            butOffsetY = cam.pixelHeight / 10f;
+
+            setFontSize = false;
+        }
+        //displays the button and calls the warp if it's clicked
+        if (displayButton && !isMoving)
+        {
+            Vector3 screenPos = cam.WorldToScreenPoint(this.transform.position);
+            butX = screenPos.x - butOffsetX;
+            butY = (cam.pixelHeight - screenPos.y) - butOffsetY;
+
+            if (GUI.Button(new Rect(butX, butY, butWidth, butHeight), "Warp", guiStyle))
+            {
+                curFoxholeScript.InitiateWarp();
             }
         }
-
     }
 
     private void Fall()
@@ -185,77 +192,71 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
     }
 
-
     public abstract void SpecialAction();
-
 
     private void UpdateTurnForPlayer()
     {
-        //Deactivate controls if character isMoving from point to point or if an animation is going
-        if (!isMoving && !isAnimating)
+        //Deactivates controls if it's the other players turn.
+        if (isMyTurn)
         {
-
-            isTurn = turn.isTurn;
-
-            if (isTurn && turn.isEnabled)
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
-                turnManager.SetMoveCountUIText(currentMovementRemaining.ToString());//Update the movement count UI text
-
+                pauseManager.togglePauseMenu();
+            }
+            else if (Input.GetKeyDown(KeyCode.C))
+            {
+                isCameraModeOpen = !isCameraModeOpen;
+            }
+            //Deactivate controls if character isMoving from point to point or if an animation is going
+            if (!isMoving && !isAnimating && !isPauseMenuOpen && !isCameraModeOpen)
+            {
                 if (Input.GetKeyDown(KeyCode.E)) //end the turn if 'E' is pressed
                 {
-                    currentMovementRemaining = 0;
+                    StartCoroutine("EndMyTurn");
                 }
 
+                if (Input.GetKeyDown(KeyCode.U))
+                {
+                    undoManager.UndoTurn();
+                }
+
+                //The foxes current facing direction used for any input
+                Vector3 curFacing = foxTransform.forward.normalized;
+                Quaternion curRotation = foxTransform.rotation;
                 //Movement input/controls happens here!
                 // UP/W moves fox *forwards* which is dependent on the orientation of the fox
                 // LEFT/A and RIGHT/D rotates the fox left and right in-place, respectively
                 // DOWN/S makes the fox do a 180 in-place
                 // So to *move* left, the user should press 'A' to turn, then 'W' to move
-                if (currentMovementRemaining > 0)
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
                 {
-                    //The foxes current facing direction used for any input
-                    Vector3 curFacing = foxTransform.forward.normalized;
-                    Quaternion curRotation = foxTransform.rotation;
-                    if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W))
+                    Vector3 currentPosition = transform.position;
+                    if (OkayToMoveToNextTile(currentPosition + curFacing))
                     {
-                        Vector3 currentPosition = transform.position;
-                        if (OkayToMoveToNextTile(currentPosition + curFacing))
-                        {
-                            //move count stuff
-                            currentMovementRemaining--;
-                            turnManager.totalMoveCount++;
+                        //undo stuff
+                        undoManager.LogState(this.gameObject);
+                        needToWrite = true;
 
-                            //moving stuff
-                            targetMoveToPosition = currentPosition + curFacing;
-                        }
+                        //move count stuff
+                        turnManager.totalMoveCount++;
+                        turnManager.UpdateMoveCount();
 
-
-                    }
-                    else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
-                    {
-                        Turn("back", curRotation);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
-                    {
-                        Turn("left", curRotation);
-                    }
-                    else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
-                    {
-                        Turn("right", curRotation);
+                        //moving stuff
+                        targetMoveToPosition = currentPosition + curFacing;
                     }
                 }
-                else
+                else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S))
                 {
-                    isTurn = false;
-                    turn.isTurn = isTurn;
-                    turn.wasTurnPrev = true;
+                    Turn("back", curRotation);
                 }
-            }
-            else if (!turn.isEnabled)
-            {
-                isTurn = false;
-                turn.isTurn = isTurn;
-                turn.wasTurnPrev = true;
+                else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+                {
+                    Turn("left", curRotation);
+                }
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+                {
+                    Turn("right", curRotation);
+                }
             }
         }
     }
@@ -378,6 +379,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             //if it's the player moving, return true iff the collider belongs to the hut
             if (isPlayer)
             {
+                if (wallHitColliders.Length > 1) //can only happen if a fox and a house are overlapped
+                    return true;
                 return wallHitColliders[0].gameObject.GetComponent<BoxCollider>().isTrigger;
             }
             else //if it's not the player moving, return false no matter what since a collider is in front
@@ -460,31 +463,93 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         return false;
     }
 
-    private void UpdateTurnForNPC()
+    //This just moves the fox to the position and rotation given as args
+    public void UndoMyTurn(Vector3 oldPosition, Quaternion oldRotation)
     {
-        isTurn = turn.isTurn;
+        //for blocks that were "destroyed" from falling
+        if (!this.gameObject.activeInHierarchy)
+            this.gameObject.SetActive(true);
 
-        if (isTurn)
-        {
-            StartCoroutine("WaitAndMove");
-        }
+        if (characterType == CharacterType.Player)
+            this.gameObject.transform.Find("Fox").rotation = oldRotation;
+        else
+            this.gameObject.transform.rotation = oldRotation;
+        
+        this.gameObject.transform.position = oldPosition;
+        targetMoveToPosition = oldPosition;
     }
 
-    IEnumerator WaitAndMove()
+    //Now that warping is an interactive button, we need to write this action to the
+    // undo stack. This is simply called every time a foxhole initiates a warp
+    public void WriteFoxholeToUndoStack()
     {
-        yield return new WaitForSeconds(1f);
-        transform.position += Vector3.forward;
-        isTurn = false;
-        turn.isTurn = isTurn;
-        turn.wasTurnPrev = true;
-
-        StopCoroutine("WaitAndMove");
-
+        undoManager.LogState(this.gameObject);
+        undoManager.WriteTurnState();
     }
-    public void ResetMovement()
-    {
 
-        currentMovementRemaining = maxMovementRange;
+    //This is just a public method for incrementing the movement counter. Foxholes
+    // will call this when they initiate the warp
+    public void IncrementMoveCounter()
+    {
+        turnManager.totalMoveCount++;
+        turnManager.UpdateMoveCount();
+    }
+
+    //This is used by foxholes to tell the foxes when they should and shouldn't display the
+    // "Warp" button
+    public void ShowFoxholeButton(bool enabled, FoxHole curScript)
+    {
+        displayButton = enabled;
+        curFoxholeScript = curScript;
+    }
+   
+    //Lil' getters and setters
+    public bool GetIsMoving()
+    {
+        return isMoving;
+    }
+
+    public void SetTargetMoveToPosition(Vector3 newTargetMoveToPosition)
+    {
+        this.targetMoveToPosition = newTargetMoveToPosition;
+    }
+
+    public bool CheckTurn()
+    {
+        return isMyTurn;
+    }
+
+    public void SetTurnActive(bool value)
+    {
+        isMyTurn = value;
+    }
+
+    public bool CheckIfTakingTurns()
+    {
+        return isTakingTurns;
+    }
+
+    public void StopTakingTurns()
+    {
+        isTakingTurns = false;
+        turnManager.EndTurn();
+    }
+
+    public void StartTakingTurns()
+    {
+        isTakingTurns = true;
+    }
+
+    public void togglePauseMenuBlock()
+    {
+        isPauseMenuOpen = !isPauseMenuOpen;
+    }
+
+    //if you don't have this delay, it ends the turn so quickly that the other fox gets the same input so it swaps back
+    private IEnumerator EndMyTurn()
+    {
+        yield return new WaitForSeconds(0.05f);
+        turnManager.EndTurn();
     }
 
     //This updates the turn indicator to active if it is this character's turn
@@ -492,7 +557,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     {
         if(turnIndicator != null)
         {
-            turnIndicator.SetActive(isTurn);
+            turnIndicator.SetActive(isMyTurn);
         }
     }
 
@@ -501,10 +566,24 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
+        //Debug.Log("begin anim");
         isAnimating = true;
     }
     public void completeAnimation()
     {
+        //Debug.Log("complete anim");
         isAnimating = false;
+    }
+
+    public enum CharacterType
+    {
+        Player,
+        NPC,
+        Wall
+    }
+
+    public CharacterType GetCharacterType()
+    {
+        return characterType;
     }
 }

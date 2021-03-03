@@ -11,6 +11,9 @@ public class MyLevel : ScriptableObject
     [Tooltip("Most optimal move count for completion")]
     public string BestMoveCount;
 
+    [Tooltip("Most optimal undo count for completion")]
+    public string UndoMoveCount;
+
     [Tooltip("Boolean to check if the level has been completed")]
     public bool isLevelComplete;
 

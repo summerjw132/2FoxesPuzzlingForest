@@ -14,6 +14,7 @@ public class LevelData
 {
     public string LevelName;
     public string BestMoveCount;
+    public string BestUndoCount;
     public bool isLevelComplete;
     public bool isUnlocked;
 
@@ -21,6 +22,7 @@ public class LevelData
     {
         LevelName = level.LevelName;
         BestMoveCount = level.BestMoveCount;
+        BestUndoCount = level.UndoMoveCount;
         isLevelComplete = level.isLevelComplete;
         isUnlocked = level.isUnlocked;
     }
