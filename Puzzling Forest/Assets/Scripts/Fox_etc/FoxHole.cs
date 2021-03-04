@@ -14,7 +14,7 @@ public class FoxHole : MonoBehaviour
 
     //stuff to track and affect the game object on top of the foxhole
     private GameObject standingOnMe = null;
-    private TurnBasedCharacter playerTBC = null;
+    private FoxCharacter playerTBC = null;
 
     /*
      * Pseudocode - Teleport player from foxhole A to B
@@ -29,7 +29,7 @@ public class FoxHole : MonoBehaviour
      * 
      */
 
-    private void Start()
+    private void Awake()
     {
         warnController = GameObject.Find("UI Canvas").GetComponent<WarningMessagesController>();
     }
@@ -41,7 +41,7 @@ public class FoxHole : MonoBehaviour
         
         if (standingOnMe.CompareTag("Player"))
         {
-            playerTBC = standingOnMe.GetComponent<TurnBasedCharacter>();
+            playerTBC = standingOnMe.GetComponent<FoxCharacter>();
 
             if (destinationFoxhole)
                 playerTBC.ShowFoxholeButton(true, this);

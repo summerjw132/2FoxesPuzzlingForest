@@ -1882,7 +1882,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 469269440}
   m_HandleRect: {fileID: 469269439}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -1955,8 +1955,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e0d9a471a53a2a44bb5ed6b3d1de97e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonLevel: {fileID: 8297687256384050293, guid: eeccfe1ccfac6ee4888b37f68ca9096f, type: 3}
-  scrollViewContainer: {fileID: 2024860023}
+  SetButtonLevel: {fileID: 8297687256384050293, guid: eeccfe1ccfac6ee4888b37f68ca9096f, type: 3}
+  SetScrollViewContainer: {fileID: 2024860023}
 --- !u!4 &1272182519
 Transform:
   m_ObjectHideFlags: 0
@@ -3090,7 +3090,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 215854693}
   m_HandleRect: {fileID: 215854692}
   m_Direction: 0
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:

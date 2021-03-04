@@ -22,13 +22,18 @@ public class LevelCompleteCondition : MonoBehaviour
     private string curLevelName;
     private LevelManager levelManager;
 
-    private void Start()
+    private void Awake()
     {
         levelCompletePanel.SetActive(false);
         tm = GameObject.Find("Turn-Based System").GetComponent<Timer>();
-        tm.isLevelComplete = false;
 
         turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
+    }
+
+    private void Start()
+    {
+        tm.isLevelComplete = false;
+
         turnManager.isLevelComplete = false;
         GetPlayersFromTurnManager();
 
@@ -61,11 +66,11 @@ public class LevelCompleteCondition : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(registeredPlayerList.Contains(other.gameObject.GetComponent<TurnBasedCharacter>()) && other.gameObject.GetComponent<TurnBasedCharacter>().CheckTurn())
+        if(registeredPlayerList.Contains(other.gameObject.GetComponent<FoxCharacter>()))
         {
             Debug.Log(other.gameObject.name + "Has reached the level finish!");
             levelCompletePlayerCount++;
-            other.gameObject.GetComponent<TurnBasedCharacter>().StopTakingTurns();
+            other.gameObject.GetComponent<FoxCharacter>().StopTakingTurns();
         }
 
         if(levelCompletePlayerCount.Equals(registeredPlayerList.Count))
@@ -97,7 +102,7 @@ public class LevelCompleteCondition : MonoBehaviour
     {
         Debug.Log("Elvis has left the building by undo");
         levelCompletePlayerCount--;
-        other.gameObject.GetComponent<TurnBasedCharacter>().StartTakingTurns();
+        other.gameObject.GetComponent<FoxCharacter>().StartTakingTurns();
     }
 
     private void VictoryData()

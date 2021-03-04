@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Note: I, garrison, got in here to lock away controls when pause menu is open and also have
+// this script lock away player controls when camera mode is open. Please feel free to clean up
+// this script I've commented everything I touched as "control-locking stuff"...
 public class CameraMovement : MonoBehaviour
 {
     public float Turning = 70;
@@ -18,6 +21,8 @@ public class CameraMovement : MonoBehaviour
     public bool CamOn = false;
     public bool ImThere = false;
     float Step;
+    float xAxisValue;
+    float yAxisValue;
 
     // Camera Walking Varaiables
     public float Forwards = 0;
@@ -25,10 +30,20 @@ public class CameraMovement : MonoBehaviour
     
     Quaternion StartRotation;
     Vector3 StartPosition;
+
+    //For control-locking stuff
+    private TurnManager turnManager;
+    private bool pauseLock = false;
+
+    void Awake()
+    {
+        CameraUI = GameObject.Find("CameraActive");
+        turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        CameraUI = GameObject.Find("CameraActive");
         CameraUI.SetActive(false);
         Zoom = cam.fieldOfView;
         StartRotation = CameraPivot.transform.rotation;
@@ -43,34 +58,17 @@ public class CameraMovement : MonoBehaviour
         if (CamOn == false)
         {
             CameraReset();
-           
+
             CameraUI.SetActive(false);
 
         }
-        if (Input.GetKeyDown(KeyCode.C))
+        //control-lock stuff
+        if (!pauseLock)
         {
-
-            
-            if(CamOn == true)
+            if (Input.GetKeyDown(KeyCode.C))
             {
-                cam.fieldOfView = 60;
-                CamOn = false;
-                
-
-
+                HitC();
             }
-            else
-            {
-
-                CamOn = true;
-
-            }
-            if (Vector3.Distance(transform.position, StartPosition) < 0.001f)
-            {
-                // Swap the position of the cylinder.
-                StartPosition *= -1.0f;
-            }
-
         }
         if (CamOn == true)
         {
@@ -80,19 +78,25 @@ public class CameraMovement : MonoBehaviour
             Zoom -= scrollData * zoomSpeed;
             Zoom = Mathf.Clamp(Zoom, Min, Max);
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, Zoom, Time.deltaTime * ZoomLerp);
-            if (Input.GetKey(KeyCode.Z))
-            {
-                CameraPivot.transform.Rotate(0f, 1f, 0f * TurnSpeed);
-            }
 
-            if (Input.GetKey(KeyCode.X))
+            //Control-locking stuff
+            if (!pauseLock)
             {
-                CameraPivot.transform.Rotate(0f, -1f, 0f * TurnSpeed);
+                if (Input.GetKey(KeyCode.Z))
+                {
+                    CameraPivot.transform.Rotate(0f, 1f, 0f * TurnSpeed);
+                }
+
+                if (Input.GetKey(KeyCode.X))
+                {
+                    CameraPivot.transform.Rotate(0f, -1f, 0f * TurnSpeed);
+                }
+
+                xAxisValue = Input.GetAxis("Horizontal");
+                //Debug.Log(xAxisValue);
+                yAxisValue = Input.GetAxisRaw("Vertical");
             }
-            
-            float xAxisValue = Input.GetAxis("Horizontal");
-            Debug.Log(xAxisValue);
-            float yAxisValue = Input.GetAxisRaw("Vertical");
+                
             
 
             if (CameraPivot != null)
@@ -116,5 +120,36 @@ public class CameraMovement : MonoBehaviour
 
     }
 
+    //Control-locking stuff (was just in update, I made it a method)
+    public void HitC()
+    {
+        if (CamOn == true)
+        {
+            cam.fieldOfView = 60;
+            CamOn = false;
+
+
+
+        }
+        else
+        {
+
+            CamOn = true;
+
+        }
+        if (Vector3.Distance(transform.position, StartPosition) < 0.001f)
+        {
+            // Swap the position of the cylinder.
+            StartPosition *= -1.0f;
+        }
+
+        turnManager.ToggleCameraMode();
+    }
+
+    //Control-locking stuff (PauseMenuManager calls this when it toggles menu)
+    public void TogglePauseLock()
+    {
+        pauseLock = !pauseLock;
+    }
 }
 

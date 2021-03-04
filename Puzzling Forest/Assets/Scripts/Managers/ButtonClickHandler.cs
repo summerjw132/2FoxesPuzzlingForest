@@ -15,7 +15,7 @@ public class ButtonClickHandler : MonoBehaviour
     private LevelManager levelManager;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
     }

@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class PauseMenuManager : MonoBehaviour
 {
+    //Menu stuff
     private GameObject pauseMenu;
     private GameObject pauseButton;
     private GameObject resetButton;
     private GameObject controlMenu;
     private GameObject audioMenu;
 
-    private GameObject[] PlayerGroup;
+    //Control-lock when menu is open stuff
+    private TurnManager turnManager;
+    private CameraMovement camScript;
 
-
-    // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //The reason I'm doing this instead of using GameObject.Find() is because disabled GOs won't
         // be found. This method will also find disabled GOs
@@ -44,18 +45,18 @@ public class PauseMenuManager : MonoBehaviour
 
                 default:
                     break;
-            }    
+            }
         }
 
-        StartCoroutine("GetPlayers");
+        turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
+
+        camScript = GameObject.Find("CameraControls").GetComponent<CameraMovement>();
     }
 
-    //give the turnmanager script 0.05 seconds to set up the playergroup before getting it
-    private IEnumerator GetPlayers()
+    // Start is called before the first frame update
+    void Start()
     {
-        yield return new WaitForSeconds(0.05f);
-        PlayerGroup = GameObject.Find("Turn-Based System").GetComponent<TurnManager>().GetPlayers();
-        yield break;
+        
     }
 
     public void openPauseMenu()
@@ -63,11 +64,6 @@ public class PauseMenuManager : MonoBehaviour
         pauseMenu.SetActive(true);
         pauseButton.SetActive(false);
         resetButton.SetActive(false);
-
-        foreach (GameObject player in PlayerGroup)
-        {
-            player.GetComponent<TurnBasedCharacter>().togglePauseMenuBlock();
-        }
     }
 
     public void closePauseMenu()
@@ -78,15 +74,13 @@ public class PauseMenuManager : MonoBehaviour
 
         controlMenu.SetActive(false);
         audioMenu.SetActive(false);
-
-        foreach (GameObject player in PlayerGroup)
-        {
-            player.GetComponent<TurnBasedCharacter>().togglePauseMenuBlock();
-        }
     }
 
     public void togglePauseMenu()
     {
+        turnManager.TogglePauseMenu();
+        camScript.TogglePauseLock();
+
         if (pauseMenu.activeInHierarchy || audioMenu.activeInHierarchy || controlMenu.activeInHierarchy)
         {
             closePauseMenu();

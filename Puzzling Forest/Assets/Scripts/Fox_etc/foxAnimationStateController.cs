@@ -26,12 +26,15 @@ public class foxAnimationStateController : MonoBehaviour
     int isTurningLeft;
     int isTurningRight;
 
-    void Start()
+    void Awake()
     {
         //initialize variables
         anim = GetComponent<Animator>();
         foxTransform = this.gameObject.transform.Find("Fox");
+    }
 
+    void Start()
+    {
         isWalkingHash = Animator.StringToHash("isWalking");
         isPushingHash = Animator.StringToHash("isPushing");
         isTurningLeft = Animator.StringToHash("isTurningLeft");
