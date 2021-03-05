@@ -9,13 +9,14 @@ public class FoxCharacter : TurnBasedCharacter
 
     //turn-system stuff
     protected TurnManager turnManager;
-    private bool isMyTurn = false;
+    public bool isMyTurn { get; private set; } = false;
     private bool isTakingTurns = true;
 
     //animation stuff
     protected foxAnimationStateController animController;
     //used as flags for knowing which type of animation to call each move
     private MoveOptions thisMove = MoveOptions.None;
+    public bool isAnimating { get; private set; }
 
     //GUI stuff for foxholes
     private FoxHole curFoxholeScript = null;
@@ -77,7 +78,7 @@ public class FoxCharacter : TurnBasedCharacter
 
             if (GUI.Button(new Rect(butX, butY, butWidth, butHeight), "Warp", guiStyle))
             {
-                curFoxholeScript.InitiateWarp();
+                curFoxholeScript.InitiateWarpCoroutine();
             }
         }
     }
@@ -140,6 +141,11 @@ public class FoxCharacter : TurnBasedCharacter
                 Debug.Log("Turn method was given a direction it doesn't recognize");
                 break;
         }
+    }
+
+    public float Dive()
+    {
+        return animController.diveIntoFoxhole();
     }
 
     public override void UndoMyTurn(Vector3 oldPosition, Quaternion oldRotation)
@@ -243,10 +249,12 @@ public class FoxCharacter : TurnBasedCharacter
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
+        isAnimating = true;
         turnManager.beginAnimation();
     }
     public void completeAnimation()
     {
+        isAnimating = false;
         turnManager.completeAnimation();
     }
 }

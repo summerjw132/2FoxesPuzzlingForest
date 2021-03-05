@@ -68,25 +68,38 @@ public class FoxHole : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.F))
                 {
-                    InitiateWarp();
+                    StartCoroutine(InitiateWarp());
                 }
             }
         }
     }
 
-    //public method for starting a warp. Includes checks to make sure the warp is valid and warns if not
-    public void InitiateWarp()
+    //Starts diving animation then triggers warp once it's finished
+    private IEnumerator InitiateWarp()
     {
-        //If we get here we've already checked that standingOnMe is a player
-        if (destinationFoxhole != null)
+        if (destinationFoxhole)
         {
-            if (!playerTBC.GetIsMoving())
+            if (destinationFoxhole.CheckIfUncovered())
             {
-                playerTBC.WriteFoxholeToUndoStack();
-                playerTBC.IncrementMoveCounter();
-                destinationFoxhole.WarpToMe(standingOnMe);
+                if (playerTBC.isMyTurn && !playerTBC.isAnimating && !playerTBC.GetIsMoving())
+                {
+                    playerTBC.WriteFoxholeToUndoStack();
+                    yield return new WaitForSeconds(playerTBC.Dive());
+                    playerTBC.IncrementMoveCounter();
+                    destinationFoxhole.WarpToMe(standingOnMe);
+                }
+            }
+            else
+            {
+                warnController.Warn(coveredWarning);
             }
         }
+    }
+
+    //public method for starting a warp.
+    public void InitiateWarpCoroutine()
+    {
+        StartCoroutine(InitiateWarp());
     }
 
     //a way to return whether or not the foxhole is blocked before warping to it
