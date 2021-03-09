@@ -97,6 +97,7 @@ public class Control : MonoBehaviour
 
     private IEnumerator IndicatorSection()
     {
+        yield return new WaitForSeconds(5f);
         indicatorCanvas.SetActive(true);
         string msg = "";
 
@@ -180,9 +181,9 @@ public class Control : MonoBehaviour
 
     private IEnumerator ShowKey(KeyCode key)
     {
-        keyText.text = "  Just Pressed: " + key;
+        keyText.text = " Just Pressed: " + key;
         yield return new WaitForSeconds(0.5f);
-        keyText.text = "  Just Pressed: ";
+        keyText.text = " Just Pressed: ";
     }
 
     private void detectKeyPress()

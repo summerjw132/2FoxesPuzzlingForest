@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
+/// <summary>
+/// This script is just used for running the tutorial scene.
+/// </summary>
 public class TutorialManager : MonoBehaviour
 {
     private GameObject allCanvases;
@@ -22,8 +25,21 @@ public class TutorialManager : MonoBehaviour
     private Text goalText;
     private readonly string houseString = "This is a house. It's quite lonely without occupants...";
     private readonly string foxString = "This is a fox. It's quite unsheltered without a house...";
-    private readonly string goalString = "The goal in 2 Foxes and the Puzzling Forest is to help all of the foxes reach the house. Let's cover how to do that!";
+    private readonly string goalString = "The goal in 2 Foxes and the Puzzling Forest is to help all of the foxes reach the house. Now we'll show you how to do that!";
+    private GameObject continueButton;
 
+    //Controls stuff
+    private GameObject controlsCanvas;
+    private VideoPlayer controlsPlayer;
+    private GameObject controlsOutput;
+    private GameObject lastFrame;
+
+    //Controls List
+    private GameObject controlsList;
+
+    //Control
+    private LevelManager levelManager;
+    private List<MyLevel> allLevels;
     private bool justStarted = true;
 
     // Start is called before the first frame update
@@ -44,6 +60,14 @@ public class TutorialManager : MonoBehaviour
 
                 case "HouseCanvas":
                     houseCanvas = child.gameObject;
+                    break;
+
+                case "ControlsCanvas":
+                    controlsCanvas = child.gameObject;
+                    break;
+
+                case "ControlsList":
+                    controlsList = child.gameObject;
                     break;
 
                 default:
@@ -94,9 +118,28 @@ public class TutorialManager : MonoBehaviour
                     goalText = child.gameObject.GetComponent<Text>();
                     break;
 
+                case "Continue":
+                    continueButton = child.gameObject;
+                    break;
+
                 default:
                     break;
             }
+        }
+
+        //Controls stuff
+        controlsPlayer = controlsCanvas.transform.Find("ControlsPlayer").gameObject.GetComponent<VideoPlayer>();
+        controlsOutput = controlsCanvas.transform.Find("ControlsOutput").gameObject;
+        lastFrame = controlsCanvas.transform.Find("LastFrame").gameObject;
+
+        //For loading the next scene
+        try
+        {
+            levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+        }
+        catch
+        {
+            Debug.Log("levelManager not found. Expected if you loaded a scene/level directly");
         }
     }
 
@@ -106,13 +149,13 @@ public class TutorialManager : MonoBehaviour
         if (justStarted)
         {
             justStarted = false;
-            //StartCoroutine(StartGoalTutorial());
             StartCoroutine(StartIntro());
         }
     }
 
     private IEnumerator StartIntro()
     {
+        introCanvas.SetActive(true);
         yield return new WaitForSeconds(0.2f);
    
         introOutput.SetActive(true);
@@ -121,12 +164,12 @@ public class TutorialManager : MonoBehaviour
 
         yield return new WaitForSeconds((float)introPlayer.length);
 
+        introCanvas.SetActive(false);
         StartCoroutine(StartGoalTutorial());
     }
 
     private IEnumerator StartGoalTutorial()
     {
-        introCanvas.SetActive(false);
         houseCanvas.SetActive(true);
         string msg = "";
 
@@ -169,5 +212,44 @@ public class TutorialManager : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
         goalText.text = msg;
+
+        yield return new WaitForSeconds(2f);
+        continueButton.SetActive(true);
+    }
+
+    private IEnumerator StartControlsTutorial()
+    {
+        controlsCanvas.SetActive(true);
+        houseCanvas.SetActive(false);
+
+        controlsOutput.SetActive(true);
+        controlsPlayer.Play();
+        lastFrame.SetActive(false);
+
+        yield return new WaitForSeconds((float)controlsPlayer.length);
+
+        controlsOutput.SetActive(false);
+        lastFrame.SetActive(true);
+    }
+
+    public void Continue()
+    {
+        StartCoroutine(StartControlsTutorial());
+    }
+
+    public void StartGame()
+    {
+        if (levelManager)
+        {
+            allLevels = levelManager.giveList();
+
+            UnityEngine.SceneManagement.SceneManager.LoadScene(allLevels[0].LevelName);
+        }
+    }
+
+    public void ShowControls()
+    {
+        controlsCanvas.SetActive(false);
+        controlsList.SetActive(true);
     }
 }
