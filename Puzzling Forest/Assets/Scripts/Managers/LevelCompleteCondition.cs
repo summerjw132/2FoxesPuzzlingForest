@@ -14,6 +14,7 @@ public class LevelCompleteCondition : MonoBehaviour
     [SerializeField] private GameObject levelCompletePanel = null;
     [SerializeField] private Text totalMoveCount = null;
     [SerializeField] private Text totalTime = null;
+    private GameObject smoke;
 
     private Timer tm;
 
@@ -28,6 +29,8 @@ public class LevelCompleteCondition : MonoBehaviour
         tm = GameObject.Find("Turn-Based System").GetComponent<Timer>();
 
         turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
+
+        smoke = GameObject.FindGameObjectWithTag("House").transform.Find("Smoke").gameObject;
     }
 
     private void Start()
@@ -71,6 +74,8 @@ public class LevelCompleteCondition : MonoBehaviour
             Debug.Log(other.gameObject.name + "Has reached the level finish!");
             levelCompletePlayerCount++;
             other.gameObject.GetComponent<FoxCharacter>().StopTakingTurns();
+
+            smoke.SetActive(true);
         }
 
         if(levelCompletePlayerCount.Equals(registeredPlayerList.Count))
@@ -100,9 +105,11 @@ public class LevelCompleteCondition : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        Debug.Log("Elvis has left the building by undo");
+        Debug.Log("Elvis has left the building.");
         levelCompletePlayerCount--;
         other.gameObject.GetComponent<FoxCharacter>().StartTakingTurns();
+
+        smoke.SetActive(false);
     }
 
     private void VictoryData()
