@@ -15,7 +15,7 @@ public class AudioManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BackgroundMusicSlider.value = .4f;
+        BackgroundMusicSlider.value = .1f;
     }
 
     public void SetBackgroundMusicValue()
