@@ -366,9 +366,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveCountUIText: {fileID: 3313891022667235846}
   undoCountUIText: {fileID: 3265362618403295563}
+  isLevelComplete: 0
   undoCount: 0
   totalMoveCount: 0
-  isLevelComplete: 0
 --- !u!114 &5012062359649409563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -383,6 +383,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   timeUI: {fileID: 7909369615882147861}
   isLevelComplete: 0
+--- !u!114 &5030628697602695566
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3313891022755480306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2caeb131e3eca649b6681d96d685b9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6242086625733429766
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,7 +599,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 0230dc58bf23e734bbd71c8d868d06c1, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.4
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -938,6 +950,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+--- !u!1 &3313891022755480306 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1755419841718699047, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+  m_PrefabInstance: {fileID: 3864597934052116181}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3313891022667235846 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1755419842175648979, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
