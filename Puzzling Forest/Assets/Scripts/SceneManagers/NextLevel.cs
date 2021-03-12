@@ -14,4 +14,19 @@ public class NextLevel : MonoBehaviour
         PlayerPrefs.SetInt("ReachedLevel", PlayerPrefs.GetInt("ReachedLevel") + 1);
         SceneManager.LoadScene(nextLevel);
     }
+
+    public void GoToNextLevelInBuildSettings()
+    {
+        //Scene editorNextLevel = EditorSceneManager.GetSceneByBuildIndex(SceneManager.GetActiveScene().buildIndex + 1);
+
+        try
+        {
+
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
+        catch { 
+            //nothing for now
+        }
+        
+    }
 }
