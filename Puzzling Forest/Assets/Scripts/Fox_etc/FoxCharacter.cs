@@ -14,6 +14,7 @@ public class FoxCharacter : TurnBasedCharacter
 
     //animation stuff
     protected foxAnimationStateController animController;
+    private Animation indicatorAnim;
     //used as flags for knowing which type of animation to call each move
     private MoveOptions thisMove = MoveOptions.None;
     public bool isAnimating { get; private set; }
@@ -51,6 +52,7 @@ public class FoxCharacter : TurnBasedCharacter
         foxTransform = this.transform.Find("Fox");
 
         turnIndicator = this.transform.Find("turnIndicator").gameObject;
+        indicatorAnim = turnIndicator.GetComponent<Animation>();
     }
 
     //This is called whenever a GUI event happens, it's used here to do the warp button above
@@ -210,7 +212,7 @@ public class FoxCharacter : TurnBasedCharacter
     public void SetTurnActive(bool value)
     {
         isMyTurn = value;
-        turnIndicator.SetActive(value);
+        //turnIndicator.SetActive(value);
     }
 
     public bool CheckIfTakingTurns()
@@ -239,11 +241,20 @@ public class FoxCharacter : TurnBasedCharacter
     ///  I'm envisioning this as just handling the animation stuff, I will have a second function
     ///  in the TurnMaanager script for actually changing whose turn it is.
     /// </summary>
-    private void PassTheBall()
+    public void PassTheBall()
     {
-
+        beginAnimation();
+        animController.startPassTheBall();
     }
-
+    
+    public void TouchTheBall()
+    {
+        indicatorAnim.Play("RaiseBall");
+    }
+    public void CatchTheBall()
+    {
+        indicatorAnim.Play("DropBall");
+    }
     //These are just wrapper functions to set/reset an "isAnimating" flag.
     // The animations themselves call these functions using animation events.
     // While the flag is set, user input is not accepted.
@@ -256,5 +267,21 @@ public class FoxCharacter : TurnBasedCharacter
     {
         isAnimating = false;
         turnManager.completeAnimation();
+    }
+    public void cAnimation()
+    {
+        StartCoroutine(delay(0.5f));
+    }
+
+    IEnumerator delay(float time)
+    {
+        yield return new WaitForSeconds(time);
+        isAnimating = false;
+        turnManager.completeAnimation();
+    }
+
+    public void ToggleIndicator(bool b)
+    {
+        turnIndicator.SetActive(b);
     }
 }

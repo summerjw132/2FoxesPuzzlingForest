@@ -23,6 +23,8 @@ public class foxAnimationStateController : MonoBehaviour
     int isTurningLeft;
     int isTurningRight;
     int isWarpingHash;
+    int isPassing;
+    int isCatching;
     //Any durations given in float that may be needed
     private float turnDurationLeft;
     private float turnDurationRight;
@@ -42,6 +44,8 @@ public class foxAnimationStateController : MonoBehaviour
         isTurningLeft = Animator.StringToHash("isTurningLeft");
         isTurningRight = Animator.StringToHash("isTurningRight");
         isWarpingHash = Animator.StringToHash("isWarping");
+        isPassing = Animator.StringToHash("Pass");
+        isCatching = Animator.StringToHash("Catch");
 
         GetDurations();
     }
@@ -123,5 +127,15 @@ public class foxAnimationStateController : MonoBehaviour
     {
         anim.SetTrigger(isWarpingHash);
         return warpAnimDuration;
+    }
+
+    public void startPassTheBall()
+    {
+        anim.SetTrigger(isPassing);
+    }
+
+    public void startCatchTheBall()
+    {
+        anim.SetTrigger(isCatching);
     }
 }

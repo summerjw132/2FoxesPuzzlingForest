@@ -138,6 +138,7 @@ public class TurnManager : MonoBehaviour
         }
 
         curPlayer = PlayerScripts[curTurnIndex];
+        curPlayer.ToggleIndicator(true);
     }
 
     //Increments the current turn index whilst keeping an eye on going out of bounds
@@ -170,6 +171,7 @@ public class TurnManager : MonoBehaviour
     public void SwapFoxes()
     {
         TakeTurn();
+        curPlayer.PassTheBall();
 
         int loopIDX = 0;
         incrementIDX();
@@ -184,8 +186,13 @@ public class TurnManager : MonoBehaviour
                 return;
             }
         }
+    }
 
+    public void SwappedFoxes()
+    {
         curPlayer = PlayerScripts[curTurnIndex];
+        curPlayer.ToggleIndicator(true);
+        curPlayer.CatchTheBall();
         GiveTurn();
     }
 
