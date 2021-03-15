@@ -94,7 +94,6 @@ public class FoxCharacter : TurnBasedCharacter
 
     protected override void UpdateSpeed()
     {
-        Debug.LogFormat("TTM: {0}", SecondsToMove);
         moveSpeed = 1f / SecondsToMove;
 
         animController.UpdateDuration(SecondsToMove);
