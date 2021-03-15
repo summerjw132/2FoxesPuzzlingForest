@@ -25,7 +25,13 @@ public class foxAnimationStateController : MonoBehaviour
     int isWarpingHash;
     int isPassing;
     int isCatching;
+    int walkSpeedHash;
+    int pushSpeedHash;
+    int turnSpeedHash;
+    int warpSpeedHash;
     //Any durations given in float that may be needed
+    private float walkDuration;
+    private float pushDuration;
     private float turnDurationLeft;
     private float turnDurationRight;
     private float warpAnimDuration;
@@ -35,10 +41,7 @@ public class foxAnimationStateController : MonoBehaviour
         //initialize variables
         anim = GetComponent<Animator>();
         foxTransform = this.gameObject.transform.Find("Fox");
-    }
 
-    void Start()
-    {
         isWalkingHash = Animator.StringToHash("isWalking");
         isPushingHash = Animator.StringToHash("isPushing");
         isTurningLeft = Animator.StringToHash("isTurningLeft");
@@ -46,13 +49,48 @@ public class foxAnimationStateController : MonoBehaviour
         isWarpingHash = Animator.StringToHash("isWarping");
         isPassing = Animator.StringToHash("Pass");
         isCatching = Animator.StringToHash("Catch");
+        walkSpeedHash = Animator.StringToHash("walk_speed");
+        pushSpeedHash = Animator.StringToHash("push_speed");
+        turnSpeedHash = Animator.StringToHash("turn_speed");
+        warpSpeedHash = Animator.StringToHash("warp_speed");
+    }
 
-        GetDurations();
+    void Start()
+    {
+        StartCoroutine(DelayStartup());
     }
 
     void Update()
     {
         
+    }
+
+    private void ShowDurations()
+    {
+        Debug.LogFormat("walkDuration: {0}", walkDuration);
+        Debug.LogFormat("pushDuration: {0}", pushDuration);
+        Debug.LogFormat("turnDurationLeft: {0}", turnDurationLeft);
+        Debug.LogFormat("turnDurationRight: {0}", turnDurationRight);
+        Debug.LogFormat("warpAnimDuration: {0}", warpAnimDuration);
+    }
+
+    public void UpdateDuration(float TTM)
+    {
+        //walking animation is 0.5f all natural
+        float speed = 0.5f / TTM;
+        anim.SetFloat(walkSpeedHash, speed);
+        //push animation is 1f naturally
+        speed = 1f / TTM;
+        anim.SetFloat(pushSpeedHash, speed);
+        //turning animations are 1f naturally
+        anim.SetFloat(turnSpeedHash, speed);
+    }
+
+    private IEnumerator DelayStartup()
+    {
+        yield return new WaitForSeconds(0.05f);
+        GetDurations();
+        ShowDurations();
     }
 
     //Goes into the runtime animator controller and calculates the duration in seconds (float) that each anim takes.
@@ -65,6 +103,16 @@ public class foxAnimationStateController : MonoBehaviour
             switch(clip.name)
             {
                 //feel free to add more cases if you need more clip times...
+                case "Fox_Run_InPlace_With_Events":
+                    speedMultiplier = anim.GetFloat(walkSpeedHash);
+                    walkDuration = clip.length / speedMultiplier;
+                    break;
+
+                case "Fox_Somersault_InPlace_With_Events":
+                    speedMultiplier = anim.GetFloat("push_speed");
+                    pushDuration = clip.length / speedMultiplier;
+                    break;
+
                 case "TurnLeft":
                     speedMultiplier = anim.GetFloat("turn_speed");
                     turnDurationLeft = clip.length / speedMultiplier;
@@ -137,5 +185,15 @@ public class foxAnimationStateController : MonoBehaviour
     public void startCatchTheBall()
     {
         anim.SetTrigger(isCatching);
+    }
+
+    public float GetWalkDuration()
+    {
+        return walkDuration;
+    }
+
+    public float GetPushDuration()
+    {
+        return pushDuration;
     }
 }

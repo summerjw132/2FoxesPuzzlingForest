@@ -55,6 +55,13 @@ public class FoxCharacter : TurnBasedCharacter
         indicatorAnim = turnIndicator.GetComponent<Animation>();
     }
 
+    protected override void Start()
+    {
+        base.Start();
+
+        UpdateSpeed();
+    }
+
     //This is called whenever a GUI event happens, it's used here to do the warp button above
     // the foxes' heads
     void OnGUI()
@@ -78,11 +85,19 @@ public class FoxCharacter : TurnBasedCharacter
             butX = curScreenPos.x - butOffsetX;
             butY = (cam.pixelHeight - curScreenPos.y) - butOffsetY;
 
-            if (GUI.Button(new Rect(butX, butY, butWidth, butHeight), "Warp", guiStyle))
+            if (GUI.Button(new Rect(butX, butY, butWidth, butHeight), "Enter", guiStyle))
             {
                 curFoxholeScript.InitiateWarpCoroutine();
             }
         }
+    }
+
+    protected override void UpdateSpeed()
+    {
+        Debug.LogFormat("TTM: {0}", SecondsToMove);
+        moveSpeed = 1f / SecondsToMove;
+
+        animController.UpdateDuration(SecondsToMove);
     }
 
     //TurnManager calls this with a W or UP input, tries to move the fox forwards
@@ -260,11 +275,13 @@ public class FoxCharacter : TurnBasedCharacter
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
+        //Debug.LogFormat("Begin at {0}", Time.time);
         isAnimating = true;
         turnManager.beginAnimation();
     }
     public void completeAnimation()
     {
+        //Debug.LogFormat("End at {0}", Time.time);
         isAnimating = false;
         turnManager.completeAnimation();
     }
