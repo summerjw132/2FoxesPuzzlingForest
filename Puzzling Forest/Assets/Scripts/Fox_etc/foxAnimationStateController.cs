@@ -90,7 +90,6 @@ public class foxAnimationStateController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.05f);
         GetDurations();
-        ShowDurations();
     }
 
     //Goes into the runtime animator controller and calculates the duration in seconds (float) that each anim takes.
