@@ -38,10 +38,15 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
-        SetUpPlayerGroup();
-
         pauseManager = GameObject.Find("UI Canvas").GetComponent<PauseMenuManager>();
         undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
+    }
+
+    private void Start()
+    {
+        SetUpPlayerGroup();
+
+        GiveTurn();
     }
 
     private void Update()
@@ -83,11 +88,6 @@ public class TurnManager : MonoBehaviour
 
             UpdateMoveCount();
         }
-    }
-
-    private void Start()
-    {
-        GiveTurn();
     }
 
     /// <summary>
