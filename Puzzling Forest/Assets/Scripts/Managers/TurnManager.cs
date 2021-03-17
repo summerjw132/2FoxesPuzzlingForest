@@ -164,6 +164,8 @@ public class TurnManager : MonoBehaviour
         if (curPlayer && curPlayer.CheckTurn())
         {
             curPlayer.SetTurnActive(false);
+            curPlayer.PassTheBall();
+            curPlayer = null;
         }
     }
 
@@ -171,7 +173,6 @@ public class TurnManager : MonoBehaviour
     public void SwapFoxes()
     {
         TakeTurn();
-        curPlayer.PassTheBall();
 
         int loopIDX = 0;
         incrementIDX();
