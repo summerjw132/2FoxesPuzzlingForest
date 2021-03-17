@@ -15,6 +15,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected CharacterType characterType = CharacterType.Player;
 
     //Used for determining when to move and where to
+    [Tooltip("How many seconds should it take a fox to move to another tile? Affects walk and push speeds, was 0.5")]
+    [SerializeField] protected float SecondsToMove = 0.5f;
     protected bool isMoving = false;
     protected Vector3 targetMoveToPosition;
 
@@ -24,7 +26,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected bool needToWrite = false;
  
     //Some constants that might need to be tuned later.
-    protected float moveSpeed = 2.5f; //Move Speed. Used in Vector3.MoveTowards()
+    protected float moveSpeed = 2.0f; //Move Speed. Used in Vector3.MoveTowards()
     protected int maxDepth = 20; //How far to check a cliff-fall to see if it will hit anything.
 
     //UI Warn Message Stuff
@@ -77,6 +79,9 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             isMoving = false;
         }
     }
+
+    //Update the actual move and animation speeds using the Editor-editable var
+    protected abstract void UpdateSpeed();
 
     //Check if it is OK to move to the next
     protected virtual bool OkayToMoveToNextTile(Vector3 nextTilePosition)

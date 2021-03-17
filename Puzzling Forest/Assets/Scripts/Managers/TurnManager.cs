@@ -38,10 +38,15 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
-        SetUpPlayerGroup();
-
         pauseManager = GameObject.Find("UI Canvas").GetComponent<PauseMenuManager>();
         undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
+    }
+
+    private void Start()
+    {
+        SetUpPlayerGroup();
+
+        GiveTurn();
     }
 
     private void Update()
@@ -83,11 +88,6 @@ public class TurnManager : MonoBehaviour
 
             UpdateMoveCount();
         }
-    }
-
-    private void Start()
-    {
-        GiveTurn();
     }
 
     /// <summary>
@@ -182,6 +182,7 @@ public class TurnManager : MonoBehaviour
             if (loopIDX >= numPlayers)
             {
                 Debug.Log("No players found taking turns.");
+                curTurnIndex = -1;
                 curPlayer = null;
                 return;
             }
@@ -190,10 +191,13 @@ public class TurnManager : MonoBehaviour
 
     public void SwappedFoxes()
     {
-        curPlayer = PlayerScripts[curTurnIndex];
-        curPlayer.ToggleIndicator(true);
-        curPlayer.CatchTheBall();
-        GiveTurn();
+        if (curTurnIndex > -1)
+        {
+            curPlayer = PlayerScripts[curTurnIndex];
+            curPlayer.ToggleIndicator(true);
+            curPlayer.CatchTheBall();
+            GiveTurn();
+        }
     }
 
     //Lil' helper getter setter stuff
