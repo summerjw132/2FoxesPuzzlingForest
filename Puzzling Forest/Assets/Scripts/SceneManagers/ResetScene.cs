@@ -10,7 +10,7 @@ public class ResetScene : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            ResetCurrentScene();
+            //ResetCurrentScene();
         }
 
         if (Input.GetKeyDown(KeyCode.Tab))

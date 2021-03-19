@@ -36,6 +36,9 @@ public class foxAnimationStateController : MonoBehaviour
     private float turnDurationRight;
     private float warpAnimDuration;
 
+    //sfx stuff
+    private AudioSource warpNoise;
+
     void Awake()
     {
         //initialize variables
@@ -53,6 +56,8 @@ public class foxAnimationStateController : MonoBehaviour
         pushSpeedHash = Animator.StringToHash("push_speed");
         turnSpeedHash = Animator.StringToHash("turn_speed");
         warpSpeedHash = Animator.StringToHash("warp_speed");
+
+        warpNoise = GameObject.Find("Audio Manager").transform.Find("Warp").GetComponent<AudioSource>();
     }
 
     void Start()
@@ -173,6 +178,7 @@ public class foxAnimationStateController : MonoBehaviour
     public float diveIntoFoxhole()
     {
         anim.SetTrigger(isWarpingHash);
+        warpNoise.PlayDelayed(warpAnimDuration / 2f);
         return warpAnimDuration;
     }
 
