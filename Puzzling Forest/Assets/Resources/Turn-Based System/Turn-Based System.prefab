@@ -1135,6 +1135,14 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 583746663941426991, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 99.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 583746663941426991, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 622682962209465891, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_AnchorMin.y
       value: 0
@@ -1479,6 +1487,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3548384736681795873, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4b67ff827caf5ad47b1da8a9c97dd1df, type: 3}
     - target: {fileID: 3728912876151651195, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_AnchorMin.y
       value: 1
@@ -1570,6 +1582,23 @@ PrefabInstance:
     - target: {fileID: 5355968983107958809, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_Text
       value: Back
+      objectReference: {fileID: 0}
+    - target: {fileID: 5579566797284789020, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_Text
+      value: 'W/S - Move Forward/Backward
+
+
+        A/D - Rotate Left/Right
+
+
+        E
+        - Switch Fox
+
+
+        F - Enter Foxhole
+
+
+        U - Undo Last Move'
       objectReference: {fileID: 0}
     - target: {fileID: 5608864453071595612, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_AnchorMin.y
