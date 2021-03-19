@@ -55,7 +55,7 @@ public class Timer : MonoBehaviour
 
             else
             {
-                curTime = Time.time - timeAtStartOfThisLevel + 55;
+                curTime = Time.time - timeAtStartOfThisLevel;
 
                 minutes = 0;
                 for (int i = (int)curTime; i >= 60; i = i - 60)
