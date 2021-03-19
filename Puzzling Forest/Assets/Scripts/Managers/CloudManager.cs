@@ -5,7 +5,7 @@ using UnityEngine;
 public class CloudManager : MonoBehaviour
 {
     [SerializeField]
-    GameObject[] CloudsModel; // Const
+    GameObject[] CloudsModel = null; // Const
     [SerializeField]
     [Range(0.1f, 10f)]
     [Tooltip("Time between each cloud to spawn")]

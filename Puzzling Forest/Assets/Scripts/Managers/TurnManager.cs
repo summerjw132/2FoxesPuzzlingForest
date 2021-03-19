@@ -123,8 +123,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    
-
     //Sets up the PlayerGroup by finding all game objects with the "Player" tag in the scene.
     private void SetUpPlayerGroup()
     {
@@ -172,6 +170,7 @@ public class TurnManager : MonoBehaviour
     //Increments curIDX, disables the current fox's turn, enables the next valid fox's turn
     public void SwapFoxes()
     {
+        curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().StopTalking();
         TakeTurn();
 
         int loopIDX = 0;
@@ -187,6 +186,36 @@ public class TurnManager : MonoBehaviour
                 curPlayer = null;
                 return;
             }
+        }
+    }
+
+    public void StealControl()
+    {
+        curPlayer.SetFairyActive(false);
+        curPlayer.SetTurnActive(false);
+        curPlayer = null;
+    }
+
+    public void ResumeControl()
+    {
+        curPlayer = PlayerScripts[curTurnIndex];
+        curPlayer.SetFairyActive(true);
+        curPlayer.SetTurnActive(true);
+        curPlayer.CatchTheBall();
+    }
+
+    public void Say(string msg)
+    {
+        if (curPlayer)
+        {
+            curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg);
+        }
+    }
+    public void Say(string msg, AudioSource clip)
+    {
+        if (curPlayer)
+        {
+            curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg, clip);
         }
     }
 
@@ -247,4 +276,5 @@ public class TurnManager : MonoBehaviour
     {
         cameraLock = !cameraLock;
     }
+
 }

@@ -64,6 +64,8 @@ public class PauseMenuManager : MonoBehaviour
         pauseMenu.SetActive(true);
         pauseButton.SetActive(false);
         resetButton.SetActive(false);
+
+        Time.timeScale = 0f;
     }
 
     public void closePauseMenu()
@@ -74,6 +76,8 @@ public class PauseMenuManager : MonoBehaviour
 
         controlMenu.SetActive(false);
         audioMenu.SetActive(false);
+
+        Time.timeScale = 1f;
     }
 
     public void togglePauseMenu()
