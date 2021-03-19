@@ -2832,9 +2832,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5710116637831234621, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: closeControlsMenu
+      objectReference: {fileID: 0}
     - target: {fileID: 5713096456127871972, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6746632365666414578, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8346715281368370978, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_AnchorMin.y
