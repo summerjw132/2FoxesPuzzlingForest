@@ -40,12 +40,12 @@ public class TurnManager : MonoBehaviour
     {
         pauseManager = GameObject.Find("UI Canvas").GetComponent<PauseMenuManager>();
         undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
+
+        SetUpPlayerGroup();
     }
 
     private void Start()
     {
-        SetUpPlayerGroup();
-
         GiveTurn();
     }
 
@@ -138,7 +138,6 @@ public class TurnManager : MonoBehaviour
         }
 
         curPlayer = PlayerScripts[curTurnIndex];
-        curPlayer.ToggleIndicator(true);
     }
 
     //Increments the current turn index whilst keeping an eye on going out of bounds
@@ -155,6 +154,7 @@ public class TurnManager : MonoBehaviour
         if (curPlayer && curPlayer.CheckIfTakingTurns())
         {
             curPlayer.SetTurnActive(true);
+            curPlayer.ToggleIndicator(true);
         }
     }
 
