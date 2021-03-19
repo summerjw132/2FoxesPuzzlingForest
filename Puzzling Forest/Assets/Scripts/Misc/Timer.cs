@@ -23,8 +23,6 @@ public class Timer : MonoBehaviour
     private bool paused = false;
     private WaitForSeconds oneSecond;
 
-    public int totaltime {get{return seconds;} set{}}
-
     void Awake()
     {
         timeText = timeUI.GetComponent<Text>();
@@ -46,7 +44,7 @@ public class Timer : MonoBehaviour
 
     private IEnumerator KeepTime()
     {
-        while (true)
+        while (!isLevelComplete)
         {
             if (paused)
             {
@@ -98,5 +96,10 @@ public class Timer : MonoBehaviour
     public void SetPause(bool val)
     {
         paused = val;
+    }
+
+    public string GetTime()
+    {
+        return displayTime;
     }
 }

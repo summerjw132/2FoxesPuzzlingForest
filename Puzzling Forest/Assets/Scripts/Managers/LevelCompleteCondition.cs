@@ -117,6 +117,6 @@ public class LevelCompleteCondition : MonoBehaviour
         tm.isLevelComplete = true;
         turnManager.isLevelComplete = true;
         totalMoveCount.text = turnManager.totalMoveCount.ToString();
-        totalTime.text = tm.totaltime.ToString();
+        totalTime.text = tm.GetTime();
     }
 }
