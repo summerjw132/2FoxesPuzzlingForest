@@ -48,8 +48,10 @@ public class IndicatorAnimationController : MonoBehaviour
 
     private readonly float typingSpeed = 0.05f;
     private readonly float puncSpeed = 0.5f;
+    private readonly float speechPauseDuration = 3f;
     private WaitForSeconds typingPause;
     private WaitForSeconds puncPause;
+    private WaitForSeconds speechPause;
 
     void Awake()
     {
@@ -62,10 +64,10 @@ public class IndicatorAnimationController : MonoBehaviour
         {
             speechCanvas = this.gameObject.transform.GetChild(0).gameObject;
             fairyText = speechCanvas.transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
-        }     
-
+        }
         typingPause = new WaitForSeconds(typingSpeed);
         puncPause = new WaitForSeconds(puncSpeed);
+        speechPause = new WaitForSeconds(speechPauseDuration);
     }
 
     void Start()
@@ -217,22 +219,40 @@ public class IndicatorAnimationController : MonoBehaviour
         driftSpeed = 15f;
     }
 
-    public void Say(string msg)
+    public float Say(string msg)
     {
         if (isTutFairy)
-            return;
+            return -1f;
 
         SetSide();
         StartCoroutine(Type(msg));
+        float duration = speechPauseDuration;
+        for (int i = 0; i < msg.Length; i++)
+        {
+            if (msg[i] == '.' || msg[i] == '!')
+                duration += puncSpeed;
+            else
+                duration += typingSpeed;
+        }
+        return duration;
     }
 
-    public void Say(string msg, AudioSource clip)
+    public float Say(string msg, AudioSource clip)
     {
         if (isTutFairy)
-            return;
+            return -1f;
 
         SetSide();
         StartCoroutine(Type(msg, clip));
+        float duration = speechPauseDuration;
+        for (int i = 0; i < msg.Length; i++)
+        {
+            if (msg[i] == '.' || msg[i] == '!')
+                duration += puncSpeed;
+            else
+                duration += typingSpeed;
+        }
+        return duration;
     }
 
     private IEnumerator Type(string msg)
@@ -251,7 +271,7 @@ public class IndicatorAnimationController : MonoBehaviour
                 yield return typingPause;
         }
 
-        yield return new WaitForSeconds(3f);
+        yield return speechPause;
         speechCanvas.SetActive(false);
     }
 
@@ -275,7 +295,7 @@ public class IndicatorAnimationController : MonoBehaviour
                 yield return typingPause;
         }
 
-        yield return new WaitForSeconds(1.5f);
+        yield return speechPause;
         speechCanvas.SetActive(false);
     }
 
@@ -300,6 +320,17 @@ public class IndicatorAnimationController : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void resizeCanvas(float width, float height)
+    {
+        speechCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+    }
+
+    public void updatePosition(Vector3 newLeftSide, Vector3 newRightSide)
+    {
+        leftSide = newLeftSide;
+        rightSide = newRightSide;
     }
 }
        

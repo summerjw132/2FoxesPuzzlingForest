@@ -186,6 +186,8 @@ public class FoxCharacter : TurnBasedCharacter
                     return true;
                 }
             }
+            if (wallHitColliders[0].CompareTag("ScriptTrigger"))
+                return true;
             return false;
         }
         else //no Colliders in target position

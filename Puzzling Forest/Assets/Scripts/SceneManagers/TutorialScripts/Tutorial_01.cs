@@ -21,6 +21,7 @@ public class Tutorial_01 : TutorialScript
     private const int numSections = 4;
     private int curSection = 0;
     private string[] sections = new string[numSections] { "Welcome", "House", "Fox", "JustTips" };
+    private float timeAtLastPress = -1f;
 
     // Start is called before the first frame update
     protected override void Awake()
@@ -62,8 +63,14 @@ public class Tutorial_01 : TutorialScript
 
     public void StartNextSection()
     {
-        StartCoroutine(sections[curSection]);
-        curSection++;
+        if (Time.time - timeAtLastPress < 1f)
+            return;
+        else
+        {
+            timeAtLastPress = Time.time;
+            StartCoroutine(sections[curSection]);
+            curSection++;
+        }
     }
 
     private IEnumerator Welcome()
@@ -137,12 +144,13 @@ public class Tutorial_01 : TutorialScript
         yield return new WaitForSeconds(3f);
         TipsCanvas.transform.Find("TipsMenu/Tip_01").gameObject.SetActive(true);
         TipsCanvas.transform.Find("TipsMenu/Tip_02").gameObject.SetActive(true);
-        if (isTipsShown)
-            alertNoise.Play();
+        if (!isTipsShown)
+            ToggleTips();
+        alertNoise.Play();
 
         yield return new WaitForSeconds(2f);
         turnManager.Say("Try pushing the block to complete the bridge.", typingNoise);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         TipsCanvas.transform.Find("TipsMenu/Tip_03").gameObject.SetActive(true);
         if (isTipsShown)
             alertNoise.Play();

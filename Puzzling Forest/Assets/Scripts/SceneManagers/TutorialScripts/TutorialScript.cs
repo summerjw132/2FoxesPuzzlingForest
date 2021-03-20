@@ -26,7 +26,7 @@ public class TutorialScript : MonoBehaviour
 
     protected Timer timer;
 
-    protected bool isTipsShown = true;
+    protected bool isTipsShown = false;
 
     protected virtual void Awake()
     {

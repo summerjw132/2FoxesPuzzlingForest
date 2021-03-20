@@ -204,19 +204,23 @@ public class TurnManager : MonoBehaviour
         curPlayer.CatchTheBall();
     }
 
-    public void Say(string msg)
+    public float Say(string msg)
     {
         if (curPlayer)
         {
-            curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg);
+            return curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg);
         }
+        else
+            return -1f;
     }
-    public void Say(string msg, AudioSource clip)
+    public float Say(string msg, AudioSource clip)
     {
         if (curPlayer)
         {
-            curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg, clip);
+            return curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg, clip);
         }
+        else
+            return -1f;
     }
 
     public void SwappedFoxes()
@@ -244,6 +248,11 @@ public class TurnManager : MonoBehaviour
     public GameObject[] GetPlayers()
     {
         return PlayerGroup;
+    }
+
+    public GameObject GetCurrentFairy()
+    {
+        return curPlayer.transform.Find("turnIndicator").gameObject;
     }
 
     //Updates the UI text "total Moves"
