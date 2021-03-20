@@ -50,8 +50,7 @@ public class Tutorial_02 : TutorialScript
     {
         yield return new WaitForSeconds(0.1f);
         FairyController = turnManager.GetCurrentFairy().GetComponent<IndicatorAnimationController>();
-        FairyController.updatePosition(newLeftSide, newRightSide);
-        FairyController.resizeCanvas(850f, 375f);
+        //FairyController.ResizeCanvas(850f, 375f);
 
         yield return new WaitForSeconds(turnManager.Say("Sometimes you can't get to one side of a block.", typingNoise) + 0.1f);
         StartCoroutine(ShowWhere());

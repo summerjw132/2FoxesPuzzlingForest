@@ -170,7 +170,7 @@ public class TurnManager : MonoBehaviour
     //Increments curIDX, disables the current fox's turn, enables the next valid fox's turn
     public void SwapFoxes()
     {
-        curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().StopTalking();
+        curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
         TakeTurn();
 
         int loopIDX = 0;
@@ -204,15 +204,6 @@ public class TurnManager : MonoBehaviour
         curPlayer.CatchTheBall();
     }
 
-    public float Say(string msg)
-    {
-        if (curPlayer)
-        {
-            return curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg);
-        }
-        else
-            return -1f;
-    }
     public float Say(string msg, AudioSource clip)
     {
         if (curPlayer)
@@ -221,6 +212,15 @@ public class TurnManager : MonoBehaviour
         }
         else
             return -1f;
+    }
+
+    public void ShutUp()
+    {
+        if (curPlayer)
+        {
+            curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
+        }
+        return;
     }
 
     public void SwappedFoxes()

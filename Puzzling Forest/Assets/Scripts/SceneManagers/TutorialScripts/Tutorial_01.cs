@@ -93,7 +93,7 @@ public class Tutorial_01 : TutorialScript
         FairyController.FlyOff();
         yield return flyPause;
 
-        FairyCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(3000, 1500);
+        FairyCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(2000, 1200);
         SetNewPosition(houseLocation, false);
         nextButton.interactable = false;
         FairyController.FlyDown();
@@ -114,6 +114,7 @@ public class Tutorial_01 : TutorialScript
         FairyController.FlyOff();
         yield return flyPause;
 
+        FairyCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(2500, 1200);
         SetNewPosition(foxLocation, true);
         nextButton.interactable = false;
         FairyController.FlyDown();
@@ -148,7 +149,7 @@ public class Tutorial_01 : TutorialScript
             ToggleTips();
         alertNoise.Play();
 
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(3f);
         turnManager.Say("Try pushing the block to complete the bridge.", typingNoise);
         yield return new WaitForSeconds(3f);
         TipsCanvas.transform.Find("TipsMenu/Tip_03").gameObject.SetActive(true);

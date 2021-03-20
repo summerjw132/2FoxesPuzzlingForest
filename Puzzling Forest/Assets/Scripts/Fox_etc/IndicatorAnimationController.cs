@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class IndicatorAnimationController : MonoBehaviour
 {
@@ -31,6 +32,7 @@ public class IndicatorAnimationController : MonoBehaviour
     private float rand_x;
     private float rand_y;
     private float rand_z;
+    private bool isFlyingOff = false;
     private bool isDrifting = false;
     private float driftSpeed = 0.5f;
     private float range = 0.2f;
@@ -39,12 +41,16 @@ public class IndicatorAnimationController : MonoBehaviour
     private Vector3 randPos;
     private bool goInactive = false;
     private bool isFinding = false;
+    private Coroutine driftingRoutine = null;
 
     //speech stuff
     private Vector3 rightSide = new Vector3(-3.87f, 1.06f, 1.29f);
     private Vector3 leftSide = new Vector3(1.16f, 1.06f, -3.74f);
     private GameObject speechCanvas;
-    private UnityEngine.UI.Text fairyText;
+    private Text fairyText;
+    private Coroutine typer = null;
+    private SpeechController speechController;
+    private Camera cam;
 
     private readonly float typingSpeed = 0.05f;
     private readonly float puncSpeed = 0.5f;
@@ -63,7 +69,10 @@ public class IndicatorAnimationController : MonoBehaviour
         else
         {
             speechCanvas = this.gameObject.transform.GetChild(0).gameObject;
-            fairyText = speechCanvas.transform.Find("Text").GetComponent<UnityEngine.UI.Text>();
+            fairyText = speechCanvas.transform.Find("Background/Text").GetComponent<Text>();
+            cam = GameObject.Find("GameManager/CameraControls/Camera").GetComponent<Camera>();
+
+            speechController = new SpeechController(this.gameObject, speechCanvas, fairyText, cam);
         }
         typingPause = new WaitForSeconds(typingSpeed);
         puncPause = new WaitForSeconds(puncSpeed);
@@ -85,7 +94,15 @@ public class IndicatorAnimationController : MonoBehaviour
         }
 
         if (isTutFairy)
-            StartCoroutine(DriftAround());
+            driftingRoutine = StartCoroutine(DriftAround());
+    }
+
+    void Update()
+    {
+        if (!isTutFairy && speechCanvas.activeInHierarchy)
+        {
+            speechController.UpdatePosition();
+        }
     }
 
     public void OnBallHit()
@@ -186,6 +203,8 @@ public class IndicatorAnimationController : MonoBehaviour
 
     private void FindRandomPosition()
     {
+        if (isFlyingOff)
+            return;
         centerPos = driftAnchor.position;
 
         rand_x = centerPos.x + Random.Range(-range, range);
@@ -202,6 +221,7 @@ public class IndicatorAnimationController : MonoBehaviour
 
     public void FlyOff()
     {
+        isFlyingOff = true;
         randPos = new Vector3(driftAnchor.position.x, driftAnchor.position.y + 12, driftAnchor.position.z);
         driftSpeed = 15f;
         isDrifting = true;
@@ -211,6 +231,7 @@ public class IndicatorAnimationController : MonoBehaviour
 
     public void FlyDown()
     {
+        isFlyingOff = false;
         goInactive = false;
         centerPos = driftAnchor.position;
         this.transform.position = new Vector3(centerPos.x, centerPos.y + 12, centerPos.z);
@@ -219,31 +240,45 @@ public class IndicatorAnimationController : MonoBehaviour
         driftSpeed = 15f;
     }
 
-    public float Say(string msg)
-    {
-        if (isTutFairy)
-            return -1f;
-
-        SetSide();
-        StartCoroutine(Type(msg));
-        float duration = speechPauseDuration;
-        for (int i = 0; i < msg.Length; i++)
-        {
-            if (msg[i] == '.' || msg[i] == '!')
-                duration += puncSpeed;
-            else
-                duration += typingSpeed;
-        }
-        return duration;
-    }
-
     public float Say(string msg, AudioSource clip)
     {
-        if (isTutFairy)
-            return -1f;
+        speechCanvas.SetActive(true);
+        if (typer != null)
+        {
+            StopCoroutine(typer);
+            typer = null;
+        }   
+        speechController.Clear();
 
-        SetSide();
-        StartCoroutine(Type(msg, clip));
+        switch (msg.ToLower())
+        {
+            case "great job.":
+                speechController.resizeCanvas(120f, 40f);
+                break;
+
+            case "great job!":
+                speechController.resizeCanvas(120f, 40f);
+                break;
+
+            case "well done!":
+                speechController.resizeCanvas(120f, 40f);
+                break;
+
+            case "well done.":
+                speechController.resizeCanvas(120f, 40f);
+                break;
+
+            case "one down, one to go.":
+                speechController.resizeCanvas(190f, 40f);
+                break;
+
+            default:
+                speechController.resizeCanvas(200f, 80f);
+                break;
+        }
+
+
+        typer = StartCoroutine(Type(msg, clip));
         float duration = speechPauseDuration;
         for (int i = 0; i < msg.Length; i++)
         {
@@ -253,41 +288,13 @@ public class IndicatorAnimationController : MonoBehaviour
                 duration += typingSpeed;
         }
         return duration;
-    }
-
-    private IEnumerator Type(string msg)
-    {
-        speechCanvas.SetActive(true);
-        fairyText.text = "";
-        string current = "";
-
-        for (int i = 0; i < msg.Length; i++)
-        {
-            current += msg[i];
-            fairyText.text = current;
-            if (msg[i] == '.' || msg[i] == '!')
-                yield return puncPause;
-            else
-                yield return typingPause;
-        }
-
-        yield return speechPause;
-        speechCanvas.SetActive(false);
     }
 
     private IEnumerator Type(string msg, AudioSource clip)
     {
-        if (clip.volume > 0.05f)
-            clip.volume = 0.05f;
-
-        speechCanvas.SetActive(true);
-        fairyText.text = "";
-        string current = "";
-
         for (int i = 0; i < msg.Length; i++)
         {
-            current += msg[i];
-            fairyText.text = current;
+            speechController.AddChar(msg[i]);
             clip.Play();
             if (msg[i] == '.' || msg[i] == '!')
                 yield return puncPause;
@@ -296,41 +303,84 @@ public class IndicatorAnimationController : MonoBehaviour
         }
 
         yield return speechPause;
-        speechCanvas.SetActive(false);
+        speechController.StopTalking();
     }
 
-    public void StopTalking()
+    public void ShutUp()
     {
-        speechCanvas.SetActive(false);
-    }
-
-    private void SetSide()
-    {
-        string side = fox.LeftOrRight();
-        switch (side)
+        if (typer != null)
         {
-            case "left":
-                speechCanvas.transform.localPosition = leftSide;
-                break;
-
-            case "right":
-                speechCanvas.transform.localPosition = rightSide;
-                break;
-
-            default:
-                break;
+            StopCoroutine(typer);
+            typer = null;
         }
+        speechController.StopTalking();
     }
 
-    public void resizeCanvas(float width, float height)
+    public void ResizeCanvas(float width, float height)
     {
-        speechCanvas.GetComponent<RectTransform>().sizeDelta = new Vector2(width, height);
+        speechController.resizeCanvas(width, height);
     }
 
-    public void updatePosition(Vector3 newLeftSide, Vector3 newRightSide)
+    public class SpeechController
     {
-        leftSide = newLeftSide;
-        rightSide = newRightSide;
+        private GameObject fairy;
+        private GameObject canvas;
+        private Text text;
+        private Camera cam;
+
+        private RectTransform background;
+
+        public SpeechController(GameObject _fairy, GameObject _canvas, Text _text, Camera _cam)
+        {
+            canvas = _canvas;
+            text = _text;
+            fairy = _fairy;
+            cam = _cam;
+
+            background = canvas.transform.Find("Background").GetComponent<RectTransform>();
+        }
+
+        public void Clear()
+        {
+            text.text = "";
+        }
+
+        public void AddChar(char nextChar)
+        {
+            text.text += nextChar;
+        }
+
+        public void StopTalking()
+        {
+            canvas.SetActive(false);
+        }
+
+        public void resizeCanvas(float width, float height)
+        {
+            background.sizeDelta = new Vector2(width, height);
+            UpdatePosition();
+        }
+
+        public void UpdatePosition()
+        {
+            Vector2 fairyScreenPos = cam.WorldToScreenPoint(fairy.transform.position);
+            float newX = 0f;
+            float newY = 0f;
+            //fairy on right, so show text on left side
+            if (fairyScreenPos.x > (cam.pixelWidth / 2f))
+            {
+                newX = fairyScreenPos.x - (background.rect.width / 1.9f);
+                newY = fairyScreenPos.y + (background.rect.height / 1.8f);
+            }
+            //fairy on left, so show text on right side
+            else
+            {
+                newX = fairyScreenPos.x + (background.rect.width / 1.9f);
+                newY = fairyScreenPos.y + (background.rect.height / 1.8f);
+            }
+            background.position = new Vector3(newX, newY, -1f);
+
+        }
     }
 }
        

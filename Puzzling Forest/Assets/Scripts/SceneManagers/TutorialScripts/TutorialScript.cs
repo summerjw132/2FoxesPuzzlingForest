@@ -65,7 +65,15 @@ public class TutorialScript : MonoBehaviour
         Fairy = FairyAnchor.transform.Find("Fairy").gameObject;
         FairyController = Fairy.GetComponent<IndicatorAnimationController>();
         FairyCanvas = FairyAnchor.transform.Find("FairyCanvas").gameObject;
-        FairyText = FairyCanvas.transform.Find("FairyText").GetComponent<Text>();
+        try
+        {
+            FairyText = FairyCanvas.transform.Find("FairyText").GetComponent<Text>();
+        }
+        catch (System.NullReferenceException)
+        {
+            FairyText = FairyCanvas.transform.Find("Background/FairyText").GetComponent<Text>();
+        }
+        
 
         timer = GameObject.Find("Turn-Based System").GetComponent<Timer>();
     }
@@ -83,8 +91,8 @@ public class TutorialScript : MonoBehaviour
 
     protected IEnumerator Type(Text text, string msg)
     {
-        if (typingNoise.volume > 0.05f)
-            typingNoise.volume = 0.05f;
+        //if (typingNoise.volume > 0.05f)
+        //    typingNoise.volume = 0.05f;
         text.text = "";
         string current = "";
 
