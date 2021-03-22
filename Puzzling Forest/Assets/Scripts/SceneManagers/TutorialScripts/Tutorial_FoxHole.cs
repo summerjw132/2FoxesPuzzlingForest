@@ -29,13 +29,16 @@ public class Tutorial_FoxHole : TutorialScript
         yield return new WaitForSeconds(0.1f);
         FairyController = turnManager.GetCurrentFairy().GetComponent<IndicatorAnimationController>();
 
-        yield return new WaitForSeconds(turnManager.Say("The black circles are 'Foxholes' and link one tile to another.", typingNoise) + 0.1f);
-        TipsCanvas.transform.Find("TipsMenu/Tip_01").gameObject.SetActive(true);
+		yield return new WaitForSeconds(turnManager.Say("Hello again! There's something new here.", typingNoise) + 0.1f);
+
+		yield return new WaitForSeconds(turnManager.Say("Those black circles are 'Fox Holes.'", typingNoise) + 0.5f);
+		yield return new WaitForSeconds(turnManager.Say("They allow you to travel between them instantly!", typingNoise) + 0.1f);
+		TipsCanvas.transform.Find("TipsMenu/Tip_01").gameObject.SetActive(true);
         if (!isTipsShown)
             ToggleTips();
         alertNoise.Play();
 
-        yield return new WaitForSeconds(turnManager.Say("Step on one and press the button to use the foxhole.", typingNoise) + 0.1f);
+        yield return new WaitForSeconds(turnManager.Say("Just walk over one and press the 'F' to move through them.", typingNoise) + 0.1f);
         TipsCanvas.transform.Find("TipsMenu/Tip_02").gameObject.SetActive(true);
         if (isTipsShown)
             alertNoise.Play();

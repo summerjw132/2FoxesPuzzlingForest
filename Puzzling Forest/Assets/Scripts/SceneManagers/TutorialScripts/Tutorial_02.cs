@@ -52,15 +52,15 @@ public class Tutorial_02 : TutorialScript
         FairyController = turnManager.GetCurrentFairy().GetComponent<IndicatorAnimationController>();
         //FairyController.ResizeCanvas(850f, 375f);
 
-        yield return new WaitForSeconds(turnManager.Say("Sometimes you can't get to one side of a block.", typingNoise) + 0.1f);
-        StartCoroutine(ShowWhere());
+        yield return new WaitForSeconds(turnManager.Say("Sometimes you have to carefully maneuver blocks.", typingNoise) + 0.1f);
+		StartCoroutine(ShowWhere());
     }
 
     private IEnumerator ShowWhere()
     {
         ShowArrow(arrowOpenSpace, true);
 
-        yield return new WaitForSeconds(turnManager.Say("Move the block here first in order to turn around!", typingNoise) - 3f);
+        yield return new WaitForSeconds(turnManager.Say("Move the block here first in order to turn it around!", typingNoise) - 3f);
 
         TipsCanvas.transform.Find("TipsMenu/Tip_01").gameObject.SetActive(true);
         if (!isTipsShown)

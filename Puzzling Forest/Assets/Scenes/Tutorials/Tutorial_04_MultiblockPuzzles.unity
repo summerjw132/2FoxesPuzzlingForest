@@ -391,7 +391,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 209005368}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: TutorialScript, Assembly-CSharp
         m_MethodName: ToggleTips
         m_Mode: 1
@@ -851,11 +851,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 209005369}
-  - component: {fileID: 209005368}
+  - component: {fileID: 209005367}
   - component: {fileID: 209005366}
   - component: {fileID: 209005365}
   m_Layer: 0
-  m_Name: Tutorial_03
+  m_Name: Tutorial_04
   m_TagString: ScriptTrigger
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -890,7 +890,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 3}
---- !u!114 &209005368
+--- !u!114 &209005367
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -899,7 +899,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 209005364}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2c0bf168cbf0b1c4eb8e81ef3eb13959, type: 3}
+  m_Script: {fileID: 11500000, guid: 04c6383d7590f9c498a6512c02a46091, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!4 &209005369
@@ -1253,6 +1253,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 872321902621665991, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1576112975740957448, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_Name
       value: Turn-Based System
@@ -1292,6 +1296,10 @@ PrefabInstance:
     - target: {fileID: 2207259251615378728, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313891023134956989, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 14.699951
       objectReference: {fileID: 0}
     - target: {fileID: 3997011618241467192, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_AnchorMax.y
@@ -4769,7 +4777,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1549668743}
-  - {fileID: 1483427985}
   - {fileID: 2083029098}
   m_Father: {fileID: 1558513972}
   m_RootOrder: 0
@@ -5458,85 +5465,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4486876473255400, guid: 872c16f7e1cc12b4793e2c3d414fa189, type: 3}
   m_PrefabInstance: {fileID: 1481629923}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1483427984
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1483427985}
-  - component: {fileID: 1483427987}
-  - component: {fileID: 1483427986}
-  m_Layer: 5
-  m_Name: Tip_01
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!224 &1483427985
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1483427984}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.4, z: 1}
-  m_Children: []
-  m_Father: {fileID: 1302869173}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.5, y: -120.7}
-  m_SizeDelta: {x: 380, y: 200}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1483427986
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1483427984}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 12800000, guid: 00b2f408440bfab4ba77817c3d0ed572, type: 3}
-    m_FontSize: 40
-    m_FontStyle: 1
-    m_BestFit: 0
-    m_MinSize: 4
-    m_MaxSize: 60
-    m_Alignment: 0
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: "1. You can push rows of\n   blocks"
---- !u!222 &1483427987
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1483427984}
-  m_CullTransparentMesh: 0
 --- !u!1001 &1489936698
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8069,12 +7997,12 @@ GameObject:
   - component: {fileID: 2083029100}
   - component: {fileID: 2083029099}
   m_Layer: 5
-  m_Name: Tip_02
+  m_Name: Tip_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &2083029098
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8087,11 +8015,11 @@ RectTransform:
   m_LocalScale: {x: 0.5, y: 0.4, z: 1}
   m_Children: []
   m_Father: {fileID: 1302869173}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0.5, y: -162.6}
+  m_AnchoredPosition: {x: 0.5, y: -128.2}
   m_SizeDelta: {x: 380, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2083029099
@@ -8127,7 +8055,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "2. \"u\" undoes the last\n    move. There's no limit."
+  m_Text: "1. \"u\" undoes the last\n    move. There's no limit to how many times
+    you can undo actions!"
 --- !u!222 &2083029100
 CanvasRenderer:
   m_ObjectHideFlags: 0

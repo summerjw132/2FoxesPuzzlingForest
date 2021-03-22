@@ -7,7 +7,6 @@ public class Tutorial_03 : TutorialScript
     private Vector3 newLeftSide = new Vector3(1.42f, 1.29f, -4.56f);
     private Vector3 newRightSide = new Vector3(-4.66f, 1.29f, 1.52f);
 
-    // Start is called before the first frame update
     protected override void Awake()
     {
         base.Awake();
@@ -44,16 +43,11 @@ public class Tutorial_03 : TutorialScript
         FairyController = turnManager.GetCurrentFairy().GetComponent<IndicatorAnimationController>();
         //FairyController.resizeCanvas(850f, 375f);
 
-        yield return new WaitForSeconds(turnManager.Say("Sometimes you'll need to push blocks in a horizontal row.", typingNoise) + 0.1f);
+        yield return new WaitForSeconds(turnManager.Say("Sometimes you'll need to push multiple blocks in a line.", typingNoise) + 0.1f);
         TipsCanvas.transform.Find("TipsMenu/Tip_01").gameObject.SetActive(true);
         if (!isTipsShown)
             ToggleTips();
         alertNoise.Play();
-
-        yield return new WaitForSeconds(turnManager.Say("If you get stuck you can press 'U' to undo the most recent move.", typingNoise) + 0.1f);
-        TipsCanvas.transform.Find("TipsMenu/Tip_02").gameObject.SetActive(true);
-        if (isTipsShown)
-            alertNoise.Play();
     }
 
     void OnTriggerEnter(Collider other)
