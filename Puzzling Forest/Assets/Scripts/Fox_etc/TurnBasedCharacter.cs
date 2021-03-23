@@ -158,7 +158,10 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
         if (wallHitColliders.Length > 0) //there's something here, could be hut or wall etc.
         {
-            return false;
+            if (wallHitColliders[0].CompareTag("ScriptTrigger"))//ignore colliders of this type
+                return true;
+            else
+                return false;
         }
         else //no Colliders in target position
         {
@@ -180,7 +183,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             potentialFloorTag = potentialFloor.tag;
 
             //Do not count the collider that handles destroying falling blocks as a floor
-            if (potentialFloorTag == "DestroyBounds")
+            if (potentialFloorTag == "DestroyBounds" || potentialFloorTag == "ScriptTrigger")
                 return false;
 
             //Can only be falling if it's a pushable wall, so we'll check for that script

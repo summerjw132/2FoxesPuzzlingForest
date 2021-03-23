@@ -13,7 +13,7 @@ public class Timer : MonoBehaviour
     [HideInInspector]
     public bool isLevelComplete;
 
-    private float timeAtStartOfThisLevel;
+    private float timeToSubtract;
 
     private int minutes = 0;
     private int seconds = 0;
@@ -22,8 +22,6 @@ public class Timer : MonoBehaviour
 
     private bool paused = false;
     private WaitForSeconds oneSecond;
-
-    public int totaltime {get{return seconds;} set{}}
 
     void Awake()
     {
@@ -34,7 +32,7 @@ public class Timer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        timeAtStartOfThisLevel = Time.time;
+        timeToSubtract = Time.time;
         StartCoroutine(KeepTime());
     }
 
@@ -46,16 +44,16 @@ public class Timer : MonoBehaviour
 
     private IEnumerator KeepTime()
     {
-        while (true)
+        while (!isLevelComplete)
         {
             if (paused)
             {
-
+                timeToSubtract += 1f;
             }
 
             else
             {
-                curTime = Time.time - timeAtStartOfThisLevel;
+                curTime = Time.time - timeToSubtract;
 
                 minutes = 0;
                 for (int i = (int)curTime; i >= 60; i = i - 60)
@@ -86,7 +84,7 @@ public class Timer : MonoBehaviour
 
     public void ResetTimer()
     {
-        timeAtStartOfThisLevel = Time.time;
+        timeToSubtract = Time.time;
         minutes = 0;
     }
 
@@ -98,5 +96,10 @@ public class Timer : MonoBehaviour
     public void SetPause(bool val)
     {
         paused = val;
+    }
+
+    public string GetTime()
+    {
+        return displayTime;
     }
 }

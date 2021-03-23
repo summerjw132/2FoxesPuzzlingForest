@@ -40,12 +40,12 @@ public class TurnManager : MonoBehaviour
     {
         pauseManager = GameObject.Find("UI Canvas").GetComponent<PauseMenuManager>();
         undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
+
+        SetUpPlayerGroup();
     }
 
     private void Start()
     {
-        SetUpPlayerGroup();
-
         GiveTurn();
     }
 
@@ -123,8 +123,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    
-
     //Sets up the PlayerGroup by finding all game objects with the "Player" tag in the scene.
     private void SetUpPlayerGroup()
     {
@@ -138,7 +136,6 @@ public class TurnManager : MonoBehaviour
         }
 
         curPlayer = PlayerScripts[curTurnIndex];
-        curPlayer.ToggleIndicator(true);
     }
 
     //Increments the current turn index whilst keeping an eye on going out of bounds
@@ -155,6 +152,7 @@ public class TurnManager : MonoBehaviour
         if (curPlayer && curPlayer.CheckIfTakingTurns())
         {
             curPlayer.SetTurnActive(true);
+            curPlayer.ToggleIndicator(true);
         }
     }
 
@@ -172,6 +170,7 @@ public class TurnManager : MonoBehaviour
     //Increments curIDX, disables the current fox's turn, enables the next valid fox's turn
     public void SwapFoxes()
     {
+        curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
         TakeTurn();
 
         int loopIDX = 0;
@@ -188,6 +187,40 @@ public class TurnManager : MonoBehaviour
                 return;
             }
         }
+    }
+
+    public void StealControl()
+    {
+        curPlayer.SetFairyActive(false);
+        curPlayer.SetTurnActive(false);
+        curPlayer = null;
+    }
+
+    public void ResumeControl()
+    {
+        curPlayer = PlayerScripts[curTurnIndex];
+        curPlayer.SetFairyActive(true);
+        curPlayer.SetTurnActive(true);
+        curPlayer.CatchTheBall();
+    }
+
+    public float Say(string msg, AudioSource clip)
+    {
+        if (curPlayer)
+        {
+            return curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg, clip);
+        }
+        else
+            return -1f;
+    }
+
+    public void ShutUp()
+    {
+        if (curPlayer)
+        {
+            curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
+        }
+        return;
     }
 
     public void SwappedFoxes()
@@ -215,6 +248,11 @@ public class TurnManager : MonoBehaviour
     public GameObject[] GetPlayers()
     {
         return PlayerGroup;
+    }
+
+    public GameObject GetCurrentFairy()
+    {
+        return curPlayer.transform.Find("turnIndicator").gameObject;
     }
 
     //Updates the UI text "total Moves"
@@ -247,4 +285,5 @@ public class TurnManager : MonoBehaviour
     {
         cameraLock = !cameraLock;
     }
+
 }
