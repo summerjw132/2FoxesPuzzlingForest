@@ -186,6 +186,8 @@ public class FoxCharacter : TurnBasedCharacter
                     return true;
                 }
             }
+            if (wallHitColliders[0].CompareTag("ScriptTrigger"))
+                return true;
             return false;
         }
         else //no Colliders in target position
@@ -229,6 +231,11 @@ public class FoxCharacter : TurnBasedCharacter
         //turnIndicator.SetActive(value);
     }
 
+    public void SetFairyActive(bool value)
+    {
+        turnIndicator.SetActive(value);
+    }
+
     public bool CheckIfTakingTurns()
     {
         return isTakingTurns;
@@ -268,6 +275,14 @@ public class FoxCharacter : TurnBasedCharacter
     public void CatchTheBall()
     {
         indicatorAnim.Play("DropBall");
+    }
+    //Fairies use this to determine, based on fox position, whether to put text box on left or right
+    public string LeftOrRight()
+    {
+        if (cam.WorldToScreenPoint(this.transform.position).x < Screen.width / 2f)
+            return "right";
+        else
+            return "left";
     }
     //These are just wrapper functions to set/reset an "isAnimating" flag.
     // The animations themselves call these functions using animation events.
