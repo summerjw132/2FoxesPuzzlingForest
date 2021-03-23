@@ -44,8 +44,6 @@ public class IndicatorAnimationController : MonoBehaviour
     private Coroutine driftingRoutine = null;
 
     //speech stuff
-    private Vector3 rightSide = new Vector3(-3.87f, 1.06f, 1.29f);
-    private Vector3 leftSide = new Vector3(1.16f, 1.06f, -3.74f);
     private GameObject speechCanvas;
     private Text fairyText;
     private Coroutine typer = null;
@@ -248,35 +246,7 @@ public class IndicatorAnimationController : MonoBehaviour
             StopCoroutine(typer);
             typer = null;
         }   
-        speechController.Clear();
-
-        switch (msg.ToLower())
-        {
-            case "great job.":
-                speechController.resizeCanvas(120f, 40f);
-                break;
-
-            case "great job!":
-                speechController.resizeCanvas(120f, 40f);
-                break;
-
-            case "well done!":
-                speechController.resizeCanvas(120f, 40f);
-                break;
-
-            case "well done.":
-                speechController.resizeCanvas(120f, 40f);
-                break;
-
-            case "one down, one to go.":
-                speechController.resizeCanvas(190f, 40f);
-                break;
-
-            default:
-                speechController.resizeCanvas(200f, 80f);
-                break;
-        }
-
+        AutoResizeCanvas(msg);
 
         typer = StartCoroutine(Type(msg, clip));
         float duration = speechPauseDuration;
@@ -321,6 +291,11 @@ public class IndicatorAnimationController : MonoBehaviour
         speechController.resizeCanvas(width, height);
     }
 
+    public void AutoResizeCanvas(string msg)
+    {
+        speechController.autoResizeCanvas(msg);
+    }
+
     public class SpeechController
     {
         private GameObject fairy;
@@ -329,6 +304,11 @@ public class IndicatorAnimationController : MonoBehaviour
         private Camera cam;
 
         private RectTransform background;
+
+        private static Vector2 defaultWidth = new Vector2(200f, 10f);
+        private static Vector2 shortWidth = new Vector3(120f, 10f);
+        private static string[] goodJobbers = new string[4] { "great job!", "good job!", "well done!", "nice job!" };
+        private bool useShort = false;
 
         public SpeechController(GameObject _fairy, GameObject _canvas, Text _text, Camera _cam)
         {
@@ -359,6 +339,28 @@ public class IndicatorAnimationController : MonoBehaviour
         {
             background.sizeDelta = new Vector2(width, height);
             UpdatePosition();
+        }
+
+        public void autoResizeCanvas(string msg)
+        {
+            //Height = fontSize * #rows + 6;
+            useShort = false;
+            for (int i = 0; i < goodJobbers.Length; i++)
+            {
+                if (goodJobbers[i] == msg.ToLower())
+                {
+                    background.sizeDelta = shortWidth;
+                    useShort = true;
+                }
+            }
+            if (!useShort)
+                background.sizeDelta = defaultWidth;
+
+            text.text = msg;
+            Canvas.ForceUpdateCanvases();
+            background.sizeDelta = new Vector2(background.rect.width, (text.cachedTextGenerator.lineCount * text.fontSize) + 6);
+            text.text = "";
+            Canvas.ForceUpdateCanvases();
         }
 
         public void UpdatePosition()

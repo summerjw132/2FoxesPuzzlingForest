@@ -4,17 +4,17 @@ using UnityEngine;
 
 //This class is attached to a game object that has a sphere collider. When a block hits this trigger,
 // the fairy will say "Great Job".
-public class GreatJob : MonoBehaviour
+public class MsgTrigger : MonoBehaviour
 {
     private TurnManager turnManager;
     private AudioSource typingNoise;
-    [Tooltip("What message should Summer say when a block enters this trigger? 'Great job.' and 'Well done.' use a small size, other messages will appear on a larger canvas.")]
-    [SerializeField] private string message = "Great job.";
+    [Tooltip("What message should Summer say when a block enters this trigger? \"[Great/Nice/Good] job!\" and \"Well done!\" use a special size text box.")]
+    [SerializeField] private string message = "Great job!";
 
     // Start is called before the first frame update
     void Awake()
     {
-        turnManager = this.transform.parent.GetComponent<TurnManager>();
+        turnManager = GameObject.FindGameObjectWithTag("TurnBasedSystem").GetComponent<TurnManager>();
         typingNoise = this.transform.Find("TypingNoise").GetComponent<AudioSource>();
     }
 
@@ -33,7 +33,7 @@ public class GreatJob : MonoBehaviour
         else
         {
             Debug.LogFormat("{0} just triggered the 'Great Job' trigger", other.name);
-            turnManager.Say("Great job.", typingNoise);
+            turnManager.Say(message, typingNoise);
         }
     }
 }

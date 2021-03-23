@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tutorial_01 : TutorialScript
 {
     private Vector3 startLocation = new Vector3(1f, 1.89f, 2.45f);
-    private Vector3 houseLocation = new Vector3(-3.11999989f, 3.17000008f, -0.280000001f);
+    private Vector3 houseLocation = new Vector3(-2.5f, 2.73000002f, -0.270000011f);
     private Vector3 foxLocation = new Vector3(5.48999977f, 6.57000017f, 3.13000011f);
 
     private GameObject arrowHouse;
