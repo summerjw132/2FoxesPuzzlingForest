@@ -79,7 +79,7 @@ public class FoxCharacter : TurnBasedCharacter
             setFontSize = false;
         }
         //displays the button and calls the warp if it's clicked
-        if (displayButton && !isMoving)
+        if (displayButton && !isMoving && isMyTurn)
         {
             curScreenPos = cam.WorldToScreenPoint(this.transform.position);
             butX = curScreenPos.x - butOffsetX;
@@ -226,6 +226,7 @@ public class FoxCharacter : TurnBasedCharacter
     public void SetTurnActive(bool value)
     {
         isMyTurn = value;
+        if (curFoxholeScript) curFoxholeScript.ToggleEffect(value);
         //turnIndicator.SetActive(value);
     }
 

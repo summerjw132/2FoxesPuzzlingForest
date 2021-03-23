@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class FoxHole : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class FoxHole : MonoBehaviour
     private GameObject standingOnMe = null;
     private FoxCharacter playerTBC = null;
 
+    public UnityEvent onStart, onEnd;
     /*
      * Pseudocode - Teleport player from foxhole A to B
      *      
@@ -44,13 +46,17 @@ public class FoxHole : MonoBehaviour
             playerTBC = standingOnMe.GetComponent<FoxCharacter>();
 
             if (destinationFoxhole)
+            {
                 playerTBC.ShowFoxholeButton(true, this);
+                ToggleEffect(true);
+            }
         }
     }
 
     // Update the vars to reflect that this hole is no longer covered
     private void OnTriggerExit(Collider other)
     {
+        ToggleEffect(false);
         playerTBC.ShowFoxholeButton(false, null);
         standingOnMe = null;
         playerTBC = null;
@@ -125,6 +131,18 @@ public class FoxHole : MonoBehaviour
         else
         {
             warnController.Warn(coveredWarning);
+        }
+    }
+
+    public void ToggleEffect(bool b)
+    {
+        if(b)
+        {
+            destinationFoxhole.onStart?.Invoke();
+        }
+        else
+        {
+            destinationFoxhole.onEnd?.Invoke();
         }
     }
 }
