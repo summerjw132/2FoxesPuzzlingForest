@@ -1831,6 +1831,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 872321902621665991, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1576112975740957448, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_Name
       value: Turn-Based System
@@ -1894,6 +1898,18 @@ PrefabInstance:
     - target: {fileID: 8497253195695974110, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8629870079444773692, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -4.141
+      objectReference: {fileID: 0}
+    - target: {fileID: 8629870079444773692, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.036
+      objectReference: {fileID: 0}
+    - target: {fileID: 8629870079444773692, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.993
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
