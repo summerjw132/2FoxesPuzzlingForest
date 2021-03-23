@@ -247,6 +247,7 @@ public class IndicatorAnimationController : MonoBehaviour
             typer = null;
         }   
         AutoResizeCanvas(msg);
+        speechController.Clear();
 
         typer = StartCoroutine(Type(msg, clip));
         float duration = speechPauseDuration;
@@ -305,6 +306,9 @@ public class IndicatorAnimationController : MonoBehaviour
 
         private RectTransform background;
 
+        private static Color defaultColor;
+        private static Color yellow = new Color(0.98f, 1f, 0f, 1f);
+        private static Color invisible = new Color(1f, 1f, 1f, 0f);
         private static Vector2 defaultWidth = new Vector2(200f, 10f);
         private static Vector2 shortWidth = new Vector3(120f, 10f);
         private static string[] goodJobbers = new string[4] { "great job!", "good job!", "well done!", "nice job!" };
@@ -318,11 +322,13 @@ public class IndicatorAnimationController : MonoBehaviour
             cam = _cam;
 
             background = canvas.transform.Find("Background").GetComponent<RectTransform>();
+            defaultColor = text.color;
         }
 
         public void Clear()
         {
             text.text = "";
+            text.color = yellow;
         }
 
         public void AddChar(char nextChar)
@@ -356,11 +362,10 @@ public class IndicatorAnimationController : MonoBehaviour
             if (!useShort)
                 background.sizeDelta = defaultWidth;
 
+            text.color = invisible;
             text.text = msg;
             Canvas.ForceUpdateCanvases();
             background.sizeDelta = new Vector2(background.rect.width, (text.cachedTextGenerator.lineCount * text.fontSize) + 6);
-            text.text = "";
-            Canvas.ForceUpdateCanvases();
         }
 
         public void UpdatePosition()
