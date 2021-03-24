@@ -10,10 +10,13 @@ public class WaterManager : MonoBehaviour
 {
     private GameObject[] waterBlocks;
     private Dictionary<float, WaterBody> bodies = new Dictionary<float, WaterBody>();
+    private Material waterMat;
 
     void Awake()
     {
         waterBlocks = GameObject.FindGameObjectsWithTag("Water");
+
+        waterMat = Resources.Load("Material/CartoonWater", typeof(Material)) as Material;
     }
 
     // Start is called before the first frame update
@@ -25,8 +28,7 @@ public class WaterManager : MonoBehaviour
             if (!bodies.ContainsKey((float) Math.Round(curPos.y, 3)))
             {
                 bodies.Add((float) Math.Round(curPos.y, 3), new WaterBody(curPos, waterBlocks[i].transform.localScale));
-
-                waterBlocks[i].GetComponent<Renderer>().material.color = Color.red;
+                bodies[(float)Math.Round(curPos.y, 3)].AddBlock(waterBlocks[i]);
             }
             else
             {
@@ -39,7 +41,9 @@ public class WaterManager : MonoBehaviour
         foreach (KeyValuePair<float, WaterBody> kvp in bodies)
         {
             bodies[kvp.Key].ShowPoints();
+            bodies[kvp.Key].ApplyMaterial(waterMat);
         }
+        
     }
 
     // Update is called once per frame
@@ -136,6 +140,24 @@ public class WaterManager : MonoBehaviour
             center.z = (edges["north"] + edges["south"]) / 2.0f;
             center.x = (edges["east"] + edges["west"]) / 2.0f;
             center.y = topHeight;
+        }
+
+        public void ApplyMaterial(Material mat)
+        {
+            float x = 0f;
+            float y = 0f;
+            Vector2 offset = new Vector2(x, y);
+            mat.mainTextureScale = offset;
+            
+            for (int i = 0; i < myBlocks.Count; i++)
+            {
+                x += 0.2f;
+                y += 0.2f;
+                offset.x = x;
+                offset.y = y;
+                mat.mainTextureScale = offset;
+                myBlocks[i].GetComponent<Renderer>().material = mat;
+            }
         }
 
         public void ShowPoints()

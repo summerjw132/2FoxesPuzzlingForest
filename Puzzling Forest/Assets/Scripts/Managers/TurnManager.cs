@@ -101,6 +101,7 @@ public class TurnManager : MonoBehaviour
         else
         {
             keyJustPressed = true;
+            Debug.LogFormat("{0} just pressed.", code);
             switch (code)
             {
                 case KeyCode.W:
@@ -267,12 +268,12 @@ public class TurnManager : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
-        //Debug.Log("begin anim");
+        Debug.Log("begin anim");
         isAnimating = true;
     }
     public void completeAnimation()
     {
-        //Debug.Log("complete anim");
+        Debug.Log("complete anim");
         isAnimating = false;
     }
 

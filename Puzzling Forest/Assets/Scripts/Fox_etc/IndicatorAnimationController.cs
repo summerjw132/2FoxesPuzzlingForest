@@ -388,6 +388,19 @@ public class IndicatorAnimationController : MonoBehaviour
             background.position = new Vector3(newX, newY, -1f);
 
         }
+
+        public struct SpeechInfo
+        {
+            public string msg;
+            public float width;
+            public float height;
+            public SpeechInfo(string _msg, float _width, float _height)
+            {
+                msg = _msg;
+                width = _width;
+                height = _height;
+            }
+        }
     }
 }
        
