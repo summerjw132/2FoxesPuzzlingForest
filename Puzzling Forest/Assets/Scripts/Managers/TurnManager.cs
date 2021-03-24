@@ -38,10 +38,15 @@ public class TurnManager : MonoBehaviour
 
     private void Awake()
     {
-        SetUpPlayerGroup();
-
         pauseManager = GameObject.Find("UI Canvas").GetComponent<PauseMenuManager>();
         undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
+
+        SetUpPlayerGroup();
+    }
+
+    private void Start()
+    {
+        GiveTurn();
     }
 
     private void Update()
@@ -85,11 +90,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        GiveTurn();
-    }
-
     /// <summary>
     /// Allowing the player to hold buttons was too fast and led to the animations restarting too soon.
     ///  This Coroutine just handles that to only re-read a held key every 0.25 seconds. (way shorter than any animation)
@@ -123,8 +123,6 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    
-
     //Sets up the PlayerGroup by finding all game objects with the "Player" tag in the scene.
     private void SetUpPlayerGroup()
     {
@@ -154,6 +152,7 @@ public class TurnManager : MonoBehaviour
         if (curPlayer && curPlayer.CheckIfTakingTurns())
         {
             curPlayer.SetTurnActive(true);
+            curPlayer.ToggleIndicator(true);
         }
     }
 
@@ -163,12 +162,15 @@ public class TurnManager : MonoBehaviour
         if (curPlayer && curPlayer.CheckTurn())
         {
             curPlayer.SetTurnActive(false);
+            curPlayer.PassTheBall();
+            curPlayer = null;
         }
     }
 
     //Increments curIDX, disables the current fox's turn, enables the next valid fox's turn
     public void SwapFoxes()
     {
+        curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
         TakeTurn();
 
         int loopIDX = 0;
@@ -180,13 +182,56 @@ public class TurnManager : MonoBehaviour
             if (loopIDX >= numPlayers)
             {
                 Debug.Log("No players found taking turns.");
+                curTurnIndex = -1;
                 curPlayer = null;
                 return;
             }
         }
+    }
 
+    public void StealControl()
+    {
+        curPlayer.SetFairyActive(false);
+        curPlayer.SetTurnActive(false);
+        curPlayer = null;
+    }
+
+    public void ResumeControl()
+    {
         curPlayer = PlayerScripts[curTurnIndex];
-        GiveTurn();
+        curPlayer.SetFairyActive(true);
+        curPlayer.SetTurnActive(true);
+        curPlayer.CatchTheBall();
+    }
+
+    public float Say(string msg, AudioSource clip)
+    {
+        if (curPlayer)
+        {
+            return curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg, clip);
+        }
+        else
+            return -1f;
+    }
+
+    public void ShutUp()
+    {
+        if (curPlayer)
+        {
+            curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
+        }
+        return;
+    }
+
+    public void SwappedFoxes()
+    {
+        if (curTurnIndex > -1)
+        {
+            curPlayer = PlayerScripts[curTurnIndex];
+            curPlayer.ToggleIndicator(true);
+            curPlayer.CatchTheBall();
+            GiveTurn();
+        }
     }
 
     //Lil' helper getter setter stuff
@@ -203,6 +248,11 @@ public class TurnManager : MonoBehaviour
     public GameObject[] GetPlayers()
     {
         return PlayerGroup;
+    }
+
+    public GameObject GetCurrentFairy()
+    {
+        return curPlayer.transform.Find("turnIndicator").gameObject;
     }
 
     //Updates the UI text "total Moves"
@@ -235,4 +285,5 @@ public class TurnManager : MonoBehaviour
     {
         cameraLock = !cameraLock;
     }
+
 }

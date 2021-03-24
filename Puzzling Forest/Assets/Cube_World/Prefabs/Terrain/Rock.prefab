@@ -108,16 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4a5c2e7a0b8e42438db31b788a5b3d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turnManager: {fileID: 0}
-  turn:
-    playerGameObject: {fileID: 0}
-    isTurn: 0
-    wasTurnPrev: 0
-    isEnabled: 1
-  isTurn: 0
-  maxMovementRange: 5
   characterType: 2
-  turnIndicator: {fileID: 0}
+  SecondsToMove: 0.3
   stackPushingIsEnabled: 1
   directionConstraint: 0
-
+  characterConstraint: 0

@@ -20,6 +20,28 @@ public class PushableTurnBasedObject : TurnBasedCharacter
     private List<string> Fox_1_names = new List<string> { "Turn-Based Player", "Turn-Based Player #1" };
     private List<string> Fox_2_names = new List<string> { "Turn-Based Player (1)", "Turn-Based Player #2" };
 
+    //SFX Stuff
+    private AudioSource blockMove;
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        blockMove = GameObject.Find("Audio Manager").transform.Find("BlockMove").GetComponent<AudioSource>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        UpdateSpeed();
+    }
+
+    protected override void UpdateSpeed()
+    {
+        moveSpeed = 1f / SecondsToMove;
+    }
+
     /// <summary>
     /// This is really the only function that is special to the PTBO class that isn't in the TBC class already.
     ///  This is basically just a wrapper on TBC.OkayToMoveToNextTile().
@@ -90,6 +112,7 @@ public class PushableTurnBasedObject : TurnBasedCharacter
             undoManager.LogState(this.gameObject);
 
             targetMoveToPosition = targetPosition;
+            blockMove.Play();
             return true;
         }
         else
