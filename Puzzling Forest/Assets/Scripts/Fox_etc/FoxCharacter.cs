@@ -153,6 +153,10 @@ public class FoxCharacter : TurnBasedCharacter
                 animController.startTurningRight(curRotation);
                 break;
 
+            case "around":
+                animController.startTurningAround(curRotation);
+                break;
+
             default:
                 Debug.Log("Turn method was given a direction it doesn't recognize");
                 break;
