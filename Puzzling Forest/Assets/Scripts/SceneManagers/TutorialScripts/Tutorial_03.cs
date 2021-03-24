@@ -43,7 +43,7 @@ public class Tutorial_03 : TutorialScript
         FairyController = turnManager.GetCurrentFairy().GetComponent<IndicatorAnimationController>();
         //FairyController.resizeCanvas(850f, 375f);
 
-        yield return new WaitForSeconds(turnManager.Say("Sometimes you'll need to push multiple blocks in a line.", typingNoise) + 0.1f);
+        yield return new WaitForSeconds(turnManager.Say("Sometimes you'll need to push multiple blocks in a line.") + 0.1f);
         TipsCanvas.transform.Find("TipsMenu/Tip_01").gameObject.SetActive(true);
         if (!isTipsShown)
             ToggleTips();
@@ -52,6 +52,6 @@ public class Tutorial_03 : TutorialScript
 
     void OnTriggerEnter(Collider other)
     {
-        turnManager.Say("Great job!", typingNoise);
+        turnManager.Say("Great job!");
     }
 }

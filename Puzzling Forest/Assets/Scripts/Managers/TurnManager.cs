@@ -13,6 +13,7 @@ public class TurnManager : MonoBehaviour
     static private int numPlayers;
     private GameObject[] PlayerGroup;
     private FoxCharacter[] PlayerScripts;
+    private IndicatorAnimationController[] FairyScripts;
     private FoxCharacter curPlayer;
     private int curTurnIndex = 0;
 
@@ -31,12 +32,14 @@ public class TurnManager : MonoBehaviour
 
     //Control Stuff
     private bool isAnimating = false;
-    private bool keyJustPressed = false;
+    private bool keyJustPressed = true;
     private bool pauseLock = false;
     private bool cameraLock = false;
     private WaitForSeconds keyDelay = new WaitForSeconds(0.2f);
     private Coroutine keyDelayer = null;
-    
+
+    //For passing on Summer's last message
+    IndicatorAnimationController.SpeechController.KeepTalkingInfo contInfo;
 
     private void Awake()
     {
@@ -49,6 +52,7 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         GiveTurn();
+        keyJustPressed = false;
     }
 
     private void Update()
@@ -158,10 +162,13 @@ public class TurnManager : MonoBehaviour
         PlayerGroup = GameObject.FindGameObjectsWithTag("Player");
         numPlayers = PlayerGroup.Length;
         PlayerScripts = new FoxCharacter[numPlayers];
+        FairyScripts = new IndicatorAnimationController[numPlayers];
 
         for (int i = 0; i < numPlayers; i++)
         {
             PlayerScripts[i] = PlayerGroup[i].GetComponent<FoxCharacter>();
+            FairyScripts[i] = PlayerGroup[i].transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>();
+            FairyScripts[i].gameObject.SetActive(false);
         }
 
         curPlayer = PlayerScripts[curTurnIndex];
@@ -199,7 +206,8 @@ public class TurnManager : MonoBehaviour
     //Increments curIDX, disables the current fox's turn, enables the next valid fox's turn
     public void SwapFoxes()
     {
-        curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
+        contInfo = FairyScripts[curTurnIndex].GetSpeechInfo();
+        FairyScripts[curTurnIndex].ShutUp();
         TakeTurn();
 
         int loopIDX = 0;
@@ -218,6 +226,19 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    public void SwappedFoxes()
+    {
+        if (curTurnIndex > -1)
+        {
+            curPlayer = PlayerScripts[curTurnIndex];
+            curPlayer.ToggleIndicator(true);
+            curPlayer.CatchTheBall();
+            GiveTurn();
+
+            FairyScripts[curTurnIndex].KeepSaying(contInfo);
+        }
+    }
+
     public void StealControl()
     {
         curPlayer.SetFairyActive(false);
@@ -233,11 +254,11 @@ public class TurnManager : MonoBehaviour
         curPlayer.CatchTheBall();
     }
 
-    public float Say(string msg, AudioSource clip)
+    public float Say(string msg)
     {
         if (curPlayer)
         {
-            return curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg, clip);
+            return FairyScripts[curTurnIndex].Say(msg);
         }
         else
             return -1f;
@@ -247,19 +268,24 @@ public class TurnManager : MonoBehaviour
     {
         if (curPlayer)
         {
-            curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
+            FairyScripts[curTurnIndex].ShutUp();
         }
         return;
     }
 
-    public void SwappedFoxes()
+    public void ResetFairySpeechProgress()
     {
-        if (curTurnIndex > -1)
+        for (int i = 0; i < numPlayers; i++)
         {
-            curPlayer = PlayerScripts[curTurnIndex];
-            curPlayer.ToggleIndicator(true);
-            curPlayer.CatchTheBall();
-            GiveTurn();
+            FairyScripts[i].resetMyProgress();
+        }
+    }
+
+    public void IncrementFairySpeechProgress()
+    {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].incrementMyProgress();
         }
     }
 
