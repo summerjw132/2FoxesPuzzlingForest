@@ -5,8 +5,10 @@ using UnityEngine.UI;
 
 public class AudioManager : MonoBehaviour
 {
+    
     [SerializeField] private Slider MasterSlider = null;
     [SerializeField] private Slider MusicSlider = null;
+    
     [SerializeField] private Slider SFXSlider = null;
 
     private GameObject[] allAudioSources;
@@ -35,11 +37,14 @@ public class AudioManager : MonoBehaviour
         {
             allAudioSources[musicLength + i] = sfxSources[i];
         }
+        MasterSlider.maxValue = .75f;
+
     }
 
     void Start()
     {
         InitializeSliders();
+
     }
 
     public void ShowSources()
@@ -106,7 +111,7 @@ public class AudioManager : MonoBehaviour
             MusicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
         }
         else
-            MusicSlider.value = 1.0f;
+            MusicSlider.value = 0.4f;
 
         if (PlayerPrefs.HasKey("MasterVolume"))
         {
@@ -114,6 +119,6 @@ public class AudioManager : MonoBehaviour
             MasterSlider.value = PlayerPrefs.GetFloat("MasterVolume");
         }
         else
-            MasterSlider.value = 0.1f;
+            MasterSlider.value = 0.4f;
     }
 }
