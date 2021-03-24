@@ -34,6 +34,8 @@ public class TurnManager : MonoBehaviour
     private bool keyJustPressed = false;
     private bool pauseLock = false;
     private bool cameraLock = false;
+    private WaitForSeconds keyDelay = new WaitForSeconds(0.2f);
+    private Coroutine keyDelayer = null;
     
 
     private void Awake()
@@ -63,29 +65,38 @@ public class TurnManager : MonoBehaviour
                 {
                     //camera mode is toggled (this is done in a camera script)
                 }
-                if (curPlayer && !curPlayer.GetIsMoving() && !isAnimating && !cameraLock)
+                if (curPlayer && !curPlayer.GetIsMoving() && !isAnimating && !cameraLock && !keyJustPressed)
                     if (Input.GetKeyDown(KeyCode.E))
                     {
-                        SwapFoxes();
+                        PressKey();
+                        SwapFoxes(); 
                     }
                     else if (Input.GetKeyDown(KeyCode.U))
                     {
+                        PressKey();
                         undoManager.UndoTurn();
                     }
                     else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
                     {
-                        StartCoroutine(WADPressed(KeyCode.W));
+                        PressKey();
+                        WASDPressed(KeyCode.W);
                     }
                     else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
                     {
-                        StartCoroutine(WADPressed(KeyCode.A));
+                        PressKey();
+                        WASDPressed(KeyCode.A);
                     }
                     else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
                     {
-                        StartCoroutine(WADPressed(KeyCode.D));
+                        PressKey();
+                        WASDPressed(KeyCode.D);
+                    }
+                    else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+                    {
+                        PressKey();
+                        WASDPressed(KeyCode.S);
                     }
             }
-
             UpdateMoveCount();
         }
     }
@@ -94,33 +105,51 @@ public class TurnManager : MonoBehaviour
     /// Allowing the player to hold buttons was too fast and led to the animations restarting too soon.
     ///  This Coroutine just handles that to only re-read a held key every 0.25 seconds. (way shorter than any animation)
     /// </summary>
-    private IEnumerator WADPressed(KeyCode code)
+    private void WASDPressed(KeyCode code)
     {
-        if (keyJustPressed)
-            yield break;
+        
+        switch (code)
+        {
+            case KeyCode.W:
+                curPlayer.MoveForward();
+                break;
+
+            case KeyCode.A:
+                curPlayer.Turn("left");
+                break;
+
+            case KeyCode.D:
+                curPlayer.Turn("right");
+                break;
+
+            case KeyCode.S:
+                curPlayer.Turn("around");
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    public void PressKey()
+    {
+        if (keyDelayer != null)
+        {
+            StopCoroutine(keyDelayer);
+            keyJustPressed = true;
+            keyDelayer = StartCoroutine(KeyPressDelay());
+        }
         else
         {
             keyJustPressed = true;
-            switch (code)
-            {
-                case KeyCode.W:
-                    curPlayer.MoveForward();
-                    break;
-
-                case KeyCode.A:
-                    curPlayer.Turn("left");
-                    break;
-
-                case KeyCode.D:
-                    curPlayer.Turn("right");
-                    break;
-
-                default:
-                    break;
-            }
-            yield return new WaitForSeconds(0.25f);
-            keyJustPressed = false;
+            keyDelayer = StartCoroutine(KeyPressDelay());
         }
+    }
+
+    private IEnumerator KeyPressDelay()
+    {
+        yield return keyDelay;
+        keyJustPressed = false;
     }
 
     //Sets up the PlayerGroup by finding all game objects with the "Player" tag in the scene.
@@ -240,6 +269,11 @@ public class TurnManager : MonoBehaviour
         return numPlayers;
     }
 
+    public bool GetKeyJustPressed()
+    {
+        return keyJustPressed;
+    }
+
     public FoxCharacter GetPlayerScript(int idx)
     {
         return PlayerScripts[idx];
@@ -267,12 +301,12 @@ public class TurnManager : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
-        //Debug.Log("begin anim");
+        //Debug.Log("begin anim" + Time.time);
         isAnimating = true;
     }
     public void completeAnimation()
     {
-        //Debug.Log("complete anim");
+        //Debug.Log("complete anim" + Time.time);
         isAnimating = false;
     }
 
@@ -285,5 +319,4 @@ public class TurnManager : MonoBehaviour
     {
         cameraLock = !cameraLock;
     }
-
 }

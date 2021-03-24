@@ -16,6 +16,7 @@ public class FoxHole : MonoBehaviour
     //stuff to track and affect the game object on top of the foxhole
     private GameObject standingOnMe = null;
     private FoxCharacter playerTBC = null;
+    private TurnManager turnManager;
 
     public UnityEvent onStart, onEnd;
     /*
@@ -34,6 +35,7 @@ public class FoxHole : MonoBehaviour
     private void Awake()
     {
         warnController = GameObject.Find("UI Canvas").GetComponent<WarningMessagesController>();
+        turnManager = GameObject.FindGameObjectWithTag("TurnBasedSystem").GetComponent<TurnManager>();
     }
 
     // Update the vars tracking the GameObject that is on top of this foxhole
@@ -72,8 +74,9 @@ public class FoxHole : MonoBehaviour
             //There's a player standing on this foxhole
             if (standingOnMe.CompareTag("Player"))
             {
-                if (Input.GetKeyDown(KeyCode.F))
+                if (Input.GetKeyDown(KeyCode.F) && !turnManager.GetKeyJustPressed())
                 {
+                    turnManager.PressKey();
                     StartCoroutine(InitiateWarp());
                 }
             }
