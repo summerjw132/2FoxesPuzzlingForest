@@ -68,7 +68,6 @@ public class TurnManager : MonoBehaviour
                 if (curPlayer && !curPlayer.GetIsMoving() && !isAnimating && !cameraLock && !keyJustPressed)
                     if (Input.GetKeyDown(KeyCode.E))
                     {
-                        Debug.Log("E just pressed at " + Time.time);
                         PressKey();
                         SwapFoxes(); 
                     }
