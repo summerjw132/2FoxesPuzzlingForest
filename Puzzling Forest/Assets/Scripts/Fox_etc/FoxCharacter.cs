@@ -14,6 +14,7 @@ public class FoxCharacter : TurnBasedCharacter
 
     //animation stuff
     protected foxAnimationStateController animController;
+    private Animation indicatorAnim;
     //used as flags for knowing which type of animation to call each move
     private MoveOptions thisMove = MoveOptions.None;
     public bool isAnimating { get; private set; }
@@ -51,6 +52,14 @@ public class FoxCharacter : TurnBasedCharacter
         foxTransform = this.transform.Find("Fox");
 
         turnIndicator = this.transform.Find("turnIndicator").gameObject;
+        indicatorAnim = turnIndicator.GetComponent<Animation>();
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+
+        UpdateSpeed();
     }
 
     //This is called whenever a GUI event happens, it's used here to do the warp button above
@@ -70,17 +79,24 @@ public class FoxCharacter : TurnBasedCharacter
             setFontSize = false;
         }
         //displays the button and calls the warp if it's clicked
-        if (displayButton && !isMoving)
+        if (displayButton && !isMoving && isMyTurn)
         {
             curScreenPos = cam.WorldToScreenPoint(this.transform.position);
             butX = curScreenPos.x - butOffsetX;
             butY = (cam.pixelHeight - curScreenPos.y) - butOffsetY;
 
-            if (GUI.Button(new Rect(butX, butY, butWidth, butHeight), "Warp", guiStyle))
+            if (GUI.Button(new Rect(butX, butY, butWidth, butHeight), "Enter", guiStyle))
             {
                 curFoxholeScript.InitiateWarpCoroutine();
             }
         }
+    }
+
+    protected override void UpdateSpeed()
+    {
+        moveSpeed = 1f / SecondsToMove;
+
+        animController.UpdateDuration(SecondsToMove);
     }
 
     //TurnManager calls this with a W or UP input, tries to move the fox forwards
@@ -137,6 +153,10 @@ public class FoxCharacter : TurnBasedCharacter
                 animController.startTurningRight(curRotation);
                 break;
 
+            case "around":
+                animController.startTurningAround(curRotation);
+                break;
+
             default:
                 Debug.Log("Turn method was given a direction it doesn't recognize");
                 break;
@@ -170,6 +190,8 @@ public class FoxCharacter : TurnBasedCharacter
                     return true;
                 }
             }
+            if (wallHitColliders[0].CompareTag("ScriptTrigger"))
+                return true;
             return false;
         }
         else //no Colliders in target position
@@ -210,6 +232,12 @@ public class FoxCharacter : TurnBasedCharacter
     public void SetTurnActive(bool value)
     {
         isMyTurn = value;
+        if (curFoxholeScript) curFoxholeScript.ToggleEffect(value);
+        //turnIndicator.SetActive(value);
+    }
+
+    public void SetFairyActive(bool value)
+    {
         turnIndicator.SetActive(value);
     }
 
@@ -239,22 +267,57 @@ public class FoxCharacter : TurnBasedCharacter
     ///  I'm envisioning this as just handling the animation stuff, I will have a second function
     ///  in the TurnMaanager script for actually changing whose turn it is.
     /// </summary>
-    private void PassTheBall()
+    public void PassTheBall()
     {
-
+        beginAnimation();
+        animController.startPassTheBall();
     }
-
+    
+    public void TouchTheBall()
+    {
+        indicatorAnim.Play("RaiseBall");
+    }
+    public void CatchTheBall()
+    {
+        indicatorAnim.Play("DropBall");
+    }
+    //Fairies use this to determine, based on fox position, whether to put text box on left or right
+    public string LeftOrRight()
+    {
+        if (cam.WorldToScreenPoint(this.transform.position).x < Screen.width / 2f)
+            return "right";
+        else
+            return "left";
+    }
     //These are just wrapper functions to set/reset an "isAnimating" flag.
     // The animations themselves call these functions using animation events.
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
+        //Debug.LogFormat("Begin at {0}", Time.time);
         isAnimating = true;
         turnManager.beginAnimation();
     }
     public void completeAnimation()
     {
+        //Debug.LogFormat("End at {0}", Time.time);
         isAnimating = false;
         turnManager.completeAnimation();
+    }
+    public void cAnimation()
+    {
+        StartCoroutine(delay(0.5f));
+    }
+
+    IEnumerator delay(float time)
+    {
+        yield return new WaitForSeconds(time);
+        isAnimating = false;
+        turnManager.completeAnimation();
+    }
+
+    public void ToggleIndicator(bool b)
+    {
+        turnIndicator.SetActive(b);
     }
 }

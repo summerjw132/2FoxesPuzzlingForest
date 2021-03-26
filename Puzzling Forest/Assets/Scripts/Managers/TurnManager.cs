@@ -13,6 +13,7 @@ public class TurnManager : MonoBehaviour
     static private int numPlayers;
     private GameObject[] PlayerGroup;
     private FoxCharacter[] PlayerScripts;
+    private IndicatorAnimationController[] FairyScripts;
     private FoxCharacter curPlayer;
     private int curTurnIndex = 0;
 
@@ -31,17 +32,27 @@ public class TurnManager : MonoBehaviour
 
     //Control Stuff
     private bool isAnimating = false;
-    private bool keyJustPressed = false;
+    private bool keyJustPressed = true;
     private bool pauseLock = false;
     private bool cameraLock = false;
-    
+    private WaitForSeconds keyDelay = new WaitForSeconds(0.2f);
+    private Coroutine keyDelayer = null;
+
+    //For passing on Summer's last message
+    IndicatorAnimationController.SpeechController.KeepTalkingInfo contInfo;
 
     private void Awake()
     {
-        SetUpPlayerGroup();
-
         pauseManager = GameObject.Find("UI Canvas").GetComponent<PauseMenuManager>();
         undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
+
+        SetUpPlayerGroup();
+    }
+
+    private void Start()
+    {
+        GiveTurn();
+        keyJustPressed = false;
     }
 
     private void Update()
@@ -58,72 +69,92 @@ public class TurnManager : MonoBehaviour
                 {
                     //camera mode is toggled (this is done in a camera script)
                 }
-                if (curPlayer && !curPlayer.GetIsMoving() && !isAnimating && !cameraLock)
+                if (curPlayer && !curPlayer.GetIsMoving() && !isAnimating && !cameraLock && !keyJustPressed)
                     if (Input.GetKeyDown(KeyCode.E))
                     {
-                        SwapFoxes();
+                        PressKey();
+                        SwapFoxes(); 
                     }
                     else if (Input.GetKeyDown(KeyCode.U))
                     {
+                        PressKey();
                         undoManager.UndoTurn();
                     }
                     else if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
                     {
-                        StartCoroutine(WADPressed(KeyCode.W));
+                        PressKey();
+                        WASDPressed(KeyCode.W);
                     }
                     else if (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow))
                     {
-                        StartCoroutine(WADPressed(KeyCode.A));
+                        PressKey();
+                        WASDPressed(KeyCode.A);
                     }
                     else if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow))
                     {
-                        StartCoroutine(WADPressed(KeyCode.D));
+                        PressKey();
+                        WASDPressed(KeyCode.D);
+                    }
+                    else if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow))
+                    {
+                        PressKey();
+                        WASDPressed(KeyCode.S);
                     }
             }
-
             UpdateMoveCount();
         }
-    }
-
-    private void Start()
-    {
-        GiveTurn();
     }
 
     /// <summary>
     /// Allowing the player to hold buttons was too fast and led to the animations restarting too soon.
     ///  This Coroutine just handles that to only re-read a held key every 0.25 seconds. (way shorter than any animation)
     /// </summary>
-    private IEnumerator WADPressed(KeyCode code)
+    private void WASDPressed(KeyCode code)
     {
-        if (keyJustPressed)
-            yield break;
-        else
+        
+        switch (code)
         {
-            keyJustPressed = true;
-            switch (code)
-            {
-                case KeyCode.W:
-                    curPlayer.MoveForward();
-                    break;
+            case KeyCode.W:
+                curPlayer.MoveForward();
+                break;
 
-                case KeyCode.A:
-                    curPlayer.Turn("left");
-                    break;
+            case KeyCode.A:
+                curPlayer.Turn("left");
+                break;
 
-                case KeyCode.D:
-                    curPlayer.Turn("right");
-                    break;
+            case KeyCode.D:
+                curPlayer.Turn("right");
+                break;
 
-                default:
-                    break;
-            }
-            yield return new WaitForSeconds(0.25f);
-            keyJustPressed = false;
+            case KeyCode.S:
+                curPlayer.Turn("around");
+                break;
+
+            default:
+                break;
         }
     }
 
-    
+    public void PressKey()
+    {
+        if (keyDelayer != null)
+        {
+            StopCoroutine(keyDelayer);
+            keyJustPressed = true;
+            keyDelayer = StartCoroutine(KeyPressDelay());
+        }
+        else
+        {
+            keyJustPressed = true;
+            keyDelayer = StartCoroutine(KeyPressDelay());
+        }
+    }
+
+    private IEnumerator KeyPressDelay()
+    {
+        yield return keyDelay;
+        keyJustPressed = false;
+    }
 
     //Sets up the PlayerGroup by finding all game objects with the "Player" tag in the scene.
     private void SetUpPlayerGroup()
@@ -131,10 +162,13 @@ public class TurnManager : MonoBehaviour
         PlayerGroup = GameObject.FindGameObjectsWithTag("Player");
         numPlayers = PlayerGroup.Length;
         PlayerScripts = new FoxCharacter[numPlayers];
+        FairyScripts = new IndicatorAnimationController[numPlayers];
 
         for (int i = 0; i < numPlayers; i++)
         {
             PlayerScripts[i] = PlayerGroup[i].GetComponent<FoxCharacter>();
+            FairyScripts[i] = PlayerGroup[i].transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>();
+            FairyScripts[i].gameObject.SetActive(false);
         }
 
         curPlayer = PlayerScripts[curTurnIndex];
@@ -154,6 +188,7 @@ public class TurnManager : MonoBehaviour
         if (curPlayer && curPlayer.CheckIfTakingTurns())
         {
             curPlayer.SetTurnActive(true);
+            curPlayer.ToggleIndicator(true);
         }
     }
 
@@ -163,12 +198,16 @@ public class TurnManager : MonoBehaviour
         if (curPlayer && curPlayer.CheckTurn())
         {
             curPlayer.SetTurnActive(false);
+            curPlayer.PassTheBall();
+            curPlayer = null;
         }
     }
 
     //Increments curIDX, disables the current fox's turn, enables the next valid fox's turn
     public void SwapFoxes()
     {
+        contInfo = FairyScripts[curTurnIndex].GetSpeechInfo();
+        FairyScripts[curTurnIndex].ShutUp();
         TakeTurn();
 
         int loopIDX = 0;
@@ -180,19 +219,85 @@ public class TurnManager : MonoBehaviour
             if (loopIDX >= numPlayers)
             {
                 Debug.Log("No players found taking turns.");
+                curTurnIndex = -1;
                 curPlayer = null;
                 return;
             }
         }
+    }
 
+    public void SwappedFoxes()
+    {
+        if (curTurnIndex > -1)
+        {
+            curPlayer = PlayerScripts[curTurnIndex];
+            curPlayer.ToggleIndicator(true);
+            curPlayer.CatchTheBall();
+            GiveTurn();
+
+            FairyScripts[curTurnIndex].KeepSaying(contInfo);
+        }
+    }
+
+    public void StealControl()
+    {
+        curPlayer.SetFairyActive(false);
+        curPlayer.SetTurnActive(false);
+        curPlayer = null;
+    }
+
+    public void ResumeControl()
+    {
         curPlayer = PlayerScripts[curTurnIndex];
-        GiveTurn();
+        curPlayer.SetFairyActive(true);
+        curPlayer.SetTurnActive(true);
+        curPlayer.CatchTheBall();
+    }
+
+    public float Say(string msg)
+    {
+        if (curPlayer)
+        {
+            return FairyScripts[curTurnIndex].Say(msg);
+        }
+        else
+            return -1f;
+    }
+
+    public void ShutUp()
+    {
+        if (curPlayer)
+        {
+            FairyScripts[curTurnIndex].ShutUp();
+        }
+        return;
+    }
+
+    public void ResetFairySpeechProgress()
+    {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].resetMyProgress();
+        }
+    }
+
+    public void IncrementFairySpeechProgress()
+    {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].incrementMyProgress();
+        }
     }
 
     //Lil' helper getter setter stuff
     public int GetNumPlayers()
     {
         return numPlayers;
+    }
+
+    public bool GetKeyJustPressed()
+    {
+        return keyJustPressed;
     }
 
     public FoxCharacter GetPlayerScript(int idx)
@@ -203,6 +308,11 @@ public class TurnManager : MonoBehaviour
     public GameObject[] GetPlayers()
     {
         return PlayerGroup;
+    }
+
+    public GameObject GetCurrentFairy()
+    {
+        return curPlayer.transform.Find("turnIndicator").gameObject;
     }
 
     //Updates the UI text "total Moves"
@@ -217,12 +327,12 @@ public class TurnManager : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
-        //Debug.Log("begin anim");
+        //Debug.Log("begin anim" + Time.time);
         isAnimating = true;
     }
     public void completeAnimation()
     {
-        //Debug.Log("complete anim");
+        //Debug.Log("complete anim" + Time.time);
         isAnimating = false;
     }
 

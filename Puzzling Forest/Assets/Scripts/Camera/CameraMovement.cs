@@ -14,9 +14,10 @@ public class CameraMovement : MonoBehaviour
     public float TurnSpeed = .5f;
     public GameObject CameraPivot;
     public float Zoom;
+    private float STartZoom;
     public Camera cam;
     public float zoomSpeed = 20f;
-    public float Max = 70, Min = 40;
+    public float Max = 11, Min = 5;
     public float ZoomLerp = 10;
     public bool CamOn = false;
     public bool ImThere = false;
@@ -44,8 +45,9 @@ public class CameraMovement : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        STartZoom = cam.orthographicSize;
         CameraUI.SetActive(false);
-        Zoom = cam.fieldOfView;
+        Zoom = cam.orthographicSize;
         StartRotation = CameraPivot.transform.rotation;
         StartPosition = cam.transform.position;
         
@@ -57,8 +59,11 @@ public class CameraMovement : MonoBehaviour
         Step = Speed * Time.deltaTime;
         if (CamOn == false)
         {
-            CameraReset();
 
+            cam.orthographicSize = STartZoom;
+            Zoom = STartZoom;
+            CameraReset();
+           
             CameraUI.SetActive(false);
 
         }
@@ -77,7 +82,7 @@ public class CameraMovement : MonoBehaviour
             scrollData = Input.GetAxis("Mouse ScrollWheel");
             Zoom -= scrollData * zoomSpeed;
             Zoom = Mathf.Clamp(Zoom, Min, Max);
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, Zoom, Time.deltaTime * ZoomLerp);
+            cam.orthographicSize = Mathf.Lerp(cam.orthographicSize, Zoom, Time.deltaTime * ZoomLerp);
 
             //Control-locking stuff
             if (!pauseLock)
@@ -108,16 +113,17 @@ public class CameraMovement : MonoBehaviour
             
         }
 
-        
     }
+   
     void CameraReset()
     {
         if (cam.transform.position != StartPosition)
         {
+           
             cam.transform.position = Vector3.MoveTowards(cam.transform.position, StartPosition, Step);
         }
         CameraPivot.transform.rotation = Quaternion.RotateTowards(transform.rotation, StartRotation, Turning * Time.deltaTime);
-
+      
     }
 
     //Control-locking stuff (was just in update, I made it a method)
@@ -125,7 +131,7 @@ public class CameraMovement : MonoBehaviour
     {
         if (CamOn == true)
         {
-            cam.fieldOfView = 60;
+           
             CamOn = false;
 
 
