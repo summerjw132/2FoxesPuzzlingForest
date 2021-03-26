@@ -31,6 +31,7 @@ public class foxAnimationStateController : MonoBehaviour
     int pushSpeedHash;
     int turnSpeedHash;
     int warpSpeedHash;
+    int freezeStateHash;
     //Any durations given in float that may be needed
     private float walkDuration;
     private float pushDuration;
@@ -60,6 +61,7 @@ public class foxAnimationStateController : MonoBehaviour
         pushSpeedHash = Animator.StringToHash("push_speed");
         turnSpeedHash = Animator.StringToHash("turn_speed");
         warpSpeedHash = Animator.StringToHash("warp_speed");
+        freezeStateHash = Animator.StringToHash("freezeState");
 
         warpNoise = GameObject.Find("Audio Manager").transform.Find("Warp").GetComponent<AudioSource>();
     }
@@ -158,10 +160,14 @@ public class foxAnimationStateController : MonoBehaviour
     //Triggers are like booleans but automatically reset after the anim completes
     public void startWalking()
     {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Fox_Walk_InPlace"))
+            return;
         anim.SetTrigger(isWalkingHash);
     }
     public void startPushing()
     {
+        if (anim.GetCurrentAnimatorStateInfo(0).IsName("Fox_Somersault_InPlace"))
+            return;
         anim.SetTrigger(isPushingHash);
     }
     //Same trigger setup for the turning animation. Also makes use of the CoRoutine "TurnSmoothly"
@@ -211,6 +217,11 @@ public class foxAnimationStateController : MonoBehaviour
     public void startCatchTheBall()
     {
         anim.SetTrigger(isCatching);
+    }
+
+    public void FreezeState(bool val)
+    {
+        anim.SetBool(freezeStateHash, val);
     }
 
     public float GetWalkDuration()

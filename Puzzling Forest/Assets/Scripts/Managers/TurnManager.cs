@@ -35,8 +35,13 @@ public class TurnManager : MonoBehaviour
     private bool keyJustPressed = true;
     private bool pauseLock = false;
     private bool cameraLock = false;
-    private WaitForSeconds keyDelay = new WaitForSeconds(0.2f);
+    private const float keyDelayDuration = 0.2f;
+    private WaitForSeconds keyDelay = new WaitForSeconds(keyDelayDuration);
     private Coroutine keyDelayer = null;
+
+    //For continuous walking
+    private bool walkQueued = false;
+    private Coroutine walkQueuer = null;
 
     //For passing on Summer's last message
     IndicatorAnimationController.SpeechController.KeepTalkingInfo contInfo;
@@ -132,6 +137,62 @@ public class TurnManager : MonoBehaviour
 
             default:
                 break;
+        }
+    }
+
+    public void StartWalkingQueuer()
+    {
+        walkQueued = false;
+        if (walkQueuer != null)
+        {
+            Debug.Log("tried to start walkQueuer while one existed!");
+            StopCoroutine(walkQueuer);
+            walkQueuer = StartCoroutine(WalkQueuer());
+        }
+        else
+        {
+            walkQueuer = StartCoroutine(WalkQueuer());
+        }
+    }
+    public void StopWalkingQueuer()
+    {
+        if (walkQueuer == null)
+        {
+            return;
+        }
+
+        StopCoroutine(walkQueuer);
+        walkQueuer = null;
+
+        if (walkQueued)
+        {
+            curPlayer.TryKeepWalking();
+        }
+        else
+        {
+            curPlayer.StopWalking();
+        }
+    }
+    private IEnumerator WalkQueuer()
+    {
+        while (true)
+        {
+            if (Input.anyKey)
+            {
+                if (!pauseLock)
+                {
+                    if (curPlayer && !cameraLock && !keyJustPressed)
+                    {
+                        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                        {
+                            PressKey();
+                            walkQueued = true;
+                            StopWalkingQueuer();
+                        }
+                    }
+                }
+            }
+            yield return null;
         }
     }
 
@@ -327,12 +388,12 @@ public class TurnManager : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
-        //Debug.Log("begin anim" + Time.time);
+        Debug.Log("begin anim" + Time.time);
         isAnimating = true;
     }
     public void completeAnimation()
     {
-        //Debug.Log("complete anim" + Time.time);
+        Debug.Log("complete anim" + Time.time);
         isAnimating = false;
     }
 
@@ -344,5 +405,10 @@ public class TurnManager : MonoBehaviour
     public void ToggleCameraMode()
     {
         cameraLock = !cameraLock;
+    }
+
+    public float GetKeyDelayDuration()
+    {
+        return keyDelayDuration;
     }
 }

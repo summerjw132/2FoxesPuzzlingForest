@@ -70,12 +70,6 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         }
         else
         {
-            //this is only ever set to true in FoxCharacters, not TBPOs.
-            if (needToWrite)
-            {
-                needToWrite = false;
-                undoManager.WriteTurnState();
-            }
             isMoving = false;
         }
     }
