@@ -72,7 +72,7 @@ public class FoxHole : MonoBehaviour
         if (standingOnMe)
         {
             //There's a player standing on this foxhole
-            if (standingOnMe.CompareTag("Player"))
+            if (standingOnMe.CompareTag("Player") && playerTBC.isMyTurn)
             {
                 if (Input.GetKeyDown(KeyCode.F) && !turnManager.GetKeyJustPressed())
                 {
@@ -90,7 +90,7 @@ public class FoxHole : MonoBehaviour
         {
             if (destinationFoxhole.CheckIfUncovered())
             {
-                if (playerTBC.isMyTurn && !playerTBC.isAnimating && !playerTBC.GetIsMoving())
+                if (!playerTBC.isAnimating && !playerTBC.GetIsMoving())
                 {
                     playerTBC.WriteFoxholeToUndoStack();
                     yield return new WaitForSeconds(playerTBC.Dive());
