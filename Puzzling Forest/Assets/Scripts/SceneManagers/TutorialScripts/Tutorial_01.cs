@@ -140,7 +140,7 @@ public class Tutorial_01 : TutorialScript
         turnManager.ResumeControl();
         timer.SetPause(false);
 
-        turnManager.Say("A/D turns the fox.\nW moves forwards.", typingNoise);
+        turnManager.Say("A/D turns the fox.\nW moves forwards.");
 
         yield return new WaitForSeconds(3f);
         TipsCanvas.transform.Find("TipsMenu/Tip_01").gameObject.SetActive(true);
@@ -150,7 +150,7 @@ public class Tutorial_01 : TutorialScript
         alertNoise.Play();
 
         yield return new WaitForSeconds(3f);
-        turnManager.Say("Try pushing the block to complete the bridge.", typingNoise);
+        turnManager.Say("Try pushing the block to complete the bridge.");
         yield return new WaitForSeconds(3f);
         TipsCanvas.transform.Find("TipsMenu/Tip_03").gameObject.SetActive(true);
         if (isTipsShown)

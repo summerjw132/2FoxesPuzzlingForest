@@ -33,7 +33,7 @@ public class MsgTrigger : MonoBehaviour
         else
         {
             Debug.LogFormat("{0} just triggered the 'Great Job' trigger", other.name);
-            turnManager.Say(message, typingNoise);
+            turnManager.Say(message);
         }
     }
 }

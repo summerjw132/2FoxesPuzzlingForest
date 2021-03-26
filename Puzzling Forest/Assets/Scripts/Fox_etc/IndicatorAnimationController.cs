@@ -49,6 +49,7 @@ public class IndicatorAnimationController : MonoBehaviour
     private Coroutine typer = null;
     private SpeechController speechController;
     private Camera cam;
+    private AudioSource typingNoise;
 
     private readonly float typingSpeed = 0.05f;
     private readonly float puncSpeed = 0.5f;
@@ -69,6 +70,7 @@ public class IndicatorAnimationController : MonoBehaviour
             speechCanvas = this.gameObject.transform.GetChild(0).gameObject;
             fairyText = speechCanvas.transform.Find("Background/Text").GetComponent<Text>();
             cam = GameObject.Find("GameManager/CameraControls/Camera").GetComponent<Camera>();
+            typingNoise = this.transform.Find("typingNoise").GetComponent<AudioSource>();
 
             speechController = new SpeechController(this.gameObject, speechCanvas, fairyText, cam);
         }
@@ -160,6 +162,13 @@ public class IndicatorAnimationController : MonoBehaviour
         }
     }
 
+    /// Whole Swap fox animation order :
+    /// 1) TurnManager.Swap Foxes()         //Start the animation of Fox A
+    /// 2) OnBallRaised()                   //Fox A animation finish, start to drop Fox B's ball
+    /// 3) OnBallHit()                      //Fox B's ball dropped on Fox B's head, play get hit animation
+    /// 4) FoxCharacter.completeAnimation() //Whole animation is done, turn manager will unlock for input.
+    /// 
+
     private IEnumerator DriftAround()
     {
         while (true)
@@ -238,18 +247,39 @@ public class IndicatorAnimationController : MonoBehaviour
         driftSpeed = 15f;
     }
 
-    public float Say(string msg, AudioSource clip)
+    private void ResetSpeechProgress()
+    {
+        turnManager.ResetFairySpeechProgress();
+    }
+
+    public void resetMyProgress()
+    {
+        speechController.resetProgress();
+    }
+
+    private void IncrementSpeechProgress()
+    {
+        turnManager.IncrementFairySpeechProgress();
+    }
+
+    public void incrementMyProgress()
+    {
+        speechController.incrementProgress();
+    }
+
+    //public method for starting the process of Summer "saying" a message.
+    public float Say(string msg)
     {
         speechCanvas.SetActive(true);
         if (typer != null)
         {
             StopCoroutine(typer);
             typer = null;
+            ResetSpeechProgress();
         }   
-        AutoResizeCanvas(msg);
-        speechController.Clear();
+        SetUpCanvas(msg);
 
-        typer = StartCoroutine(Type(msg, clip));
+        typer = StartCoroutine(Type(msg));
         float duration = speechPauseDuration;
         for (int i = 0; i < msg.Length; i++)
         {
@@ -261,12 +291,13 @@ public class IndicatorAnimationController : MonoBehaviour
         return duration;
     }
 
-    private IEnumerator Type(string msg, AudioSource clip)
+    private IEnumerator Type(string msg)
     {
         for (int i = 0; i < msg.Length; i++)
         {
             speechController.AddChar(msg[i]);
-            clip.Play();
+            IncrementSpeechProgress();
+            typingNoise.Play();
             if (msg[i] == '.' || msg[i] == '!')
                 yield return puncPause;
             else
@@ -274,6 +305,63 @@ public class IndicatorAnimationController : MonoBehaviour
         }
 
         yield return speechPause;
+        ResetSpeechProgress();
+        speechController.Clear();
+        speechController.StopTalking();
+    }
+
+    //public method for the continuation of a message from Summer. Used
+    // if E is pressed while she's talking.
+    public float KeepSaying(SpeechController.KeepTalkingInfo info)
+    {
+        if (info.msg == "") //nothing to say.
+        {
+            Debug.Log("here");
+            return -1f;
+        }
+
+        speechCanvas.SetActive(true);
+        if (typer != null)
+        {
+            StopCoroutine(typer);
+            typer = null;
+        }
+        SetUpCanvas(info.msg);
+
+        for (int i = 0; i < info.progress; i++)
+        {
+            speechController.AddChar(info.msg[i]);
+        }
+
+        typer = StartCoroutine(TypeFromI(info.msg, info.progress));
+        float duration = speechPauseDuration;
+        for (int i = info.progress; i < info.msg.Length; i++)
+        {
+            if (info.msg[i] == '.' || info.msg[i] == '!')
+                duration += puncSpeed;
+            else
+                duration += typingSpeed;
+        }
+        return duration;
+    }
+
+    private IEnumerator TypeFromI(string msg, int startDex)
+    {
+        yield return new WaitForSeconds(0.5f);
+        for (int i = startDex; i < msg.Length; i++)
+        {
+            speechController.AddChar(msg[i]);
+            IncrementSpeechProgress();
+            typingNoise.Play();
+            if (msg[i] == '.' || msg[i] == '!')
+                yield return puncPause;
+            else
+                yield return typingPause;
+        }
+
+        yield return speechPause;
+        ResetSpeechProgress();
+        speechController.Clear();
         speechController.StopTalking();
     }
 
@@ -292,9 +380,14 @@ public class IndicatorAnimationController : MonoBehaviour
         speechController.resizeCanvas(width, height);
     }
 
-    public void AutoResizeCanvas(string msg)
+    public void SetUpCanvas(string msg)
     {
-        speechController.autoResizeCanvas(msg);
+        speechController.SetUpCanvas(msg);
+    }
+
+    public SpeechController.KeepTalkingInfo GetSpeechInfo()
+    {
+        return speechController.GetInfo();
     }
 
     public class SpeechController
@@ -314,6 +407,8 @@ public class IndicatorAnimationController : MonoBehaviour
         private static string[] goodJobbers = new string[4] { "great job!", "good job!", "well done!", "nice job!" };
         private bool useShort = false;
 
+        private KeepTalkingInfo myInfo;
+
         public SpeechController(GameObject _fairy, GameObject _canvas, Text _text, Camera _cam)
         {
             canvas = _canvas;
@@ -323,12 +418,27 @@ public class IndicatorAnimationController : MonoBehaviour
 
             background = canvas.transform.Find("Background").GetComponent<RectTransform>();
             defaultColor = text.color;
+
+            myInfo = new KeepTalkingInfo("", 0);
         }
 
         public void Clear()
         {
             text.text = "";
             text.color = yellow;
+
+            myInfo.msg = "";
+            myInfo.progress = 0;
+        }
+
+        public void resetProgress()
+        {
+            myInfo.progress = 0;
+        }
+
+        public void incrementProgress()
+        {
+            myInfo.progress++;
         }
 
         public void AddChar(char nextChar)
@@ -347,8 +457,10 @@ public class IndicatorAnimationController : MonoBehaviour
             UpdatePosition();
         }
 
-        public void autoResizeCanvas(string msg)
+        public void SetUpCanvas(string msg)
         {
+            myInfo.msg = msg;
+
             //Height = fontSize * #rows + 6;
             useShort = false;
             for (int i = 0; i < goodJobbers.Length; i++)
@@ -366,6 +478,8 @@ public class IndicatorAnimationController : MonoBehaviour
             text.text = msg;
             Canvas.ForceUpdateCanvases();
             background.sizeDelta = new Vector2(background.rect.width, (text.cachedTextGenerator.lineCount * text.fontSize) + 6);
+            text.text = "";
+            text.color = yellow;
         }
 
         public void UpdatePosition()
@@ -388,14 +502,34 @@ public class IndicatorAnimationController : MonoBehaviour
             background.position = new Vector3(newX, newY, -1f);
 
         }
+
+        public struct KeepTalkingInfo
+        {
+            public string msg;
+            public int progress;
+
+            public KeepTalkingInfo(string _msg, int _progress)
+            {
+                msg = _msg;
+                progress = _progress;
+            }
+
+            public override string ToString()
+            {
+                string retString = "msg: " + msg;
+                retString += "\nprogress: " + progress;
+
+                return retString;
+            }
+        }
+
+        public KeepTalkingInfo GetInfo()
+        {
+            return myInfo;
+        }
     }
 }
        
-/// Whole Swap fox animation order :
-/// 1) TurnManager.Swap Foxes()         //Start the animation of Fox A
-/// 2) OnBallRaised()                   //Fox A animation finish, start to drop Fox B's ball
-/// 3) OnBallHit()                      //Fox B's ball dropped on Fox B's head, play get hit animation
-/// 4) FoxCharacter.completeAnimation() //Whole animation is done, turn manager will unlock for input.
-/// 
+
 
 

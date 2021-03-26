@@ -71,7 +71,7 @@ public class Tutorial_05 : TutorialScript
         turnManager.ResumeControl();
         timer.SetPause(false);
 
-        yield return new WaitForSeconds(turnManager.Say("Press 'E' to change which fox we're helping.", typingNoise) - 3f);
+        yield return new WaitForSeconds(turnManager.Say("Press 'E' to change which fox we're helping.") - 3f);
 
         TipsCanvas.transform.Find("TipsMenu/Tip_01").gameObject.SetActive(true);
         TipsCanvas.transform.Find("TipsMenu/Tip_02").gameObject.SetActive(true);
@@ -85,11 +85,11 @@ public class Tutorial_05 : TutorialScript
         if (!isFirstBlockDone)
         {
             isFirstBlockDone = true;
-            turnManager.Say("One down, one to go.", typingNoise);
+            turnManager.Say("One down, one to go.");
         }
         else
         {
-            turnManager.Say("Great job.", typingNoise);
+            turnManager.Say("Great job!");
         }
     }
 }
