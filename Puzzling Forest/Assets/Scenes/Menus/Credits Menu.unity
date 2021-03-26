@@ -1012,6 +1012,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536694266}
   m_CullTransparentMesh: 0
+--- !u!1 &659448740
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 659448741}
+  - component: {fileID: 659448743}
+  - component: {fileID: 659448742}
+  m_Layer: 5
+  m_Name: Image
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &659448741
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659448740}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 816496321}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -1.2, y: -995}
+  m_SizeDelta: {x: 410.14026, y: 1251.8547}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &659448742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659448740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 47393a70d58cad74d94c576bafbaff52, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &659448743
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 659448740}
+  m_CullTransparentMesh: 0
 --- !u!1 &699071460
 GameObject:
   m_ObjectHideFlags: 0
@@ -1342,7 +1417,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1669850927}
+  - {fileID: 659448741}
   m_Father: {fileID: 1726823462}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2151,7 +2226,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 627e62599456db64dadf560675388b08, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 58b14bc5df072db4484ceb9245be822f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2218,106 +2293,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextLevel: level
---- !u!1 &1669850926
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1669850927}
-  - component: {fileID: 1669850929}
-  - component: {fileID: 1669850928}
-  m_Layer: 5
-  m_Name: Text
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1669850927
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1669850926}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 816496321}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8.6351, y: -1051.1}
-  m_SizeDelta: {x: 315.0197, y: 1322.7483}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1669850928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1669850926}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.1957547, g: 0.29879194, b: 0.5, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 40
-    m_Alignment: 1
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: "Producers/Leads: \r\nJohn Summerville \u2013Project Lead/ Producer/Game
-    Designer/ Artist/Developer \r\nSarah Woizeschie \u2013 Asset Provider/URP Specialist/QA
-    Test Planner \r\nKi Hawthorne \u2013 Lead Level Designer/Lead QA Organizer \r\nGarrison
-    Lee \u2013 Lead Gameplay Developer/Level Designer/Animator \r\nNadine L\u2019Heureux
-    \u2013 Business Marketer/Lead Audio Engineer \r\n \r\nDevelopers: \r\nJeremy
-    Pineda \u2013 Game UI Developer/Performance Analyst \r\nJustin Brown \u2013 Game
-    Developer \r\nKevin Paul Smith \u2013 Credits UI Developer\nPranjal Lokhande
-    \u2013 Extern Game Developer \r\nAndy Lam \u2013 Guest Game Developer \r\nTJay
-    Cargle \u2013 Guest Game Developer/Technical Consultant/Extensive Tester/Audio
-    \r\n\n \r\nLevel Designers: \r\nNathaniel Pace \u2013 Level Designer \r\nLeon
-    Lu \u2013 Level Designer/Imposter \r\nRobert Gitau \u2013 Level Designer \r\nJustin
-    Kamm \u2013 Level Designer \r\nTyler Diaz \u2013 Level Designer \r\nWyatt Martilik
-    \u2013 Level Designer \r\nChristian Soares \u2013 Level Design \r\nLisa D Lee
-    \u2013 Level Designer \r\n \r\nAudio \r\nNadine L\u2019Heureux \u2013 Audio Engineer
-    \r\nLee Neering \u2013 Audio Engineer \r\n \r\nArtists: \r\nBryson Barthol \u2013
-    UI Artist \r\nWenhao Liu \u2013 UI Artist \r\n\n \r\nQA: \r\nChad Kiernan \r\u2013
-    QA Specialist\nJason Lance \u2013 QA Tester \n \r\nExternal Assets \r\n \r\nSpecial
-    Thanks: \r\nTy Wagner \u2013 Creative Contributor/Initial Conceptualization \r\nKrystle
-    Kettle \u2013 Dedicated Game Tester \r\nRoy Papp \u2013 Game Design Instructor/Design
-    Consultant/Level Designer \r\nSowmya Ragi \u2013 Production Consultant \r\nJake
-    Wade \u2013 Extensive Tester \r\nFrancois \u2013 UI Developer \r\n \r\nIn Collaboration
-    With: \r\nZygobot Studios \r\n \r\n"
---- !u!222 &1669850929
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1669850926}
-  m_CullTransparentMesh: 0
 --- !u!1 &1684086019
 GameObject:
   m_ObjectHideFlags: 0
