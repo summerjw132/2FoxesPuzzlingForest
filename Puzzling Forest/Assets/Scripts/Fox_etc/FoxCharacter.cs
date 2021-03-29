@@ -79,7 +79,7 @@ public class FoxCharacter : TurnBasedCharacter
             setFontSize = false;
         }
         //displays the button and calls the warp if it's clicked
-        if (displayButton && !isMoving)
+        if (displayButton && !isMoving && isMyTurn)
         {
             curScreenPos = cam.WorldToScreenPoint(this.transform.position);
             butX = curScreenPos.x - butOffsetX;
@@ -153,6 +153,10 @@ public class FoxCharacter : TurnBasedCharacter
                 animController.startTurningRight(curRotation);
                 break;
 
+            case "around":
+                animController.startTurningAround(curRotation);
+                break;
+
             default:
                 Debug.Log("Turn method was given a direction it doesn't recognize");
                 break;
@@ -186,6 +190,8 @@ public class FoxCharacter : TurnBasedCharacter
                     return true;
                 }
             }
+            if (wallHitColliders[0].CompareTag("ScriptTrigger"))
+                return true;
             return false;
         }
         else //no Colliders in target position
@@ -226,7 +232,13 @@ public class FoxCharacter : TurnBasedCharacter
     public void SetTurnActive(bool value)
     {
         isMyTurn = value;
+        if (curFoxholeScript) curFoxholeScript.ToggleEffect(value);
         //turnIndicator.SetActive(value);
+    }
+
+    public void SetFairyActive(bool value)
+    {
+        turnIndicator.SetActive(value);
     }
 
     public bool CheckIfTakingTurns()
@@ -268,6 +280,14 @@ public class FoxCharacter : TurnBasedCharacter
     public void CatchTheBall()
     {
         indicatorAnim.Play("DropBall");
+    }
+    //Fairies use this to determine, based on fox position, whether to put text box on left or right
+    public string LeftOrRight()
+    {
+        if (cam.WorldToScreenPoint(this.transform.position).x < Screen.width / 2f)
+            return "right";
+        else
+            return "left";
     }
     //These are just wrapper functions to set/reset an "isAnimating" flag.
     // The animations themselves call these functions using animation events.

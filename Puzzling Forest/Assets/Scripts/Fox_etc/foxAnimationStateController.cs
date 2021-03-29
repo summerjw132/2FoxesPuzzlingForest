@@ -22,6 +22,8 @@ public class foxAnimationStateController : MonoBehaviour
     int isPushingHash;
     int isTurningLeft;
     int isTurningRight;
+    int isTurningAroundLeft;
+    int isTurningAroundRight;
     int isWarpingHash;
     int isPassing;
     int isCatching;
@@ -36,6 +38,9 @@ public class foxAnimationStateController : MonoBehaviour
     private float turnDurationRight;
     private float warpAnimDuration;
 
+    //sfx stuff
+    private AudioSource warpNoise;
+
     void Awake()
     {
         //initialize variables
@@ -46,6 +51,8 @@ public class foxAnimationStateController : MonoBehaviour
         isPushingHash = Animator.StringToHash("isPushing");
         isTurningLeft = Animator.StringToHash("isTurningLeft");
         isTurningRight = Animator.StringToHash("isTurningRight");
+        isTurningAroundLeft = Animator.StringToHash("isTurningAroundLeft");
+        isTurningAroundRight = Animator.StringToHash("isTurningAroundRight");
         isWarpingHash = Animator.StringToHash("isWarping");
         isPassing = Animator.StringToHash("Pass");
         isCatching = Animator.StringToHash("Catch");
@@ -53,6 +60,8 @@ public class foxAnimationStateController : MonoBehaviour
         pushSpeedHash = Animator.StringToHash("push_speed");
         turnSpeedHash = Animator.StringToHash("turn_speed");
         warpSpeedHash = Animator.StringToHash("warp_speed");
+
+        warpNoise = GameObject.Find("Audio Manager").transform.Find("Warp").GetComponent<AudioSource>();
     }
 
     void Start()
@@ -160,19 +169,37 @@ public class foxAnimationStateController : MonoBehaviour
     public void startTurningLeft(Quaternion curRotation)
     {
         targetRotation = curRotation * Quaternion.AngleAxis(-90, Vector3.up);
-        StartCoroutine(TurnSmoothly(curRotation, targetRotation, turnDurationLeft));
         anim.SetTrigger(isTurningLeft);
+        StartCoroutine(TurnSmoothly(curRotation, targetRotation, turnDurationLeft));
+        
     }
     public void startTurningRight(Quaternion curRotation)
     {
         targetRotation = curRotation * Quaternion.AngleAxis(90, Vector3.up);
-        StartCoroutine(TurnSmoothly(curRotation, targetRotation, turnDurationRight));
         anim.SetTrigger(isTurningRight);
+        StartCoroutine(TurnSmoothly(curRotation, targetRotation, turnDurationRight));
+    }
+    public void startTurningAround(Quaternion curRotation)
+    {
+        float randChoice = Random.value;
+        if (randChoice >= 0.55)
+        {
+            targetRotation = curRotation * Quaternion.AngleAxis(180, Vector3.up);
+            anim.SetTrigger(isTurningAroundLeft);
+            StartCoroutine(TurnSmoothly(curRotation, targetRotation, turnDurationLeft * 2));
+        }
+        else
+        {
+            targetRotation = curRotation * Quaternion.AngleAxis(-180, Vector3.up);
+            anim.SetTrigger(isTurningAroundRight);
+            StartCoroutine(TurnSmoothly(curRotation, targetRotation, turnDurationRight * 2));
+        }
     }
     //The foxhole warp animation. Returns the duration of the animation for the coroutine in foxhole
     public float diveIntoFoxhole()
     {
         anim.SetTrigger(isWarpingHash);
+        warpNoise.PlayDelayed(warpAnimDuration / 2f);
         return warpAnimDuration;
     }
 

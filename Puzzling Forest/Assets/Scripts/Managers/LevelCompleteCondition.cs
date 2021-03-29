@@ -38,7 +38,7 @@ public class LevelCompleteCondition : MonoBehaviour
         tm.isLevelComplete = false;
 
         turnManager.isLevelComplete = false;
-        GetPlayersFromTurnManager();
+        StartCoroutine(DelayGetPlayers());
 
         //Save/Load stuff
         curScene = SceneManager.GetActiveScene();
@@ -51,6 +51,13 @@ public class LevelCompleteCondition : MonoBehaviour
         {
             Debug.Log("levelManager not found. Expected if you loaded a scene/level directly");
         }
+    }
+
+    private IEnumerator DelayGetPlayers()
+    {
+        yield return new WaitForSeconds(0.05f);
+
+        GetPlayersFromTurnManager();
     }
 
     private void GetPlayersFromTurnManager()
@@ -117,6 +124,6 @@ public class LevelCompleteCondition : MonoBehaviour
         tm.isLevelComplete = true;
         turnManager.isLevelComplete = true;
         totalMoveCount.text = turnManager.totalMoveCount.ToString();
-        totalTime.text = tm.totaltime.ToString();
+        totalTime.text = tm.GetTime();
     }
 }
