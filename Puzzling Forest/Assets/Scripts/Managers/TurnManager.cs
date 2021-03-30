@@ -69,7 +69,7 @@ public class TurnManager : MonoBehaviour
                 {
                     //camera mode is toggled (this is done in a camera script)
                 }
-                if (curPlayer && !curPlayer.GetIsMoving() && !isAnimating && !cameraLock && !keyJustPressed)
+                if (curPlayer && !curPlayer.GetIsMoving() && curPlayer.CheckIfTakingTurns() && !isAnimating && !cameraLock && !keyJustPressed)
                     if (Input.GetKeyDown(KeyCode.E))
                     {
                         PressKey();
@@ -327,12 +327,12 @@ public class TurnManager : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
-        //Debug.Log("begin anim" + Time.time);
+        //Debug.Log("begin anim at: " + Time.time);
         isAnimating = true;
     }
     public void completeAnimation()
     {
-        //Debug.Log("complete anim" + Time.time);
+        //Debug.Log("complete anim at: " + Time.time);
         isAnimating = false;
     }
 
