@@ -94,6 +94,12 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 warnController.Warn(crushFoxWarnMessage);
                 return false;
             }
+            //We also shouldn't count the obstacles or house objects as valid floors.
+            else if (potentialFloorTag == "Obstacle" || potentialFloorTag == "House")
+            {
+                return false;
+            }
+
             //Second parameter is because Foxes don't count houses as walls but rocks do.
             if (NoWallIsPresent(nextTilePosition))
             {
@@ -138,10 +144,14 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         //There's no floor, foxes cannot step off, but walls should go off and proceed to fall.
         else if (!this.gameObject.tag.Equals("Player"))
         {
-            //This tag is set by a fxn that checks for the next floor to see what it lands on
+            //This tag is set by CrushedObjectCheck() to see what it lands on
             if (potentialFloorTag == "Player")
             {
                 warnController.Warn(crushFoxWarnMessage);
+                return false;
+            }
+            else if (potentialFloorTag == "Obstacle" || potentialFloorTag == "House")
+            {
                 return false;
             }
             else
