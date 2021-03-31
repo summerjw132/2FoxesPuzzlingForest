@@ -8,14 +8,13 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Water
-  m_Shader: {fileID: 4800000, guid: 933532a4fcc9baf4fa0491de14d08ed7, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 5b190261bb88888408637af2d35c41a9, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses:
   - SHADOWCASTER
   m_SavedProperties:
@@ -61,11 +60,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_A54712FD_Texture_1:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SampleTexture2D_FB8A5544_Texture_1:
+        m_Texture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Vector1_1CE4C669: 3.05
+    - Vector1_3A1F162: 5
+    - Vector1_C03881CF: 1
+    - Vector1_C7B506DC: 0.1
+    - Vector1_E8C5C5C3: 0.15
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -76,6 +88,7 @@ Material:
     - _EnvironmentReflections: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.39
+    - _GlossinessSource: 0
     - _GlossyReflections: 1
     - _Metallic: 0.22
     - _Mode: 2
@@ -83,8 +96,11 @@ Material:
     - _Parallax: 0.02
     - _QueueOffset: 0
     - _ReceiveShadows: 1
+    - _Shininess: 0
     - _Smoothness: 0.39
+    - _SmoothnessSource: 0
     - _SmoothnessTextureChannel: 0
+    - _SpecSource: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 5
     - _Surface: 1
@@ -92,6 +108,8 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 0
     m_Colors:
+    - Color_489D5188: {r: 0.03882155, g: 0.9982684, b: 1.059274, a: 0.4627451}
+    - Color_CA3B0E78: {r: 0.08032215, g: 0.7882353, b: 0.8962264, a: 0}
     - _BaseColor: {r: 0.14684944, g: 0.4143316, b: 0.5660378, a: 0.8666667}
     - _Color: {r: 0.14684944, g: 0.4143316, b: 0.5660378, a: 0.8666667}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
