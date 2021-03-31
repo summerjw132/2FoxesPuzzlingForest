@@ -264,7 +264,6 @@ public class FairyController : MonoBehaviour
     {
         if (info.msg == "") //nothing to say.
         {
-            Debug.Log("here");
             return -1f;
         }
 
