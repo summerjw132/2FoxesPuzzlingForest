@@ -8,7 +8,6 @@ public class FoxCharacter : TurnBasedCharacter
     private GameObject turnIndicator = null;
 
     //turn-system stuff
-    protected TurnManager turnManager;
     public bool isMyTurn { get; private set; } = false;
     private bool isTakingTurns = true;
 
@@ -40,9 +39,6 @@ public class FoxCharacter : TurnBasedCharacter
     protected override void Awake()
     {
         base.Awake();
-
-        //Find the turn manager in game; use it to
-        turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
 
         //Get the camera
         cam = GameObject.Find("GameManager").GetComponentInChildren<Camera>();

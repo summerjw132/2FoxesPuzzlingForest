@@ -100,7 +100,8 @@ public class FoxHole : MonoBehaviour
             }
             else
             {
-                warnController.Warn(coveredWarning);
+                //warnController.Warn(coveredWarning);
+                turnManager.Say(coveredWarning);
             }
         }
     }
@@ -133,7 +134,8 @@ public class FoxHole : MonoBehaviour
         }
         else
         {
-            warnController.Warn(coveredWarning);
+            //warnController.Warn(coveredWarning);
+            turnManager.Say(coveredWarning);
         }
     }
 
