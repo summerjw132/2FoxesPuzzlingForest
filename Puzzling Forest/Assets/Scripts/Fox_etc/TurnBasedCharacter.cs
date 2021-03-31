@@ -14,6 +14,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     [SerializeField]
     protected CharacterType characterType = CharacterType.Player;
 
+    
+
     //Used for determining when to move and where to
     [Tooltip("How many seconds should it take a fox to move to another tile? Affects walk and push speeds, was 0.5")]
     [SerializeField] protected float SecondsToMove = 0.5f;
@@ -30,7 +32,9 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected int maxDepth = 20; //How far to check a cliff-fall to see if it will hit anything.
 
     //UI Warn Message Stuff
-    protected WarningMessagesController warnController = null;
+    protected TurnManager turnManager;
+    //NOTE: The WarningMessagesController is probably deprecated, Summer now says the messages. Leaving this for now though.
+    //protected WarningMessagesController warnController = null;
     //In the string below, the warning message is cut off immediately after "Twelve" That's your max length
     //                                            "One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen";
     private static string vertStackWarnMessage  = "One of the blocks you tried to move is weighed down!";
@@ -43,8 +47,11 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     //  in start and whatever is needed better be in Awake to be sure it's ready.
     protected virtual void Awake()
     {
+        //Find the turn manager in game
+        turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
+
         //a reference to the WarningController script that handles UI warning messages
-        warnController = GameObject.Find("UI Canvas").GetComponent<WarningMessagesController>();
+        //warnController = GameObject.Find("UI Canvas").GetComponent<WarningMessagesController>(); //probably deprecated.
 
         //a reference to the UndoManager script that handles undoing stuff (every movable object needs this)
         undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
@@ -91,7 +98,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             //Check to make sure we're not walking onto a Fox! That's bad for their backs!
             if (potentialFloorTag == "Player")
             {
-                warnController.Warn(crushFoxWarnMessage);
+                //warnController.Warn(crushFoxWarnMessage);
+                turnManager.Say(crushFoxWarnMessage);
                 return false;
             }
             //We also shouldn't count the obstacles or house objects as valid floors.
@@ -122,7 +130,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 {
                     if (weighted)
                     {
-                        warnController.Warn(vertStackWarnMessage);
+                        //warnController.Warn(vertStackWarnMessage);
+                        turnManager.Say(vertStackWarnMessage);
                         return false;
                     }
                     //Players can alwasy push pushables, pushables can only push others if the other has stack pushing enabled
@@ -147,7 +156,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
             //This tag is set by CrushedObjectCheck() to see what it lands on
             if (potentialFloorTag == "Player")
             {
-                warnController.Warn(crushFoxWarnMessage);
+                //warnController.Warn(crushFoxWarnMessage);
+                turnManager.Say(crushFoxWarnMessage);
                 return false;
             }
             else if (potentialFloorTag == "Obstacle" || potentialFloorTag == "House")
