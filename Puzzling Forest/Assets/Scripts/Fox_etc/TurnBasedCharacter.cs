@@ -14,7 +14,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     [SerializeField]
     protected CharacterType characterType = CharacterType.Player;
 
-    protected TurnManager turnManager;
+    
 
     //Used for determining when to move and where to
     [Tooltip("How many seconds should it take a fox to move to another tile? Affects walk and push speeds, was 0.5")]
@@ -32,7 +32,9 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected int maxDepth = 20; //How far to check a cliff-fall to see if it will hit anything.
 
     //UI Warn Message Stuff
-    protected WarningMessagesController warnController = null;
+    protected TurnManager turnManager;
+    //NOTE: The WarningMessagesController is probably deprecated, Summer now says the messages. Leaving this for now though.
+    //protected WarningMessagesController warnController = null;
     //In the string below, the warning message is cut off immediately after "Twelve" That's your max length
     //                                            "One Two Three Four Five Six Seven Eight Nine Ten Eleven Twelve Thirteen Fourteen";
     private static string vertStackWarnMessage  = "One of the blocks you tried to move is weighed down!";
@@ -49,7 +51,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
         turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
 
         //a reference to the WarningController script that handles UI warning messages
-        warnController = GameObject.Find("UI Canvas").GetComponent<WarningMessagesController>();
+        //warnController = GameObject.Find("UI Canvas").GetComponent<WarningMessagesController>(); //probably deprecated.
 
         //a reference to the UndoManager script that handles undoing stuff (every movable object needs this)
         undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
