@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Please See TutorialScript.cs for notes on these bad boys.
+/// </summary>
 public class Tutorial_02 : TutorialScript
 {
     private Vector3 newLeftSide = new Vector3(1.42f, 1.29f, -4.56f);
@@ -49,10 +52,10 @@ public class Tutorial_02 : TutorialScript
     private IEnumerator Begin()
     {
         yield return new WaitForSeconds(0.1f);
-        FairyController = turnManager.GetCurrentFairy().GetComponent<IndicatorAnimationController>();
+        FairyController = turnManager.GetCurrentFairy().GetComponent<TutFairyController>();
         //FairyController.ResizeCanvas(850f, 375f);
 
-        yield return new WaitForSeconds(turnManager.Say("Sometimes you have to carefully maneuver blocks.", typingNoise) + 0.1f);
+        yield return new WaitForSeconds(turnManager.Say("Sometimes you have to carefully maneuver blocks.") + 0.1f);
 		StartCoroutine(ShowWhere());
     }
 
@@ -60,7 +63,7 @@ public class Tutorial_02 : TutorialScript
     {
         ShowArrow(arrowOpenSpace, true);
 
-        yield return new WaitForSeconds(turnManager.Say("Move the block here first in order to turn it around!", typingNoise) - 3f);
+        yield return new WaitForSeconds(turnManager.Say("Move the block here first in order to turn it around!") - 3f);
 
         TipsCanvas.transform.Find("TipsMenu/Tip_01").gameObject.SetActive(true);
         if (!isTipsShown)
@@ -71,12 +74,12 @@ public class Tutorial_02 : TutorialScript
     private IEnumerator GoodJob()
     {
         ShowArrow(arrowOpenSpace, false);
-        yield return new WaitForSeconds(turnManager.Say("Great! Now use the block to complete the bridge.", typingNoise) + 0.1f);
+        yield return new WaitForSeconds(turnManager.Say("Great! Now use the block to complete the bridge.") + 0.1f);
     }
 
     private IEnumerator GoodJob_2()
     {
-        yield return new WaitForSeconds(turnManager.Say("Well done!", typingNoise) + 0.1f);
+        yield return new WaitForSeconds(turnManager.Say("Well done!") + 0.1f);
     }
 
     private void OnTriggerEnter(Collider other)

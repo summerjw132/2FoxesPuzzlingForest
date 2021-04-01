@@ -12388,10 +12388,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1499049379}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a12877e7c4350324bb7e9a1a3670599e, type: 3}
+  m_Script: {fileID: 11500000, guid: 340bf998d490c4344a03894b4128c4cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isTutFairy: 1
 --- !u!111 &1499049382
 Animation:
   m_ObjectHideFlags: 0
@@ -12757,22 +12756,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 5333090097961905088, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -2.4499977
-      objectReference: {fileID: 0}
-    - target: {fileID: 5333090097961905088, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -5.100004
-      objectReference: {fileID: 0}
-    - target: {fileID: 5801570293402833546, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_Text
-      value: Sometimes moving a block where you want it to go isn't straight-forward
-      objectReference: {fileID: 0}
-    - target: {fileID: 6590236108565765747, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7045160852408786490, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
       propertyPath: m_Name
       value: Turn-Based Player
@@ -12820,34 +12803,6 @@ PrefabInstance:
     - target: {fileID: 7045160852408786494, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7045160852408786495, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: maxMovementRange
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 7396253061294829968, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8515140469825070313, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 850
-      objectReference: {fileID: 0}
-    - target: {fileID: 8515140469825070313, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 375
-      objectReference: {fileID: 0}
-    - target: {fileID: 8515140469825070313, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.52
-      objectReference: {fileID: 0}
-    - target: {fileID: 8515140469825070313, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: -4.66
-      objectReference: {fileID: 0}
-    - target: {fileID: 8515140469825070313, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 1.29
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ba1583c10ae793e40be8d966b9872dac, type: 3}
@@ -14296,7 +14251,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -4.9999695, y: -127}
+  m_AnchoredPosition: {x: -5, y: -127}
   m_SizeDelta: {x: 300, y: 200}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &1894299675

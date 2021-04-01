@@ -8,7 +8,6 @@ public class FoxCharacter : TurnBasedCharacter
     private GameObject turnIndicator = null;
 
     //turn-system stuff
-    protected TurnManager turnManager;
     public bool isMyTurn { get; private set; } = false;
     private bool isTakingTurns = true;
 
@@ -40,9 +39,6 @@ public class FoxCharacter : TurnBasedCharacter
     protected override void Awake()
     {
         base.Awake();
-
-        //Find the turn manager in game; use it to
-        turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
 
         //Get the camera
         cam = GameObject.Find("GameManager").GetComponentInChildren<Camera>();
@@ -170,7 +166,7 @@ public class FoxCharacter : TurnBasedCharacter
 
     public override void UndoMyTurn(Vector3 oldPosition, Quaternion oldRotation)
     {
-        this.gameObject.transform.Find("Fox").rotation = oldRotation;
+        this.gameObject.transform.Find("Fox").transform.rotation = oldRotation;
 
         this.gameObject.transform.position = oldPosition;
         targetMoveToPosition = oldPosition;
@@ -249,7 +245,25 @@ public class FoxCharacter : TurnBasedCharacter
     public void StopTakingTurns()
     {
         isTakingTurns = false;
-        turnManager.SwapFoxes();
+        StartCoroutine(QueueStopTakingTurns());
+    }
+
+    //If we don't wait for the first fox to finish it's animation, it will call CompleteAnimation()
+    // as soon as it is done animating. IF that is in the middle of the Fox-Swap animation, this
+    // will allow for the fox to take over too soon.
+    private IEnumerator QueueStopTakingTurns()
+    {
+        while (true)
+        {
+            if (isAnimating)
+                yield return null;
+            else
+            {
+                turnManager.PressKey();
+                turnManager.SwapFoxes();
+                yield break;
+            }
+        }
     }
 
     public void StartTakingTurns()

@@ -13,6 +13,7 @@ public class TurnManager : MonoBehaviour
     static private int numPlayers;
     private GameObject[] PlayerGroup;
     private FoxCharacter[] PlayerScripts;
+    private FairyController[] FairyScripts;
     private FoxCharacter curPlayer;
     private int curTurnIndex = 0;
 
@@ -31,12 +32,14 @@ public class TurnManager : MonoBehaviour
 
     //Control Stuff
     private bool isAnimating = false;
-    private bool keyJustPressed = false;
+    private bool keyJustPressed = true;
     private bool pauseLock = false;
     private bool cameraLock = false;
     private WaitForSeconds keyDelay = new WaitForSeconds(0.2f);
     private Coroutine keyDelayer = null;
-    
+
+    //For passing on Summer's last message
+    FairyController.SpeechController.KeepTalkingInfo contInfo;
 
     private void Awake()
     {
@@ -49,6 +52,7 @@ public class TurnManager : MonoBehaviour
     private void Start()
     {
         GiveTurn();
+        keyJustPressed = false;
     }
 
     private void Update()
@@ -65,7 +69,7 @@ public class TurnManager : MonoBehaviour
                 {
                     //camera mode is toggled (this is done in a camera script)
                 }
-                if (curPlayer && !curPlayer.GetIsMoving() && !isAnimating && !cameraLock && !keyJustPressed)
+                if (curPlayer && !curPlayer.GetIsMoving() && curPlayer.CheckIfTakingTurns() && !isAnimating && !cameraLock && !keyJustPressed)
                     if (Input.GetKeyDown(KeyCode.E))
                     {
                         PressKey();
@@ -158,10 +162,13 @@ public class TurnManager : MonoBehaviour
         PlayerGroup = GameObject.FindGameObjectsWithTag("Player");
         numPlayers = PlayerGroup.Length;
         PlayerScripts = new FoxCharacter[numPlayers];
+        FairyScripts = new FairyController[numPlayers];
 
         for (int i = 0; i < numPlayers; i++)
         {
             PlayerScripts[i] = PlayerGroup[i].GetComponent<FoxCharacter>();
+            FairyScripts[i] = PlayerGroup[i].transform.Find("turnIndicator").GetComponent<FairyController>();
+            FairyScripts[i].gameObject.SetActive(false);
         }
 
         curPlayer = PlayerScripts[curTurnIndex];
@@ -199,7 +206,8 @@ public class TurnManager : MonoBehaviour
     //Increments curIDX, disables the current fox's turn, enables the next valid fox's turn
     public void SwapFoxes()
     {
-        curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
+        contInfo = FairyScripts[curTurnIndex].GetSpeechInfo();
+        FairyScripts[curTurnIndex].ShutUp();
         TakeTurn();
 
         int loopIDX = 0;
@@ -218,6 +226,22 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    //This is called by the SwapFox animation when the ball goes off the screen for the first one.
+    // It then handles activating the turn and playing the "catch" animation for the second one.
+    public void SwappedFoxes()
+    {
+        if (curTurnIndex > -1)
+        {
+            curPlayer = PlayerScripts[curTurnIndex];
+            curPlayer.ToggleIndicator(true);
+            curPlayer.CatchTheBall();
+            GiveTurn();
+
+            FairyScripts[curTurnIndex].KeepSaying(contInfo);
+        }
+    }
+
+    //These two functions are only used in tutorial levels to arrest control long enough for exposition.
     public void StealControl()
     {
         curPlayer.SetFairyActive(false);
@@ -233,11 +257,16 @@ public class TurnManager : MonoBehaviour
         curPlayer.CatchTheBall();
     }
 
-    public float Say(string msg, AudioSource clip)
+
+    //The following is stuff for the Summer/Fairy dialogue system. Each fox has its own Summer since they weren't
+    // originally intended to be personified. As such, the turn manager is needed in order to control WHICH Summer
+    // is being told to do what at a given time and for ensuring all of the Summers are on the same page.
+
+    public float Say(string msg)
     {
         if (curPlayer)
         {
-            return curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().Say(msg, clip);
+            return FairyScripts[curTurnIndex].Say(msg);
         }
         else
             return -1f;
@@ -247,19 +276,43 @@ public class TurnManager : MonoBehaviour
     {
         if (curPlayer)
         {
-            curPlayer.transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>().ShutUp();
+            FairyScripts[curTurnIndex].ShutUp();
         }
         return;
     }
 
-    public void SwappedFoxes()
+    //These are the functions that an individual Summer will call when she wants it to apply to all
+    // all Summers or just the Summers that are relevant. TurnManager (this) script then handels
+    // the logic for which Summers are actually relevant.
+    public void ResetFairySpeechProgress()
     {
-        if (curTurnIndex > -1)
+        for (int i = 0; i < numPlayers; i++)
         {
-            curPlayer = PlayerScripts[curTurnIndex];
-            curPlayer.ToggleIndicator(true);
-            curPlayer.CatchTheBall();
-            GiveTurn();
+            FairyScripts[i].resetMyProgress();
+        }
+    }
+
+    public void IncrementFairySpeechProgress()
+    {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].incrementMyProgress();
+        }
+    }
+
+    public void StopTalking()
+    {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].stopTalking();
+        }
+    }
+
+    public void ClearDialogue()
+    {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].clearDialogue();
         }
     }
 
@@ -301,12 +354,12 @@ public class TurnManager : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
-        //Debug.Log("begin anim" + Time.time);
+        //Debug.Log("begin anim at: " + Time.time);
         isAnimating = true;
     }
     public void completeAnimation()
     {
-        //Debug.Log("complete anim" + Time.time);
+        //Debug.Log("complete anim at: " + Time.time);
         isAnimating = false;
     }
 
