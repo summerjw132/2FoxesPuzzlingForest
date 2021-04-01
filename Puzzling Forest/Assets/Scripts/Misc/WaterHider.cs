@@ -9,7 +9,6 @@ public class WaterHider : MonoBehaviour
     void Awake()
     {
         water = this.transform.parent.transform.GetChild(0).gameObject;
-        Debug.LogFormat("Me: {0}\tMy water: {1}", this.transform.parent.name, water.name);
     }
 
     // Start is called before the first frame update
