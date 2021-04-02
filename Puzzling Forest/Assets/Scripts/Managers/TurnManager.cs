@@ -51,6 +51,10 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].gameObject.SetActive(false);
+        }
         GiveTurn();
         keyJustPressed = false;
     }
@@ -168,7 +172,6 @@ public class TurnManager : MonoBehaviour
         {
             PlayerScripts[i] = PlayerGroup[i].GetComponent<FoxCharacter>();
             FairyScripts[i] = PlayerGroup[i].transform.Find("turnIndicator").GetComponent<FairyController>();
-            FairyScripts[i].gameObject.SetActive(false);
         }
 
         curPlayer = PlayerScripts[curTurnIndex];
