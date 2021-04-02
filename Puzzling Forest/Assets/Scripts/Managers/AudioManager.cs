@@ -34,6 +34,10 @@ public class AudioManager : MonoBehaviour
         for (int i = 0; i < sfxLength; i++)
         {
             allAudioSources[musicLength + i] = sfxSources[i];
+            //if (sfxSources[i].name == "typingNoise")
+            //    Debug.LogFormat("AudioManager just found: {0}", sfxSources[i].transform.parent.transform.parent.name);
+            //else
+            //    Debug.LogFormat("AudioManager just found: {0}", sfxSources[i]);
         }
     }
 
@@ -115,5 +119,7 @@ public class AudioManager : MonoBehaviour
         }
         else
             MasterSlider.value = 0.1f;
+
+        UpdateVolume();
     }
 }
