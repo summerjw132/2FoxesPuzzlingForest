@@ -3,14 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This script handles updating the volume for all of the noises based on the audio settings menu. Also uses PlayerPrefs to
+///  keep this constant between sessions.
+/// </summary>
 public class AudioManager : MonoBehaviour
 {
     [SerializeField] private Slider MasterSlider = null;
     [SerializeField] private Slider MusicSlider = null;
     [SerializeField] private Slider SFXSlider = null;
 
+    //All audio sources
     private GameObject[] allAudioSources;
+    //All audio sources tagged "Music"
     private GameObject[] musicSources;
+    //All audio sources tagged "SFX"
     private GameObject[] sfxSources;
 
     private int musicLength = 0;
@@ -46,14 +53,7 @@ public class AudioManager : MonoBehaviour
         InitializeSliders();
     }
 
-    public void ShowSources()
-    {
-        for (int i = 0; i < allSourcesLength; i++)
-        {
-            Debug.LogFormat("Source{0}: {1} - Type: {2}", i, allAudioSources[i], allAudioSources[i].tag);
-        }
-    }
-
+    // Iterates through the audio sources and updates their volumes based on the slider values.
     public void UpdateVolume()
     {
         float musicVolume = MasterSlider.value * MusicSlider.value;
@@ -70,6 +70,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    // These functions update the PlayerPrefs based on the slider values and then update the volumes accordingly.
     public void UpdateMaster()
     {
         PlayerPrefs.SetFloat("MasterVolume", MasterSlider.value);
@@ -94,6 +95,10 @@ public class AudioManager : MonoBehaviour
         UpdateVolume();
     }
 
+    /// <summary>
+    /// Updates the sliders in the audio menu to reflect the values from the playerprefs.
+    ///  Also updates the actual volume of the audio sources accordingly.
+    /// </summary>
     private void InitializeSliders()
     {
         if (PlayerPrefs.HasKey("SFXVolume"))
@@ -121,5 +126,14 @@ public class AudioManager : MonoBehaviour
             MasterSlider.value = 0.1f;
 
         UpdateVolume();
+    }
+
+    //Debugging function for when an audio source just doesn't want to be found
+    public void ShowSources()
+    {
+        for (int i = 0; i < allSourcesLength; i++)
+        {
+            Debug.LogFormat("Source{0}: {1} - Type: {2}", i, allAudioSources[i], allAudioSources[i].tag);
+        }
     }
 }
