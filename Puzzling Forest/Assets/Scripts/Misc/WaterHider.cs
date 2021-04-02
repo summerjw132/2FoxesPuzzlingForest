@@ -23,8 +23,11 @@ public class WaterHider : MonoBehaviour
         
     }
 
-    void OnTriggerEnter()
+    void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("ScriptTrigger"))
+            return;
+
         water.SetActive(false);
     }
 
