@@ -74,6 +74,7 @@ public class LevelManager : MonoBehaviour
             GameObject lastButton = scrollViewContainer.transform.GetChild(0).gameObject;
             lastButton.transform.SetParent(null);
             lastButton.transform.SetParent(scrollViewContainer.transform);
+            lastButton.GetComponentInChildren<Text>().text = allLevels[allLevels.Count-1].name;
         }
     }
 
