@@ -6,6 +6,10 @@ using System.Runtime.Serialization.Formatters.Binary;
 /// The save method will take a LevelProgress and write it to a static location as a binary file.
 /// The load method will deserialize the binary file back into a LevelProgress and return it.
 /// </summary>
+
+//NOTE: Application.persitantDataPath:                 
+// Windows Standalone: %userprofile%\AppData\LocalLow\<companyname>\PuzzlingForest
+// As of 04.01.2021: %userprofile%\AppData\LocalLow\SummervilleGaming\PuzzlingForest
 public static class SaveSystem
 {
     static string file_name = "/levelProgress.save";
@@ -34,7 +38,7 @@ public static class SaveSystem
         }
         else
         {
-            Debug.LogError("Save fle not found in " + path);
+            Debug.Log("No save at: " + path);
             return null;
         }
     }

@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class IndicatorAnimationController : MonoBehaviour
+/// <summary>
+/// This script handles a couple of things.
+///  1. The animations for the fairy flying up/off screen and back down.
+///  2. Summer's "Dialogue" system. (In conjunction with turnManager to know which Fairy should be "talking" when).
+///  3. NOTE: Tutorial fairies (Summer when disconnected from a fox) use a child class called TutFairyController.cs
+/// </summary>
+public class FairyController : MonoBehaviour
 {
-    foxAnimationStateController foxAnim;
-    FoxCharacter fox;
-    TurnManager turnManager;
+    //General
+    protected foxAnimationStateController foxAnim;
+    protected FoxCharacter fox;
+    protected TurnManager turnManager;
 
-
+    //Catch ball and Pass ball animation stuff
     static int dropCount;
     const float prob = 0.1f;
     int targetDrop;
@@ -19,7 +26,7 @@ public class IndicatorAnimationController : MonoBehaviour
     bool isPlayDead = false;
 
     int algo = 3;
-    /// Algorithm
+    /// Algorithm for determining when a fox should "flop" when Summer returns
     /// Swap algo to corresponding algo number
     /// 0) Flat rate, animation will play per "flatDrop" times
     /// 1) Random range, animation will play once after "targetDrop" times, which is within "minDrop" and "maxDrop"
@@ -27,61 +34,41 @@ public class IndicatorAnimationController : MonoBehaviour
     /// 3) Random chance which raise per time, each time the animation will have "dropCount"/"MaxDrop" of chance to play. After the animation, dropCount will reset.
     /// 
 
-    //random drift/float effect
-    [SerializeField] private bool isTutFairy = false;
-    private float rand_x;
-    private float rand_y;
-    private float rand_z;
-    private bool isFlyingOff = false;
-    private bool isDrifting = false;
-    private float driftSpeed = 0.5f;
-    private float range = 0.2f;
-    private Transform driftAnchor;
-    private Vector3 centerPos;
-    private Vector3 randPos;
-    private bool goInactive = false;
-    private bool isFinding = false;
-    private Coroutine driftingRoutine = null;
-
     //speech stuff
-    private GameObject speechCanvas;
-    private Text fairyText;
-    private Coroutine typer = null;
-    private SpeechController speechController;
-    private Camera cam;
-    private AudioSource typingNoise;
+    protected GameObject speechCanvas;
+    protected Text fairyText;
+    protected Coroutine typer = null;
+    protected SpeechController speechController;
+    protected Camera cam;
+    protected AudioSource typingNoise;
 
-    private readonly float typingSpeed = 0.05f;
-    private readonly float puncSpeed = 0.5f;
-    private readonly float speechPauseDuration = 3f;
-    private WaitForSeconds typingPause;
-    private WaitForSeconds puncPause;
-    private WaitForSeconds speechPause;
+    protected readonly float typingSpeed = 0.05f;
+    protected readonly float puncSpeed = 0.5f;
+    protected readonly float speechPauseDuration = 3f;
+    protected WaitForSeconds typingPause;
+    protected WaitForSeconds puncPause;
+    protected WaitForSeconds speechPause;
 
-    void Awake()
+    protected virtual void Awake()
     {
         foxAnim = transform.parent.GetComponent<foxAnimationStateController>();
         fox = transform.parent.GetComponent<FoxCharacter>();
         turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
-        if (isTutFairy)
-            driftAnchor = this.gameObject.transform.parent.transform.parent.transform.Find("DriftAnchor");
-        else
-        {
-            speechCanvas = this.gameObject.transform.GetChild(0).gameObject;
-            fairyText = speechCanvas.transform.Find("Background/Text").GetComponent<Text>();
-            cam = GameObject.Find("GameManager/CameraControls/Camera").GetComponent<Camera>();
-            typingNoise = this.transform.Find("typingNoise").GetComponent<AudioSource>();
 
-            speechController = new SpeechController(this.gameObject, speechCanvas, fairyText, cam);
-        }
+        speechCanvas = this.gameObject.transform.GetChild(0).gameObject;
+        fairyText = speechCanvas.transform.Find("Background/Text").GetComponent<Text>();
+        cam = GameObject.Find("GameManager/CameraControls/Camera").GetComponent<Camera>();
+        typingNoise = this.transform.Find("typingNoise").GetComponent<AudioSource>();
+        speechController = new SpeechController(this.gameObject, speechCanvas, fairyText, cam);
+
         typingPause = new WaitForSeconds(typingSpeed);
         puncPause = new WaitForSeconds(puncSpeed);
         speechPause = new WaitForSeconds(speechPauseDuration);
     }
 
-    void Start()
+    protected virtual void Start()
     {
-        switch (algo)
+        switch (algo) //see comment on this at top
         {
             case 0:
                 targetDrop = flatDrop;
@@ -92,21 +79,26 @@ public class IndicatorAnimationController : MonoBehaviour
             default:
                 break;
         }
-
-        if (isTutFairy)
-            driftingRoutine = StartCoroutine(DriftAround());
     }
 
     void Update()
     {
-        if (!isTutFairy && speechCanvas.activeInHierarchy)
+        if (speechCanvas.activeInHierarchy) //keeps the text box attached to Summer and on-screen
         {
             speechController.UpdatePosition();
         }
     }
 
+    /// Whole Swap fox animation order :
+    /// 1) TurnManager.Swap Foxes()         //Start the animation of Fox A
+    /// 2) OnBallRaised()                   //Fox A animation finish, start to drop Fox B's ball
+    /// 3) OnBallHit()                      //Fox B's ball dropped on Fox B's head, play get hit animation
+    /// 4) FoxCharacter.completeAnimation() //Whole animation is done, turn manager will unlock for input.
+    /// 
+
     public void OnBallHit()
     {
+        //determines whether or not to play the flop animation
         switch (algo)
         {
             case 0:
@@ -162,99 +154,15 @@ public class IndicatorAnimationController : MonoBehaviour
         }
     }
 
-    /// Whole Swap fox animation order :
-    /// 1) TurnManager.Swap Foxes()         //Start the animation of Fox A
-    /// 2) OnBallRaised()                   //Fox A animation finish, start to drop Fox B's ball
-    /// 3) OnBallHit()                      //Fox B's ball dropped on Fox B's head, play get hit animation
-    /// 4) FoxCharacter.completeAnimation() //Whole animation is done, turn manager will unlock for input.
-    /// 
+    //Starting here is stuff for the dialogue system
 
-    private IEnumerator DriftAround()
-    {
-        while (true)
-        {
-            DriftAroundFunc();
-            yield return null; //waits one frame
-        }
-    }
-
-    private void DriftAroundFunc()
-    {
-        if (isDrifting)
-        {
-            this.transform.position = Vector3.MoveTowards(this.transform.position, randPos, driftSpeed * Time.deltaTime);
-            if (this.transform.position == randPos)
-            {
-                isDrifting = false;
-                if (goInactive)
-                    this.gameObject.transform.parent.gameObject.SetActive(false);
-            }
-                
-        }
-        else
-        {
-            StartCoroutine(DelayFindRandomPosition());
-        }
-    }
-
-    private IEnumerator DelayFindRandomPosition()
-    {
-        if (isFinding)
-        {
-            yield break;
-        }
-        isFinding = true;
-        yield return new WaitForSeconds(0.1f);
-        FindRandomPosition();
-    }
-
-    private void FindRandomPosition()
-    {
-        if (isFlyingOff)
-            return;
-        centerPos = driftAnchor.position;
-
-        rand_x = centerPos.x + Random.Range(-range, range);
-        rand_y = centerPos.y + Random.Range(-range, range);
-        rand_z = centerPos.z + Random.Range(-range, range);
-
-        randPos = new Vector3(rand_x, rand_y, rand_z);
-
-        isDrifting = true;
-        driftSpeed = 0.5f;
-
-        isFinding = false;
-    }
-
-    public void FlyOff()
-    {
-        isFlyingOff = true;
-        randPos = new Vector3(driftAnchor.position.x, driftAnchor.position.y + 12, driftAnchor.position.z);
-        driftSpeed = 15f;
-        isDrifting = true;
-        StopCoroutine(DelayFindRandomPosition());
-        goInactive = true;
-    }
-
-    public void FlyDown()
-    {
-        isFlyingOff = false;
-        goInactive = false;
-        centerPos = driftAnchor.position;
-        this.transform.position = new Vector3(centerPos.x, centerPos.y + 12, centerPos.z);
-        randPos = centerPos;
-        isDrifting = true;
-        driftSpeed = 15f;
-    }
-
+    //These are wrapper functions for going through the turn manager. This is because these were created as turn indicators originally.
+    // Because of that, each fox has its own TurnIndicator/Summer/Fairy object. But they need to act as if there's only one in terms of
+    // personification/dialogue. As such, the methods for keeping track of speech progress and clearing the box etc. all need to go
+    // through turnManager so that that script can handle updating all Summers together and only telling the active one to talk etc.
     private void ResetSpeechProgress()
     {
         turnManager.ResetFairySpeechProgress();
-    }
-
-    public void resetMyProgress()
-    {
-        speechController.resetProgress();
     }
 
     private void IncrementSpeechProgress()
@@ -262,12 +170,50 @@ public class IndicatorAnimationController : MonoBehaviour
         turnManager.IncrementFairySpeechProgress();
     }
 
+    private void StopTalking()
+    {
+        turnManager.StopTalking();
+    }
+
+    private void ClearDialogue()
+    {
+        turnManager.ClearDialogue();
+    }
+
+    //These are the functions that actually affect this particular Summer. TurnManager calls these for the appropriate fairies whenever
+    // an individual fairy uses one of the above wrappers to ask the TurnManager to update things accordingly.
+    public void resetMyProgress()
+    {
+        speechController.resetProgress();
+    }
+
     public void incrementMyProgress()
     {
         speechController.incrementProgress();
     }
 
-    //public method for starting the process of Summer "saying" a message.
+    public void stopTalking()
+    {
+        speechController.StopTalking();
+    }
+
+    public void clearDialogue()
+    {
+        speechController.Clear();
+    }
+
+    public void ShutUp()
+    {
+        if (typer != null)
+        {
+            StopCoroutine(typer);
+            typer = null;
+        }
+        speechController.StopTalking();
+    }
+
+    //public method for Summer "saying" a message. Note that when displaying dialogue you should
+    // use TurnManager.Say() because that way the turn manager will tell the active fairy to speak.
     public float Say(string msg)
     {
         speechCanvas.SetActive(true);
@@ -291,6 +237,8 @@ public class IndicatorAnimationController : MonoBehaviour
         return duration;
     }
 
+    //Both of the Type Coroutines that are in this class are for the Typing effect
+    // during dialogues. Don't try to use them manually, see the above method.
     private IEnumerator Type(string msg)
     {
         for (int i = 0; i < msg.Length; i++)
@@ -306,17 +254,16 @@ public class IndicatorAnimationController : MonoBehaviour
 
         yield return speechPause;
         ResetSpeechProgress();
-        speechController.Clear();
-        speechController.StopTalking();
+        ClearDialogue();
+        StopTalking();
     }
 
-    //public method for the continuation of a message from Summer. Used
-    // if E is pressed while she's talking.
+    //method for the continuation of a message from Summer. Used
+    // if E is pressed while she's talking. Do not manually call this.
     public float KeepSaying(SpeechController.KeepTalkingInfo info)
     {
         if (info.msg == "") //nothing to say.
         {
-            Debug.Log("here");
             return -1f;
         }
 
@@ -361,20 +308,11 @@ public class IndicatorAnimationController : MonoBehaviour
 
         yield return speechPause;
         ResetSpeechProgress();
-        speechController.Clear();
-        speechController.StopTalking();
+        ClearDialogue();
+        StopTalking();
     }
 
-    public void ShutUp()
-    {
-        if (typer != null)
-        {
-            StopCoroutine(typer);
-            typer = null;
-        }
-        speechController.StopTalking();
-    }
-
+    //The following are all for formatting/sizing/positioning the text box Summer uses to speak.
     public void ResizeCanvas(float width, float height)
     {
         speechController.resizeCanvas(width, height);
@@ -390,6 +328,7 @@ public class IndicatorAnimationController : MonoBehaviour
         return speechController.GetInfo();
     }
 
+    //A class that solely tracks info regarding the text box and has useful methods for positioning, updating, etc.
     public class SpeechController
     {
         private GameObject fairy;
@@ -407,6 +346,7 @@ public class IndicatorAnimationController : MonoBehaviour
         private static string[] goodJobbers = new string[4] { "great job!", "good job!", "well done!", "nice job!" };
         private bool useShort = false;
 
+        //A custom struct for keeping track of dialogue progress in the event the player swaps foxes during dialogue.
         private KeepTalkingInfo myInfo;
 
         public SpeechController(GameObject _fairy, GameObject _canvas, Text _text, Camera _cam)
@@ -485,24 +425,35 @@ public class IndicatorAnimationController : MonoBehaviour
         public void UpdatePosition()
         {
             Vector2 fairyScreenPos = cam.WorldToScreenPoint(fairy.transform.position);
-            float newX = 0f;
-            float newY = 0f;
+            float newX;
+            float newY;
             //fairy on right, so show text on left side
             if (fairyScreenPos.x > (cam.pixelWidth / 2f))
             {
                 newX = fairyScreenPos.x - (background.rect.width / 1.9f);
-                newY = fairyScreenPos.y + (background.rect.height / 1.8f);
             }
             //fairy on left, so show text on right side
             else
             {
                 newX = fairyScreenPos.x + (background.rect.width / 1.9f);
+            }
+
+            //Strong preference for text above fairy, but display below if necessary
+            if (fairyScreenPos.y < (cam.pixelHeight * 0.8f))
+            {
                 newY = fairyScreenPos.y + (background.rect.height / 1.8f);
             }
-            background.position = new Vector3(newX, newY, -1f);
+            else
+            {
+                newY = fairyScreenPos.y - (background.rect.height / 1.8f);
+            }
 
+            background.position = new Vector3(newX, newY, -1f);
         }
 
+        //Struct for passing the necessary information to the TurnManager in order to
+        // have the next Summer pick up from where this one left off if the player swaps
+        // foxes or otherwise interrupts Summer.
         public struct KeepTalkingInfo
         {
             public string msg;
@@ -529,7 +480,3 @@ public class IndicatorAnimationController : MonoBehaviour
         }
     }
 }
-       
-
-
-

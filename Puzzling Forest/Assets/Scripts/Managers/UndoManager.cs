@@ -58,7 +58,7 @@ public class UndoManager : MonoBehaviour
             GO = incomingGO;
             position = GO.transform.position;
             if (GO.CompareTag("Player"))
-                rotation = GO.transform.Find("Fox").rotation;
+                rotation = GO.transform.Find("Fox").transform.rotation;
             else
                 rotation = GO.transform.rotation;
         }

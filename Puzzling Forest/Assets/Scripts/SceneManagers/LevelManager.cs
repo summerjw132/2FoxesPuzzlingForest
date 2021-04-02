@@ -16,12 +16,6 @@ public class LevelManager : MonoBehaviour
 
     private static GameObject instance;
 
-    //TEMPORARY LOAD FROM WHERE STUFF
-    GameObject LevelSelectMenu;
-    GameObject LoadFromWhereMenu;
-    Button LoadFileButton;
-    Button LoadSOButton;
-
     private void Awake()
     {
         //So that the instance of this class persists between scenes
@@ -36,34 +30,12 @@ public class LevelManager : MonoBehaviour
         if (scrollViewContainer == null)
             scrollViewContainer = SetScrollViewContainer;
 
-        LevelSelectMenu = GameObject.Find("LevelSelectMenu");
-        LoadFromWhereMenu = GameObject.Find("LoadFromWhereMenu");
-
-        //TEMPORARY LOAD FROM WHERE STUFF
-        if (allLevels.Count == 0)
-        {
-            LoadFileButton = GameObject.Find("LoadFromFile").GetComponent<Button>();
-            LoadSOButton = GameObject.Find("LoadFromSOs").GetComponent<Button>();
-
-            LevelSelectMenu.SetActive(false);
-            LoadFromWhereMenu.SetActive(true);
-
-            LoadFileButton.onClick.AddListener(LoadFromFile);
-            LoadFileButton.onClick.AddListener(GoToMenu);
-            LoadSOButton.onClick.AddListener(LoadFromSciptableObjects);
-            LoadSOButton.onClick.AddListener(GoToMenu);
-        }
-        else
-            GoToMenu();
-        
+        LoadFromFile();
+        SetUpMenu();
     }
 
-    //TEMPORARY LOAD FROM WHERE STUFF
-    public void GoToMenu()
+    public void SetUpMenu()
     {
-        LevelSelectMenu.SetActive(true);
-        LoadFromWhereMenu.SetActive(false);
-
         PopulateButtons();
         SetLevelPermission();
     }
@@ -146,6 +118,8 @@ public class LevelManager : MonoBehaviour
                 curButton.interactable = true;
                 if (allLevels[i].isLevelComplete)
                     curButton.GetComponentInChildren<Text>().text = allLevels[i].name + "\nMoves: " + allLevels[i].BestMoveCount + "\nUndos: " + allLevels[i].UndoMoveCount;
+                else
+                    curButton.GetComponentInChildren<Text>().text = allLevels[i].name;
             }
             else
             {
