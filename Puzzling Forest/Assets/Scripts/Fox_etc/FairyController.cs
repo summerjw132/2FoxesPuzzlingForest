@@ -32,7 +32,7 @@ public class FairyController : MonoBehaviour
     /// 1) Random range, animation will play once after "targetDrop" times, which is within "minDrop" and "maxDrop"
     /// 2) Random chance per time, animation will have "prob" chance to play the animation each time
     /// 3) Random chance which raise per time, each time the animation will have "dropCount"/"MaxDrop" of chance to play. After the animation, dropCount will reset.
-    /// 
+    /// 4) 100% chance of the flop animation playing
 
     //speech stuff
     protected GameObject speechCanvas;
@@ -116,8 +116,13 @@ public class FairyController : MonoBehaviour
                     float chance = (float)dropCount / MaxDrop;
                     float rand = Random.value;
                     isPlayDead = chance > rand;
+                    break;
                 }
-                break;
+            case 4:
+                {
+                    isPlayDead = true;
+                    break;
+                }
             default:
                 break;
         }
