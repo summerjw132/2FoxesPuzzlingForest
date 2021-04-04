@@ -1,10 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using System;
-using System.Text;
 
 public class LevelManager : MonoBehaviour
 {
@@ -35,10 +31,10 @@ public class LevelManager : MonoBehaviour
             scrollViewContainer = SetScrollViewContainer;
 
         LoadFromFile();
-        SetupMenu();
+        SetUpMenu();
     }
-        
-    public void SetupMenu()
+
+    public void SetUpMenu()
     {
         PopulateButtons();
         SetLevelPermission();
@@ -257,33 +253,12 @@ public class LevelManager : MonoBehaviour
         {
             allLevels[i].isLevelComplete = false;
             allLevels[i].isUnlocked = true;
-            allLevels[i].UndoMoveCount = "";
+            allLevels[i].BestMoveCount = "";
         }
 
         Save();
         LoadFromFile();
         SetLevelPermission();
-    }
-
-    public void SaveLevelData(string levelName, string totalMoveCount, string totalTime, string totalUndoCount)
-    {
-        for (int i = 0; i < allLevels.Count; i++)
-        {
-            if (allLevels[i].LevelName == SceneManager.GetActiveScene().name)
-            {
-                allLevels[i].BestMoveCount = totalMoveCount;
-                allLevels[i].BestTime = totalTime;
-                allLevels[i].UndoMoveCount = totalUndoCount;
-                SaveToTextFile(levelName, totalMoveCount, totalTime, totalUndoCount);
-            }
-        }
-    }
-
-    private void SaveToTextFile(string levelName, string totalMove, string totaltime, string totalUndo)
-    {
-        string filePath = Application.persistentDataPath;
-
-        File.AppendAllText(filePath + "/LevelScores", string.Format("Level name: {0}, \nTotal Move Count: {1}, \nTotal Time: {2}, \nTotal Undo: {3} \n", levelName, totalMove, totaltime, totalUndo));
     }
 
     /// <summary>

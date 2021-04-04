@@ -9,10 +9,8 @@ using UnityEngine.UI;
 /// </summary>
 public class AudioManager : MonoBehaviour
 {
-    
     [SerializeField] private Slider MasterSlider = null;
     [SerializeField] private Slider MusicSlider = null;
-    
     [SerializeField] private Slider SFXSlider = null;
 
     //All audio sources
@@ -44,14 +42,11 @@ public class AudioManager : MonoBehaviour
         {
             allAudioSources[musicLength + i] = sfxSources[i];
         }
-        MasterSlider.maxValue = .75f;
-
     }
 
     void Start()
     {
         InitializeSliders();
-
     }
 
     // Iterates through the audio sources and updates their volumes based on the slider values.
@@ -116,7 +111,7 @@ public class AudioManager : MonoBehaviour
             MusicSlider.value = PlayerPrefs.GetFloat("MusicVolume");
         }
         else
-            MusicSlider.value = 0.4f;
+            MusicSlider.value = 1.0f;
 
         if (PlayerPrefs.HasKey("MasterVolume"))
         {
@@ -124,7 +119,7 @@ public class AudioManager : MonoBehaviour
             MasterSlider.value = PlayerPrefs.GetFloat("MasterVolume");
         }
         else
-            MasterSlider.value = 0.4f;
+            MasterSlider.value = 0.1f;
     }
 
     //Debugging function for when an audio source just doesn't want to be found

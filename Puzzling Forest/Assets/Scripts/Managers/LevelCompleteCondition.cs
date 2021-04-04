@@ -14,7 +14,6 @@ public class LevelCompleteCondition : MonoBehaviour
     [SerializeField] private GameObject levelCompletePanel = null;
     [SerializeField] private Text totalMoveCount = null;
     [SerializeField] private Text totalTime = null;
-    [SerializeField] private Text totalUndo = null;
     private GameObject smoke;
 
     private Timer tm;
@@ -101,8 +100,7 @@ public class LevelCompleteCondition : MonoBehaviour
             //This completeLevel fxn sets the current level to complete, stores the score if its best
             try
             {
-                //levelManager.completeLevel(curLevelName, turnManager.totalMoveCount, turnManager.undoCount);
-                levelManager.SaveLevelData(SceneManager.GetActiveScene().name, totalMoveCount.text,totalTime.text, totalUndo.text);
+                levelManager.completeLevel(curLevelName, turnManager.totalMoveCount, turnManager.undoCount);
                 Debug.LogFormat("Called completeLevel");
             }
             catch (NullReferenceException nre)
@@ -126,7 +124,6 @@ public class LevelCompleteCondition : MonoBehaviour
         tm.isLevelComplete = true;
         turnManager.isLevelComplete = true;
         totalMoveCount.text = turnManager.totalMoveCount.ToString();
-        totalUndo.text = turnManager.undoCount.ToString();
         totalTime.text = tm.GetTime();
     }
 }
