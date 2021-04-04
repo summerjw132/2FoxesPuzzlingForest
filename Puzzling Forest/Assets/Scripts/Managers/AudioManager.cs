@@ -137,12 +137,4 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    //Debugging function for when an audio source just doesn't want to be found
-    public void ShowSources()
-    {
-        for (int i = 0; i < allSourcesLength; i++)
-        {
-            Debug.LogFormat("Source{0}: {1} - Type: {2}", i, allAudioSources[i], allAudioSources[i].tag);
-        }
-    }
 }
