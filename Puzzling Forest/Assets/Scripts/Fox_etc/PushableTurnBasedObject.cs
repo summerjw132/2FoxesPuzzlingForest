@@ -117,7 +117,7 @@ public class PushableTurnBasedObject : TurnBasedCharacter
         }
         else
         {
-            Debug.Log(this.gameObject.name + " can't be pushed due to obstruction.");
+            Debug.Log(this.gameObject.name + " can't be pushed here.");
             
             return false;
         }

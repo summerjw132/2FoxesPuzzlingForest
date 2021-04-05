@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Please See TutorialScript.cs for notes on these bad boys.
+/// </summary>
 public class Tutorial_04 : TutorialScript
 {
 	private Vector3 newLeftSide = new Vector3(1.42f, 1.29f, -4.56f);
@@ -30,7 +33,7 @@ public class Tutorial_04 : TutorialScript
 	private IEnumerator Begin()
 	{
 		yield return new WaitForSeconds(0.1f);
-		FairyController = turnManager.GetCurrentFairy().GetComponent<IndicatorAnimationController>();
+		FairyController = turnManager.GetCurrentFairy().GetComponent<TutFairyController>();
 		//FairyController.resizeCanvas(850f, 375f);
 
 		yield return new WaitForSeconds(turnManager.Say("This puzzle is a bit trickier.") - 0.1f);

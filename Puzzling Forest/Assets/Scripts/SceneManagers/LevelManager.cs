@@ -1,6 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
+using System.Text;
 
 public class LevelManager : MonoBehaviour
 {
@@ -16,12 +20,6 @@ public class LevelManager : MonoBehaviour
 
     private static GameObject instance;
 
-    //TEMPORARY LOAD FROM WHERE STUFF
-    GameObject LevelSelectMenu;
-    GameObject LoadFromWhereMenu;
-    Button LoadFileButton;
-    Button LoadSOButton;
-
     private void Awake()
     {
         //So that the instance of this class persists between scenes
@@ -36,34 +34,12 @@ public class LevelManager : MonoBehaviour
         if (scrollViewContainer == null)
             scrollViewContainer = SetScrollViewContainer;
 
-        LevelSelectMenu = GameObject.Find("LevelSelectMenu");
-        LoadFromWhereMenu = GameObject.Find("LoadFromWhereMenu");
-
-        //TEMPORARY LOAD FROM WHERE STUFF
-        if (allLevels.Count == 0)
-        {
-            LoadFileButton = GameObject.Find("LoadFromFile").GetComponent<Button>();
-            LoadSOButton = GameObject.Find("LoadFromSOs").GetComponent<Button>();
-
-            LevelSelectMenu.SetActive(false);
-            LoadFromWhereMenu.SetActive(true);
-
-            LoadFileButton.onClick.AddListener(LoadFromFile);
-            LoadFileButton.onClick.AddListener(GoToMenu);
-            LoadSOButton.onClick.AddListener(LoadFromSciptableObjects);
-            LoadSOButton.onClick.AddListener(GoToMenu);
-        }
-        else
-            GoToMenu();
-        
+        LoadFromFile();
+        SetupMenu();
     }
-
-    //TEMPORARY LOAD FROM WHERE STUFF
-    public void GoToMenu()
+        
+    public void SetupMenu()
     {
-        LevelSelectMenu.SetActive(true);
-        LoadFromWhereMenu.SetActive(false);
-
         PopulateButtons();
         SetLevelPermission();
     }
@@ -146,6 +122,8 @@ public class LevelManager : MonoBehaviour
                 curButton.interactable = true;
                 if (allLevels[i].isLevelComplete)
                     curButton.GetComponentInChildren<Text>().text = allLevels[i].name + "\nMoves: " + allLevels[i].BestMoveCount + "\nUndos: " + allLevels[i].UndoMoveCount;
+                else
+                    curButton.GetComponentInChildren<Text>().text = allLevels[i].name;
             }
             else
             {
@@ -279,12 +257,33 @@ public class LevelManager : MonoBehaviour
         {
             allLevels[i].isLevelComplete = false;
             allLevels[i].isUnlocked = true;
-            allLevels[i].BestMoveCount = "";
+            allLevels[i].UndoMoveCount = "";
         }
 
         Save();
         LoadFromFile();
         SetLevelPermission();
+    }
+
+    public void SaveLevelData(string levelName, string totalMoveCount, string totalTime, string totalUndoCount)
+    {
+        for (int i = 0; i < allLevels.Count; i++)
+        {
+            if (allLevels[i].LevelName == SceneManager.GetActiveScene().name)
+            {
+                allLevels[i].BestMoveCount = totalMoveCount;
+                allLevels[i].BestTime = totalTime;
+                allLevels[i].UndoMoveCount = totalUndoCount;
+                SaveToTextFile(levelName, totalMoveCount, totalTime, totalUndoCount);
+            }
+        }
+    }
+
+    private void SaveToTextFile(string levelName, string totalMove, string totaltime, string totalUndo)
+    {
+        string filePath = Application.persistentDataPath;
+
+        File.AppendAllText(filePath + "/LevelScores", string.Format("Level name: {0}, \nTotal Move Count: {1}, \nTotal Time: {2}, \nTotal Undo: {3} \n", levelName, totalMove, totaltime, totalUndo));
     }
 
     /// <summary>
