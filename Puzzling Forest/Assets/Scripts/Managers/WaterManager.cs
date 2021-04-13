@@ -14,8 +14,6 @@ public class WaterManager : MonoBehaviour
 
         waterMat.SetFloat("Vector1_62556560", currentSpeed);
         waterMat.SetVector("Vector2_F45F7D08", currentDirection);
-
-        Debug.LogFormat("Watermat: {0}", waterMat);
     }
 
     // Update is called once per frame
