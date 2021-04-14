@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionBounces: 1
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
-  m_Sun: {fileID: 0}
+  m_Sun: {fileID: 1037031484}
   m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
@@ -10305,34 +10305,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.005814017
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.504864
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.7885442
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.35110784
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
       propertyPath: m_RootOrder
       value: 1
       objectReference: {fileID: 0}
@@ -10354,6 +10326,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
+--- !u!108 &1037031484 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 6018168346009007593, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
+  m_PrefabInstance: {fileID: 1037031483}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1039283610
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13189,6 +13166,14 @@ PrefabInstance:
     - target: {fileID: 1576112975740957454, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313891023134956989, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -35.69995
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313891023134956989, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 14.699951
       objectReference: {fileID: 0}
     - target: {fileID: 4447354277789092346, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -18046,42 +18031,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
---- !u!1 &1722984496 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3912553088640534370, guid: 882a2d699ca9e1b4690bb65f229548c8, type: 3}
-  m_PrefabInstance: {fileID: 1722984495}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1722984497
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1722984496}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_RenderShadows: 1
-  m_RequiresDepthTextureOption: 2
-  m_RequiresOpaqueTextureOption: 2
-  m_CameraType: 0
-  m_Cameras: []
-  m_RendererIndex: -1
-  m_VolumeLayerMask:
-    serializedVersion: 2
-    m_Bits: 1
-  m_VolumeTrigger: {fileID: 0}
-  m_RenderPostProcessing: 0
-  m_Antialiasing: 0
-  m_AntialiasingQuality: 2
-  m_StopNaN: 0
-  m_Dithering: 0
-  m_ClearDepth: 1
-  m_RequiresDepthTexture: 0
-  m_RequiresColorTexture: 0
-  m_Version: 2
 --- !u!1001 &1725269986
 PrefabInstance:
   m_ObjectHideFlags: 0

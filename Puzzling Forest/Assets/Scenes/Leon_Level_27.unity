@@ -25,7 +25,7 @@ RenderSettings:
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
   m_AmbientMode: 3
-  m_SubtractiveShadowColor: {r: 0.4185208, g: 0.47951612, b: 0.5188679, a: 1}
+  m_SubtractiveShadowColor: {r: 0.7411765, g: 0.8156863, b: 1, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 59f000c0d8cc61543a75b6ecdfe0d0d1, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -6781,34 +6781,6 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.66
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.78
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -6.51
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.07451876
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.47234538
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.7850355
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.39377168
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
@@ -11735,7 +11707,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3313891023134956989, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 14.700027
+      value: 14.699951
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313891023134956989, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -35.69995
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447354277789092346, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}

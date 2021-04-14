@@ -1790,6 +1790,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3313891023134956989, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -35.69995
+      objectReference: {fileID: 0}
+    - target: {fileID: 3313891023134956989, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 14.699951
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447354277789092346, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8ce517c63ad4afb4da231894f860402e, type: 3}
 --- !u!1 &373404493 stripped
@@ -11351,34 +11363,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -2.66
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 4.78
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 8.24
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.005814017
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.504864
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.7885442
-      objectReference: {fileID: 0}
-    - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.35110784
-      objectReference: {fileID: 0}
     - target: {fileID: 6018168346009007592, guid: af183a21df331e94fb8bd7cee5be4a0e, type: 3}
       propertyPath: m_RootOrder
       value: 11

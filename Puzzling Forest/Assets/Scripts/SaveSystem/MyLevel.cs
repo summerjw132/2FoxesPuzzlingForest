@@ -5,13 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MyLevel")]
 public class MyLevel : ScriptableObject
 {
-    [Tooltip("Name of the Level you want to load")]
+    [Tooltip("Name of the level")]
     public string LevelName;
 
-    [Tooltip("Most optimal move count for completion")]
+    [Tooltip("Lowest move count the player has beaten the level with")]
     public string BestMoveCount;
 
-    [Tooltip("Most optimal undo count for completion")]
+    [Tooltip("Lowest undo count the player has beaten the level with")]
     public string UndoMoveCount;
 
     [Tooltip("Boolean to check if the level has been completed")]

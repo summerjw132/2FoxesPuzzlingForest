@@ -84,10 +84,12 @@ public class Tutorial_02 : TutorialScript
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+
+        if (other.CompareTag("Player") || other.CompareTag("ScriptTrigger"))
             return;
         if (!alreadyTriggered)
         {
+            Debug.Log("TriggerEnter by: " + other.name);
             alreadyTriggered = true;
             this.gameObject.GetComponent<BoxCollider>().enabled = false;
             StartCoroutine(GoodJob());
