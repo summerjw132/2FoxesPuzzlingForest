@@ -10,8 +10,9 @@ public class FoxHole : MonoBehaviour
     private FoxHole destinationFoxhole = null;
 
     //stuff to warn the player via UI if the exit hole is blocked
-    private WarningMessagesController warnController = null;
-    private static string coveredWarning = "The exit of this Fox Hole is covered by something!";
+    //NOTE: The WarningMessagesController is probably deprecated, Summer now says the warnings. Leaving this for now though.
+    //private WarningMessagesController warnController = null;
+    static string coveredWarning = "The exit of this Fox Hole is covered by something!";
 
     //stuff to track and affect the game object on top of the foxhole
     private GameObject standingOnMe = null;
@@ -34,7 +35,7 @@ public class FoxHole : MonoBehaviour
 
     private void Awake()
     {
-        warnController = GameObject.Find("UI Canvas").GetComponent<WarningMessagesController>();
+        //warnController = GameObject.Find("UI Canvas").GetComponent<WarningMessagesController>(); //likely deprecated
         turnManager = GameObject.FindGameObjectWithTag("TurnBasedSystem").GetComponent<TurnManager>();
     }
 
@@ -100,7 +101,8 @@ public class FoxHole : MonoBehaviour
             }
             else
             {
-                warnController.Warn(coveredWarning);
+                //warnController.Warn(coveredWarning);
+                turnManager.Say(coveredWarning);
             }
         }
     }
@@ -133,7 +135,8 @@ public class FoxHole : MonoBehaviour
         }
         else
         {
-            warnController.Warn(coveredWarning);
+            //warnController.Warn(coveredWarning);
+            turnManager.Say(coveredWarning);
         }
     }
 

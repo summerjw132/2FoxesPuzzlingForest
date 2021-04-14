@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Please See TutorialScript.cs for notes on these bad boys.
+/// </summary>
 public class Tutorial_05 : TutorialScript
 {
     private UnityEngine.UI.Button nextButton;
@@ -82,6 +85,8 @@ public class Tutorial_05 : TutorialScript
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("ScriptTrigger"))
+            return;
         if (!isFirstBlockDone)
         {
             isFirstBlockDone = true;

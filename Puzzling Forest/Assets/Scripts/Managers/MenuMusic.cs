@@ -7,7 +7,7 @@ public class MenuMusic : MonoBehaviour
 {
     private static GameObject instance;
     private AudioSource source;
-    private readonly string[] menuNames = new string[2] { "Main Menu 1", "Level Select" };
+    private readonly string[] menuNames = new string[3] { "Main Menu 1", "Level Select", "Credits Menu" };
 
     // Start is called before the first frame update
     void Awake()

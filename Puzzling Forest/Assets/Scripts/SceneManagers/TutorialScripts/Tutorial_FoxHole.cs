@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Please See TutorialScript.cs for notes on these bad boys.
+/// </summary>
 public class Tutorial_FoxHole : TutorialScript
 {
     // Start is called before the first frame update
@@ -27,7 +30,7 @@ public class Tutorial_FoxHole : TutorialScript
     private IEnumerator Begin()
     {
         yield return new WaitForSeconds(0.1f);
-        FairyController = turnManager.GetCurrentFairy().GetComponent<IndicatorAnimationController>();
+        FairyController = turnManager.GetCurrentFairy().GetComponent<TutFairyController>();
 
 		yield return new WaitForSeconds(turnManager.Say("Hello again! There's something new here.") + 0.1f);
 
@@ -46,6 +49,8 @@ public class Tutorial_FoxHole : TutorialScript
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("ScriptTrigger"))
+            return;
         turnManager.Say("Great job!");
     }
 }

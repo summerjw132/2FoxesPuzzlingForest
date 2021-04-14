@@ -3,12 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// This is the parent class for all of the Tutorial scripts. I'm not going to lie, since these are used in individual levels,
+///  it's not very re-usable, encapsulated code. Instead, these scripts pretty much manually call things when they need to happen and then
+///  wait for hard coded intervals before moving on. 
+///  
+/// Open up any Tutorial Scene and you'll see a "Tutorial_??" Game Object. Those only exist on the tutorial levels. This script (or one of
+///  its children) are attached to the DriftAnchor that is a part of the Tutorial Game Object.
+///  
+/// There's not much to say other than that. You'll generally have to go line by line to see what's happening, but the flip side to that coin
+///  is that there's no complicated inter-weaving of systems to worry about!
+/// </summary>
 public class TutorialScript : MonoBehaviour
 {
     protected TurnManager turnManager;
     protected GameObject FairyAnchor;
     protected GameObject Fairy;
-    protected IndicatorAnimationController FairyController;
+    protected TutFairyController FairyController;
     protected GameObject FairyCanvas;
     protected Text FairyText;
     protected GameObject TipsCanvas;
@@ -63,7 +74,7 @@ public class TutorialScript : MonoBehaviour
         }
 
         Fairy = FairyAnchor.transform.Find("Fairy").gameObject;
-        FairyController = Fairy.GetComponent<IndicatorAnimationController>();
+        FairyController = Fairy.GetComponent<TutFairyController>();
         FairyCanvas = FairyAnchor.transform.Find("FairyCanvas").gameObject;
         try
         {
@@ -89,6 +100,7 @@ public class TutorialScript : MonoBehaviour
         
     }
 
+    //Used for the typing effect for the dialogue.
     protected IEnumerator Type(Text text, string msg)
     {
         //if (typingNoise.volume > 0.05f)
@@ -128,6 +140,7 @@ public class TutorialScript : MonoBehaviour
             FairyCanvas.transform.localPosition = new Vector3(-0.909f, 0.94f, -0.809f);
     }
 
+    //Plays the alert noise and turns the given arrow visible. Used in some tutorial levels to point to places.
     protected void ShowArrow(GameObject arrow, bool val)
     {
         arrow.SetActive(val);
@@ -135,6 +148,7 @@ public class TutorialScript : MonoBehaviour
             alertNoise.Play();
     }
 
+    //Used in conjunction with the on-screen toggle button to hide/show tips during tutorials.
     public void ToggleTips()
     {
         isTipsShown = !isTipsShown;

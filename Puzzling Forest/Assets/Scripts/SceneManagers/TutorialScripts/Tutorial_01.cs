@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Please See TutorialScript.cs for notes on these bad boys.
+/// </summary>
 public class Tutorial_01 : TutorialScript
 {
     private Vector3 startLocation = new Vector3(1f, 1.89f, 2.45f);

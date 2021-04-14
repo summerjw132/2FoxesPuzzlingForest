@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
+//For TEST LOGS
+using System.IO;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// This class handles input and controls characters' turns
@@ -13,7 +16,7 @@ public class TurnManager : MonoBehaviour
     static private int numPlayers;
     private GameObject[] PlayerGroup;
     private FoxCharacter[] PlayerScripts;
-    private IndicatorAnimationController[] FairyScripts;
+    private FairyController[] FairyScripts;
     private FoxCharacter curPlayer;
     private int curTurnIndex = 0;
 
@@ -23,6 +26,8 @@ public class TurnManager : MonoBehaviour
     [HideInInspector] public bool isLevelComplete;
     public int undoCount = 0;
     public int totalMoveCount = 0;
+    //For TEST LOGS
+    private Timer timer;
 
     //Pause Menu Stuff
     private PauseMenuManager pauseManager;
@@ -44,7 +49,7 @@ public class TurnManager : MonoBehaviour
     private Coroutine walkQueuer = null;
 
     //For passing on Summer's last message
-    IndicatorAnimationController.SpeechController.KeepTalkingInfo contInfo;
+    FairyController.SpeechController.KeepTalkingInfo contInfo;
 
     private void Awake()
     {
@@ -56,8 +61,16 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].gameObject.SetActive(false);
+        }
+
         GiveTurn();
         keyJustPressed = false;
+
+        //For TEST LOGS
+        timer = this.gameObject.GetComponent<Timer>();
     }
 
     private void Update()
@@ -74,7 +87,7 @@ public class TurnManager : MonoBehaviour
                 {
                     //camera mode is toggled (this is done in a camera script)
                 }
-                if (curPlayer && !curPlayer.GetIsMoving() && !isAnimating && !cameraLock && !keyJustPressed)
+                if (curPlayer && !curPlayer.GetIsMoving() && curPlayer.CheckIfTakingTurns() && !isAnimating && !cameraLock && !keyJustPressed)
                     if (Input.GetKeyDown(KeyCode.E))
                     {
                         PressKey();
@@ -223,13 +236,13 @@ public class TurnManager : MonoBehaviour
         PlayerGroup = GameObject.FindGameObjectsWithTag("Player");
         numPlayers = PlayerGroup.Length;
         PlayerScripts = new FoxCharacter[numPlayers];
-        FairyScripts = new IndicatorAnimationController[numPlayers];
+        FairyScripts = new FairyController[numPlayers];
 
         for (int i = 0; i < numPlayers; i++)
         {
             PlayerScripts[i] = PlayerGroup[i].GetComponent<FoxCharacter>();
-            FairyScripts[i] = PlayerGroup[i].transform.Find("turnIndicator").GetComponent<IndicatorAnimationController>();
-            FairyScripts[i].gameObject.SetActive(false);
+            FairyScripts[i] = PlayerGroup[i].transform.Find("turnIndicator").GetComponent<FairyController>();
+            //FairyScripts[i].gameObject.SetActive(false);
         }
 
         curPlayer = PlayerScripts[curTurnIndex];
@@ -287,6 +300,8 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    //This is called by the SwapFox animation when the ball goes off the screen for the first one.
+    // It then handles activating the turn and playing the "catch" animation for the second one.
     public void SwappedFoxes()
     {
         if (curTurnIndex > -1)
@@ -300,6 +315,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    //These two functions are only used in tutorial levels to arrest control long enough for exposition.
     public void StealControl()
     {
         curPlayer.SetFairyActive(false);
@@ -314,6 +330,11 @@ public class TurnManager : MonoBehaviour
         curPlayer.SetTurnActive(true);
         curPlayer.CatchTheBall();
     }
+
+
+    //The following is stuff for the Summer/Fairy dialogue system. Each fox has its own Summer since they weren't
+    // originally intended to be personified. As such, the turn manager is needed in order to control WHICH Summer
+    // is being told to do what at a given time and for ensuring all of the Summers are on the same page.
 
     public float Say(string msg)
     {
@@ -334,6 +355,9 @@ public class TurnManager : MonoBehaviour
         return;
     }
 
+    //These are the functions that an individual Summer will call when she wants it to apply to all
+    // all Summers or just the Summers that are relevant. TurnManager (this) script then handels
+    // the logic for which Summers are actually relevant.
     public void ResetFairySpeechProgress()
     {
         for (int i = 0; i < numPlayers; i++)
@@ -347,6 +371,22 @@ public class TurnManager : MonoBehaviour
         for (int i = 0; i < numPlayers; i++)
         {
             FairyScripts[i].incrementMyProgress();
+        }
+    }
+
+    public void StopTalking()
+    {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].stopTalking();
+        }
+    }
+
+    public void ClearDialogue()
+    {
+        for (int i = 0; i < numPlayers; i++)
+        {
+            FairyScripts[i].clearDialogue();
         }
     }
 
@@ -388,12 +428,12 @@ public class TurnManager : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
-        Debug.Log("begin anim" + Time.time);
+        //Debug.Log("begin anim at: " + Time.time);
         isAnimating = true;
     }
     public void completeAnimation()
     {
-        Debug.Log("complete anim" + Time.time);
+        //Debug.Log("complete anim at: " + Time.time);
         isAnimating = false;
     }
 
@@ -410,5 +450,51 @@ public class TurnManager : MonoBehaviour
     public float GetKeyDelayDuration()
     {
         return keyDelayDuration;
+    }
+
+    //For TEST LOGS
+    public void LogUserTest()
+    {
+        string msg;
+        if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
+        {
+            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS";
+            File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+        }
+
+        msg = "\n" + SceneManager.GetActiveScene().name;
+        msg += "," + "reset";
+        msg += "," + timer.GetTime();
+        msg += "," + totalMoveCount;
+        msg += "," + undoCount;
+
+
+        File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+    }
+
+    //For TEST LOGS
+    public void LogUserTest(bool complete)
+    {
+        if (!complete)
+        {
+            LogUserTest();
+            return;
+        }
+
+        string msg;
+        if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
+        {
+            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS";
+            File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+        }
+
+        msg = "\n" + SceneManager.GetActiveScene().name;
+        msg += "," + "complete";
+        msg += "," + timer.GetTime();
+        msg += "," + totalMoveCount;
+        msg += "," + undoCount;
+
+
+        File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
     }
 }
