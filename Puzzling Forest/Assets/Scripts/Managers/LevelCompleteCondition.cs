@@ -21,7 +21,7 @@ public class LevelCompleteCondition : MonoBehaviour
     //Save/Load, permanent progress stuff
     private Scene curScene;
     private string curLevelName;
-    private LevelManager levelManager;
+    private LevelSelectManager levelManager;
 
     private void Awake()
     {
@@ -45,7 +45,7 @@ public class LevelCompleteCondition : MonoBehaviour
         curLevelName = curScene.name;
         try
         {
-            levelManager = GameObject.Find("LevelManager").GetComponent<LevelManager>();
+            levelManager = GameObject.Find("LevelSelectManager").GetComponent<LevelSelectManager>();
         }
         catch
         {
@@ -93,7 +93,8 @@ public class LevelCompleteCondition : MonoBehaviour
             {
                 VictoryData();
                 levelCompletePanel.SetActive(true);
-                
+                //For TEST LOGS
+                turnManager.LogUserTest(true);
             }
 
             //Save/Load stuff

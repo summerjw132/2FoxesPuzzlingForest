@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
+//For TEST LOGS
+using System.IO;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// This class handles input and controls characters' turns
@@ -23,6 +26,8 @@ public class TurnManager : MonoBehaviour
     [HideInInspector] public bool isLevelComplete;
     public int undoCount = 0;
     public int totalMoveCount = 0;
+    //For TEST LOGS
+    private Timer timer;
 
     //Pause Menu Stuff
     private PauseMenuManager pauseManager;
@@ -58,6 +63,9 @@ public class TurnManager : MonoBehaviour
 
         GiveTurn();
         keyJustPressed = false;
+
+        //For TEST LOGS
+        timer = this.gameObject.GetComponent<Timer>();
     }
 
     private void Update()
@@ -376,5 +384,51 @@ public class TurnManager : MonoBehaviour
     public void ToggleCameraMode()
     {
         cameraLock = !cameraLock;
+    }
+
+    //For TEST LOGS
+    public void LogUserTest()
+    {
+        string msg;
+        if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
+        {
+            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS";
+            File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+        }
+
+        msg = "\n" + SceneManager.GetActiveScene().name;
+        msg += "," + "reset";
+        msg += "," + timer.GetTime();
+        msg += "," + totalMoveCount;
+        msg += "," + undoCount;
+
+
+        File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+    }
+
+    //For TEST LOGS
+    public void LogUserTest(bool complete)
+    {
+        if (!complete)
+        {
+            LogUserTest();
+            return;
+        }
+
+        string msg;
+        if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
+        {
+            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS";
+            File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+        }
+
+        msg = "\n" + SceneManager.GetActiveScene().name;
+        msg += "," + "complete";
+        msg += "," + timer.GetTime();
+        msg += "," + totalMoveCount;
+        msg += "," + undoCount;
+
+
+        File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
     }
 }
