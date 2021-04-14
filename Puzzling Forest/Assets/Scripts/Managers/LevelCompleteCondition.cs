@@ -93,7 +93,8 @@ public class LevelCompleteCondition : MonoBehaviour
             {
                 VictoryData();
                 levelCompletePanel.SetActive(true);
-                
+                //For TEST LOGS
+                turnManager.LogUserTest(true);
             }
 
             //Save/Load stuff

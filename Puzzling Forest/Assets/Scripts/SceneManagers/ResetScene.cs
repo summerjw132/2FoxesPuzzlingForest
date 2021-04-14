@@ -20,6 +20,17 @@ public class ResetScene : MonoBehaviour
     }
     public void ResetCurrentScene()
     {
+        //For TEST LOGS
+        //Adding a delay here because we now want to log user test data. Remove this after test builds.
+        // The logging method itself is handled in the turn manager.
+        //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        StartCoroutine(DelayReset());
+    }
+
+    //For TEST LOGS
+    private IEnumerator DelayReset()
+    {
+        yield return new WaitForSeconds(0.25f);
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
