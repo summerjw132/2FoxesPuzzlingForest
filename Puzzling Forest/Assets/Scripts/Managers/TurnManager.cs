@@ -455,14 +455,16 @@ public class TurnManager : MonoBehaviour
     //For TEST LOGS
     public void LogUserTest()
     {
+        System.DateTime localDateTime = System.DateTime.Now;
         string msg;
         if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
         {
-            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
+            msg = "DATE,NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
             File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
         }
 
-        msg = "\n" + SceneManager.GetActiveScene().name;
+        msg = "\n" + localDateTime.ToString();
+        msg += "," + SceneManager.GetActiveScene().name;
         msg += "," + "reset";
         msg += "," + timer.GetTime();
         msg += "," + totalMoveCount;
@@ -484,20 +486,21 @@ public class TurnManager : MonoBehaviour
         else
             completionStatus = "completed";
 
+        System.DateTime localDateTime = System.DateTime.Now;
         string msg;
         if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
         {
-            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
+            msg = "DATE,NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
             File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
         }
 
-        msg = "\n" + SceneManager.GetActiveScene().name;
+        msg = "\n" + localDateTime.ToString();
+        msg += "," + SceneManager.GetActiveScene().name;
         msg += "," + completionStatus;
         msg += "," + timer.GetTime();
         msg += "," + totalMoveCount;
         msg += "," + undoCount;
         msg += "," + PlayerPrefs.GetString("Speed");
-
 
         File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
     }
