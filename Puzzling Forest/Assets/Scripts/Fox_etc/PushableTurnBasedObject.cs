@@ -34,6 +34,24 @@ public class PushableTurnBasedObject : TurnBasedCharacter
     {
         base.Start();
 
+        if (PlayerPrefs.HasKey("Speed"))
+        {
+            if (PlayerPrefs.GetString("Speed") == "Normal")
+                SecondsToMove = normalSpeedRock;
+            else if (PlayerPrefs.GetString("Speed") == "Hyper")
+                SecondsToMove = hyperSpeed;
+            else
+            {
+                SecondsToMove = normalSpeedRock;
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetString("Speed", "Normal");
+            PlayerPrefs.Save();
+            SecondsToMove = normalSpeedRock;
+        }
+
         UpdateSpeed();
     }
 

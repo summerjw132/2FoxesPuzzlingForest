@@ -17,18 +17,23 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     
 
     //Used for determining when to move and where to
-    [Tooltip("How many seconds should it take a fox to move to another tile? Affects walk and push speeds, was 0.5")]
-    [SerializeField] protected float SecondsToMove = 0.5f;
     protected bool isMoving = false;
     protected Vector3 targetMoveToPosition;
+    //Some constants that might need to be tuned later.
+    protected float moveSpeed = 2.0f; //Move Speed. Used in Vector3.MoveTowards(). Subject to "SecondsToMove" below.
+    //This variable determines the seconds to complete a move. It is set in the Fox and Rox Start() methods. It assumes
+    // the value of the constants below based on the PlayerPrefs key "Speed" being "Normal" or "Hyper". User can change the
+    // setting from the main menu.
+    protected float SecondsToMove;
+    protected const float normalSpeedFox = 0.36f;
+    protected const float normalSpeedRock = 0.3f;
+    protected const float hyperSpeed = 0.01f;
 
     //Used for undoing moves, writes positions of each object using undoManager.
     // The bool is used for when to "seal" a set of positions as "one move."
     protected UndoManager undoManager;
     protected bool needToWrite = false;
- 
-    //Some constants that might need to be tuned later.
-    protected float moveSpeed = 2.0f; //Move Speed. Used in Vector3.MoveTowards()
+
     protected int maxDepth = 20; //How far to check a cliff-fall to see if it will hit anything.
 
     //UI Warn Message Stuff

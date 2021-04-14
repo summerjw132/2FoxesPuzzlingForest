@@ -60,6 +60,26 @@ public class FoxCharacter : TurnBasedCharacter
         base.Start();
 
         writeDelay = new WaitForSeconds(turnManager.GetKeyDelayDuration() * 0.75f);
+
+        if (PlayerPrefs.HasKey("Speed"))
+        {
+            if (PlayerPrefs.GetString("Speed") == "Normal")
+                SecondsToMove = normalSpeedFox;
+            else if (PlayerPrefs.GetString("Speed") == "Hyper")
+                SecondsToMove = hyperSpeed;
+            else
+            {
+                Debug.LogError("PlayerPrefs has key Speed but value was not expected.");
+                SecondsToMove = normalSpeedFox;
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetString("Speed", "Normal");
+            PlayerPrefs.Save();
+            SecondsToMove = normalSpeedFox;
+        }
+
         UpdateSpeed();
     }
 
