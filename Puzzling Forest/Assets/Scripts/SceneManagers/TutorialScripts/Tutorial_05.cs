@@ -85,6 +85,8 @@ public class Tutorial_05 : TutorialScript
 
     void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("ScriptTrigger"))
+            return;
         if (!isFirstBlockDone)
         {
             isFirstBlockDone = true;

@@ -47,6 +47,8 @@ public class Tutorial_04 : TutorialScript
 
 	void OnTriggerEnter(Collider other)
 	{
+		if (other.CompareTag("ScriptTrigger"))
+			return;
 		turnManager.Say("Great job!");
 	}
 }
