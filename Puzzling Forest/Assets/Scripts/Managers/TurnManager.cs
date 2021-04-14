@@ -458,7 +458,7 @@ public class TurnManager : MonoBehaviour
         string msg;
         if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
         {
-            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS";
+            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
             File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
         }
 
@@ -467,32 +467,36 @@ public class TurnManager : MonoBehaviour
         msg += "," + timer.GetTime();
         msg += "," + totalMoveCount;
         msg += "," + undoCount;
+        msg += "," + PlayerPrefs.GetString("Speed");
 
 
         File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
     }
 
     //For TEST LOGS
+    // Note: this is hooked up to the level complete condition, the one above is hooked up to the rest button,
+    // and this one is now also hooked up to the exit button in the pause menu
     public void LogUserTest(bool complete)
     {
+        string completionStatus;
         if (!complete)
-        {
-            LogUserTest();
-            return;
-        }
+            completionStatus = "exited";
+        else
+            completionStatus = "completed";
 
         string msg;
         if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
         {
-            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS";
+            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
             File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
         }
 
         msg = "\n" + SceneManager.GetActiveScene().name;
-        msg += "," + "complete";
+        msg += "," + completionStatus;
         msg += "," + timer.GetTime();
         msg += "," + totalMoveCount;
         msg += "," + undoCount;
+        msg += "," + PlayerPrefs.GetString("Speed");
 
 
         File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
