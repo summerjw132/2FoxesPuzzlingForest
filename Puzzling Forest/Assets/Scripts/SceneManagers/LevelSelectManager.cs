@@ -77,7 +77,7 @@ public class LevelSelectManager : MonoBehaviour
                 if (totalCount >= allLevels.Count)
                     isValidButton = false;
 
-                curButton = GameObject.Find(curBranch.name + "/Canvas/LeafButton (" + (j + 1) + ")");
+                curButton = GameObject.Find(curBranch.name + "/Canvas/Branch/LeafButton (" + (j + 1) + ")");
                 leaves[totalCount] = curButton;
                 if (isValidButton)
                 {
