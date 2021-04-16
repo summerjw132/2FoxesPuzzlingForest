@@ -8,9 +8,9 @@ public class UndoManager : MonoBehaviour
     {
         public List<StateInfo> turnState;
 
-        public void AddState(GameObject incomingGO)
+        public void AddState(GameObject incomingGO, float[] forcePosition = null)
         {
-            turnState.Add(new StateInfo(incomingGO));
+            turnState.Add(new StateInfo(incomingGO, forcePosition));
         }
 
         public void Reset()
@@ -53,14 +53,26 @@ public class UndoManager : MonoBehaviour
         public Vector3 position;
         public Quaternion rotation;
 
-        public StateInfo(GameObject incomingGO)
+        public StateInfo(GameObject incomingGO, float[] forcePosition = null)
         {
-            GO = incomingGO;
-            position = GO.transform.position;
-            if (GO.CompareTag("Player"))
-                rotation = GO.transform.Find("Fox").transform.rotation;
+            if (forcePosition == null)
+            {
+                GO = incomingGO;
+                position = GO.transform.position;
+                if (GO.CompareTag("Player"))
+                    rotation = GO.transform.Find("Fox").rotation;
+                else
+                    rotation = GO.transform.rotation;
+            }
             else
-                rotation = GO.transform.rotation;
+            {
+                GO = incomingGO;
+                position = new Vector3(forcePosition[0], forcePosition[1], forcePosition[2]);
+                if (GO.CompareTag("Player"))
+                    rotation = GO.transform.Find("Fox").rotation;
+                else
+                    rotation = GO.transform.rotation;
+            }
         }
 
         //Print
@@ -81,10 +93,10 @@ public class UndoManager : MonoBehaviour
         turnManager = GameObject.Find("Turn-Based System").GetComponent<TurnManager>();
     }
 
-    public void LogState(GameObject incomingGO)
+    public void LogState(GameObject incomingGO, float[] forcePosition = null)
     {
         //Debug.LogFormat("adding {0} to curTurnState", incomingGO.name);
-        curTurnState.AddState(incomingGO);
+        curTurnState.AddState(incomingGO, forcePosition);
     }
 
     public void WriteTurnState()

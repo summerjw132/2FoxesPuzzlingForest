@@ -40,8 +40,13 @@ public class TurnManager : MonoBehaviour
     private bool keyJustPressed = true;
     private bool pauseLock = false;
     private bool cameraLock = false;
-    private WaitForSeconds keyDelay = new WaitForSeconds(0.2f);
+    private const float keyDelayDuration = 0.2f;
+    private WaitForSeconds keyDelay = new WaitForSeconds(keyDelayDuration);
     private Coroutine keyDelayer = null;
+
+    //For continuous walking
+    private bool walkQueued = false;
+    private Coroutine walkQueuer = null;
 
     //For passing on Summer's last message
     FairyController.SpeechController.KeepTalkingInfo contInfo;
@@ -145,6 +150,62 @@ public class TurnManager : MonoBehaviour
 
             default:
                 break;
+        }
+    }
+
+    public void StartWalkingQueuer()
+    {
+        walkQueued = false;
+        if (walkQueuer != null)
+        {
+            Debug.Log("tried to start walkQueuer while one existed!");
+            StopCoroutine(walkQueuer);
+            walkQueuer = StartCoroutine(WalkQueuer());
+        }
+        else
+        {
+            walkQueuer = StartCoroutine(WalkQueuer());
+        }
+    }
+    public void StopWalkingQueuer()
+    {
+        if (walkQueuer == null)
+        {
+            return;
+        }
+
+        StopCoroutine(walkQueuer);
+        walkQueuer = null;
+
+        if (walkQueued)
+        {
+            curPlayer.TryKeepWalking();
+        }
+        else
+        {
+            curPlayer.StopWalking();
+        }
+    }
+    private IEnumerator WalkQueuer()
+    {
+        while (true)
+        {
+            if (Input.anyKey)
+            {
+                if (!pauseLock)
+                {
+                    if (curPlayer && !cameraLock && !keyJustPressed)
+                    {
+                        if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow))
+                        {
+                            PressKey();
+                            walkQueued = true;
+                            StopWalkingQueuer();
+                        }
+                    }
+                }
+            }
+            yield return null;
         }
     }
 
@@ -386,48 +447,60 @@ public class TurnManager : MonoBehaviour
         cameraLock = !cameraLock;
     }
 
+    public float GetKeyDelayDuration()
+    {
+        return keyDelayDuration;
+    }
+
     //For TEST LOGS
     public void LogUserTest()
     {
+        System.DateTime localDateTime = System.DateTime.Now;
         string msg;
         if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
         {
-            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS";
+            msg = "DATE,NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
             File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
         }
 
-        msg = "\n" + SceneManager.GetActiveScene().name;
+        msg = "\n" + localDateTime.ToString();
+        msg += "," + SceneManager.GetActiveScene().name;
         msg += "," + "reset";
         msg += "," + timer.GetTime();
         msg += "," + totalMoveCount;
         msg += "," + undoCount;
+        msg += "," + PlayerPrefs.GetString("Speed");
 
 
         File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
     }
 
     //For TEST LOGS
+    // Note: this is hooked up to the level complete condition, the one above is hooked up to the rest button,
+    // and this one is now also hooked up to the exit button in the pause menu
     public void LogUserTest(bool complete)
     {
+        string completionStatus;
         if (!complete)
-        {
-            LogUserTest();
-            return;
-        }
+            completionStatus = "exited";
+        else
+            completionStatus = "completed";
 
+        System.DateTime localDateTime = System.DateTime.Now;
         string msg;
         if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
         {
-            msg = "NAME,COMPLETE/RESET,TIME,MOVES,UNDOS";
+            msg = "DATE,NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
             File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
         }
 
-        msg = "\n" + SceneManager.GetActiveScene().name;
-        msg += "," + "complete";
+        msg = "\n" + localDateTime.ToString();
+        msg += "," + SceneManager.GetActiveScene().name;
+        msg += "," + completionStatus;
         msg += "," + timer.GetTime();
         msg += "," + totalMoveCount;
         msg += "," + undoCount;
-
+        msg += "," + PlayerPrefs.GetString("Speed");
 
         File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
     }

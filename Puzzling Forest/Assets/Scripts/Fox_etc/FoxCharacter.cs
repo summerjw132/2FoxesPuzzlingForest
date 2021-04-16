@@ -18,6 +18,10 @@ public class FoxCharacter : TurnBasedCharacter
     private MoveOptions thisMove = MoveOptions.None;
     public bool isAnimating { get; private set; }
 
+    //For writing to undoManager
+    private WaitForSeconds writeDelay;
+    private float[] futurePosition = new float[3];
+
     //GUI stuff for foxholes
     private FoxHole curFoxholeScript = null;
     private bool displayButton;
@@ -54,6 +58,27 @@ public class FoxCharacter : TurnBasedCharacter
     protected override void Start()
     {
         base.Start();
+
+        writeDelay = new WaitForSeconds(turnManager.GetKeyDelayDuration() * 0.75f);
+
+        if (PlayerPrefs.HasKey("Speed"))
+        {
+            if (PlayerPrefs.GetString("Speed") == "Normal")
+                SecondsToMove = normalSpeedFox;
+            else if (PlayerPrefs.GetString("Speed") == "Hyper")
+                SecondsToMove = hyperSpeed;
+            else
+            {
+                Debug.LogError("PlayerPrefs has key Speed but value was not expected.");
+                SecondsToMove = normalSpeedFox;
+            }
+        }
+        else
+        {
+            PlayerPrefs.SetString("Speed", "Normal");
+            PlayerPrefs.Save();
+            SecondsToMove = normalSpeedFox;
+        }
 
         UpdateSpeed();
     }
@@ -106,7 +131,7 @@ public class FoxCharacter : TurnBasedCharacter
         {
             //undo stuff
             undoManager.LogState(this.gameObject);
-            needToWrite = true;
+            WriteToUndoManager();
 
             //moving stuff
             targetMoveToPosition = currentPosition + curFacing;
@@ -129,6 +154,54 @@ public class FoxCharacter : TurnBasedCharacter
                     break;
             }
         }
+    }
+
+    public void TryKeepWalking()
+    {
+        //The foxes current facing direction used for any input
+        Vector3 curFacing = foxTransform.forward.normalized;
+
+        if (OkayToMoveToNextTile(targetMoveToPosition + curFacing))
+        {
+            //undo stuff
+            futurePosition[0] = targetMoveToPosition.x;
+            futurePosition[1] = targetMoveToPosition.y;
+            futurePosition[2] = targetMoveToPosition.z;
+            undoManager.LogState(this.gameObject, futurePosition);
+            WriteToUndoManager();
+
+            //moving stuff
+            targetMoveToPosition = targetMoveToPosition + curFacing;
+            IncrementMoveCounter();
+
+            //animation for this move
+            animController.FreezeState(true);
+            switch (thisMove)
+            {
+                case MoveOptions.Walk:
+                    animController.startWalking();
+                    thisMove = MoveOptions.None;
+                    break;
+
+                case MoveOptions.Push:
+                    animController.startPushing();
+                    thisMove = MoveOptions.None;
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        else
+        {
+            StopWalking();
+        }
+    }
+
+    public void StopWalking()
+    {
+        animController.FreezeState(false);
+        completeAnimation();
     }
 
     //TurnManager calls this with A or D input, tries to rotate fox left or right respectively
@@ -333,5 +406,26 @@ public class FoxCharacter : TurnBasedCharacter
     public void ToggleIndicator(bool b)
     {
         turnIndicator.SetActive(b);
+    }
+
+    public void StartWalkingQueuer()
+    {
+        turnManager.StartWalkingQueuer();
+    }
+
+    public void StopWalkingQueuer()
+    {
+        turnManager.StopWalkingQueuer();
+    }
+
+    private void WriteToUndoManager()
+    {
+        StartCoroutine(DelayWriteToUndoManager());
+    }
+
+    private IEnumerator DelayWriteToUndoManager()
+    {
+        yield return writeDelay;
+        undoManager.WriteTurnState();
     }
 }
