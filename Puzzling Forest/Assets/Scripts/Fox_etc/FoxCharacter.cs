@@ -161,6 +161,14 @@ public class FoxCharacter : TurnBasedCharacter
         //The foxes current facing direction used for any input
         Vector3 curFacing = foxTransform.forward.normalized;
 
+        //Manual check to not walk through a house
+        Collider[] forwardBlocks = Physics.OverlapSphere(targetMoveToPosition, 0.1f);
+        if (forwardBlocks.Length > 0 && forwardBlocks[0].gameObject.CompareTag("House"))
+        {
+            StopWalking();
+            return;
+        }
+
         if (OkayToMoveToNextTile(targetMoveToPosition + curFacing))
         {
             //undo stuff
