@@ -38,6 +38,7 @@ public class LevelSelectManager : MonoBehaviour
     {
         if (scene.name == "LevelSelectMenu")
         {
+            curBranch = 0;
             LoadFromFile();
             SetUpMenu();
             SetLevelPermission();
