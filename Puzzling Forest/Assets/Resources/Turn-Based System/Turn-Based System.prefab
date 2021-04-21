@@ -634,10 +634,54 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5661979894950328558, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 273
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661979894950328558, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -73
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661979894950328558, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661979894950328558, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661979894950328558, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5661979894950328558, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7030170979012830509, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 7553256288095999967}
+    - target: {fileID: 7993305585734665647, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_Text
+      value: Level 50
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993305585734665647, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 4f530ee56092a994ea5cd7aaa246e7c7, type: 3}
+    - target: {fileID: 7993305585734665647, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 7993305585734665647, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_FontData.m_FontStyle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8131696453494105414, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
+      propertyPath: m_Name
+      value: LevelIndicator
+      objectReference: {fileID: 0}
     - target: {fileID: 8134302182626821757, guid: de0c26347827c7b4abf72d450a746f0d, type: 3}
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 

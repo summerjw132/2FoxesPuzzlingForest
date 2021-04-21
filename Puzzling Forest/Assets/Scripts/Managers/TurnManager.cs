@@ -21,6 +21,7 @@ public class TurnManager : MonoBehaviour
     private int curTurnIndex = 0;
 
     //Scoring stuff
+    private LevelSelectManager levelManager;
     [SerializeField] private Text moveCountUIText = null;
     [SerializeField] private Text undoCountUIText = null;
     [HideInInspector] public bool isLevelComplete;
@@ -61,6 +62,7 @@ public class TurnManager : MonoBehaviour
 
     private void Start()
     {
+        Time.maximumDeltaTime = keyDelayDuration;
         for (int i = 0; i < numPlayers; i++)
         {
             FairyScripts[i].gameObject.SetActive(false);
@@ -68,6 +70,17 @@ public class TurnManager : MonoBehaviour
 
         GiveTurn();
         keyJustPressed = false;
+
+        //For displaying level name... kind of tricky since its index is unrelated
+        try
+        {
+            levelManager = GameObject.Find("LevelSelectManager").GetComponent<LevelSelectManager>();
+            transform.Find("UI Canvas/Panel_Info/LevelIndicator").GetComponent<Text>().text = "Level " + (levelManager.GetLevelIndex(SceneManager.GetActiveScene().name)+1);
+        }
+        catch
+        {
+            //Do nothing
+        }
 
         //For TEST LOGS
         timer = this.gameObject.GetComponent<Timer>();
@@ -428,12 +441,12 @@ public class TurnManager : MonoBehaviour
     // While the flag is set, user input is not accepted.
     public void beginAnimation()
     {
-        //Debug.Log("begin anim at: " + Time.time);
+        Debug.Log("begin anim at: " + Time.time);
         isAnimating = true;
     }
     public void completeAnimation()
     {
-        //Debug.Log("complete anim at: " + Time.time);
+        Debug.Log("complete anim at: " + Time.time);
         isAnimating = false;
     }
 
@@ -455,12 +468,31 @@ public class TurnManager : MonoBehaviour
     //For TEST LOGS
     public void LogUserTest()
     {
+        int randID;
+        if (PlayerPrefs.HasKey("randomID"))
+            randID = PlayerPrefs.GetInt("randomID");
+        else
+        {
+            PlayerPrefs.SetInt("randomID", Random.Range(10000, 99999));
+            randID = PlayerPrefs.GetInt("randomID");
+        }
+        string fileName = "/PuzzlingForestLog_" + randID + ".csv" ;
+
         System.DateTime localDateTime = System.DateTime.Now;
         string msg;
-        if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
+        if (!File.Exists(Application.persistentDataPath + fileName))
         {
             msg = "DATE,NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
-            File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+            File.AppendAllText(Application.persistentDataPath + fileName, msg);
+
+            //System Info
+            string sysInfo;
+            sysInfo = ",,,deviceModel,graphicsID,operatingSystem";
+            sysInfo += "\n,,,,,,,,";
+            sysInfo += "," + SystemInfo.deviceModel.Replace(",", ".");
+            sysInfo += "," + SystemInfo.graphicsDeviceName.Replace(",", ".");
+            sysInfo += "," + SystemInfo.operatingSystem.Replace(",", ".");
+            File.AppendAllText(Application.persistentDataPath + fileName, sysInfo);
         }
 
         msg = "\n" + localDateTime.ToString();
@@ -472,7 +504,7 @@ public class TurnManager : MonoBehaviour
         msg += "," + PlayerPrefs.GetString("Speed");
 
 
-        File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+        File.AppendAllText(Application.persistentDataPath + fileName, msg);
     }
 
     //For TEST LOGS
@@ -480,6 +512,16 @@ public class TurnManager : MonoBehaviour
     // and this one is now also hooked up to the exit button in the pause menu
     public void LogUserTest(bool complete)
     {
+        int randID;
+        if (PlayerPrefs.HasKey("randomID"))
+            randID = PlayerPrefs.GetInt("randomID");
+        else
+        {
+            PlayerPrefs.SetInt("randomID", Random.Range(10000, 99999));
+            randID = PlayerPrefs.GetInt("randomID");
+        }
+        string fileName = "/PuzzlingForestLog_" + randID + ".csv";
+
         string completionStatus;
         if (!complete)
             completionStatus = "exited";
@@ -488,10 +530,19 @@ public class TurnManager : MonoBehaviour
 
         System.DateTime localDateTime = System.DateTime.Now;
         string msg;
-        if (!File.Exists(Application.persistentDataPath + "/UserTestLog.csv"))
+        if (!File.Exists(Application.persistentDataPath + fileName))
         {
             msg = "DATE,NAME,COMPLETE/RESET,TIME,MOVES,UNDOS,MODE";
-            File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+            File.AppendAllText(Application.persistentDataPath + fileName, msg);
+
+            //System Info
+            string sysInfo;
+            sysInfo = ",,,deviceModel,graphicsID,operatingSystem";
+            sysInfo += "\n,,,,,,,,";
+            sysInfo += "," + SystemInfo.deviceModel.Replace(",", ".");
+            sysInfo += "," + SystemInfo.graphicsDeviceName.Replace(",",".");
+            sysInfo += "," + SystemInfo.operatingSystem.Replace(",", ".");
+            File.AppendAllText(Application.persistentDataPath + fileName, sysInfo);
         }
 
         msg = "\n" + localDateTime.ToString();
@@ -502,6 +553,6 @@ public class TurnManager : MonoBehaviour
         msg += "," + undoCount;
         msg += "," + PlayerPrefs.GetString("Speed");
 
-        File.AppendAllText(Application.persistentDataPath + "/UserTestLog.csv", msg);
+        File.AppendAllText(Application.persistentDataPath + fileName, msg);
     }
 }
