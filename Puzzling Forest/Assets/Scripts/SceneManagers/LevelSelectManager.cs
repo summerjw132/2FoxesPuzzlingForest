@@ -151,6 +151,16 @@ public class LevelSelectManager : MonoBehaviour
         }
     }
 
+    public int GetLevelIndex(string levelName)
+    {
+        for (int i = 0; i < allLevels.Count; i++)
+        {
+            if (allLevels[i].LevelName == levelName)
+                return i;
+        }
+        return -1;
+    }
+
     /// <summary>
     /// This method sets the buttons to active or inactive depending on whether or not the corresponding Scriptable
     /// Object in the allLevels list indicates the level isUnlocked or not. Also tells the leaf managers
