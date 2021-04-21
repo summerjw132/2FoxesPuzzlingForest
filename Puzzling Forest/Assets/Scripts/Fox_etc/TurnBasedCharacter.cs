@@ -27,7 +27,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected float SecondsToMove;
     protected const float normalSpeedFox = 0.36f;
     protected const float normalSpeedRock = 0.3f;
-    protected const float hyperSpeed = 0.01f;
+    protected const float hyperSpeedFox = 0.02f;
+    protected const float hyperSpeedRock = 0.01f;
 
     //Used for undoing moves, writes positions of each object using undoManager.
     // The bool is used for when to "seal" a set of positions as "one move."
@@ -60,6 +61,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
 
         //a reference to the UndoManager script that handles undoing stuff (every movable object needs this)
         undoManager = GameObject.Find("GameManager").GetComponent<UndoManager>();
+
+        //Time.timeScale = 10f;
     }
 
     //This doesn't happen until right before the first call to Update(). Importantly, after Awake()
@@ -214,7 +217,7 @@ public abstract class TurnBasedCharacter : MonoBehaviour
                 //if the floor is moving, that's no good!
                 if (pushableScript.isMoving)
                 {
-                    Debug.Log("That floor is falling!");
+                    //Debug.Log("That floor is falling!");
                     return false;
                 }
                 else
