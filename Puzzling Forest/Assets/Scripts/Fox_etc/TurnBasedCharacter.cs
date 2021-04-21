@@ -27,8 +27,8 @@ public abstract class TurnBasedCharacter : MonoBehaviour
     protected float SecondsToMove;
     protected const float normalSpeedFox = 0.36f;
     protected const float normalSpeedRock = 0.3f;
-    protected const float hyperSpeedFox = 0.02f;
-    protected const float hyperSpeedRock = 0.01f;
+    protected const float hyperSpeedFox = 0.2f;
+    protected const float hyperSpeedRock = 0.17f;
 
     //Used for undoing moves, writes positions of each object using undoManager.
     // The bool is used for when to "seal" a set of positions as "one move."
