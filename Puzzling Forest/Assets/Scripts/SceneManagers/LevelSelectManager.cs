@@ -38,6 +38,7 @@ public class LevelSelectManager : MonoBehaviour
     {
         if (scene.name == "LevelSelectMenu")
         {
+            curBranch = 0;
             LoadFromFile();
             SetUpMenu();
             SetLevelPermission();
@@ -148,6 +149,16 @@ public class LevelSelectManager : MonoBehaviour
         {
             Debug.LogError("Tried to update SOs using the save file but they were of uneven length...");
         }
+    }
+
+    public int GetLevelIndex(string levelName)
+    {
+        for (int i = 0; i < allLevels.Count; i++)
+        {
+            if (allLevels[i].LevelName == levelName)
+                return i;
+        }
+        return -1;
     }
 
     /// <summary>

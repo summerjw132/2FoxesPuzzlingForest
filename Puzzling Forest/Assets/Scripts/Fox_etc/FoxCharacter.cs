@@ -66,7 +66,7 @@ public class FoxCharacter : TurnBasedCharacter
             if (PlayerPrefs.GetString("Speed") == "Normal")
                 SecondsToMove = normalSpeedFox;
             else if (PlayerPrefs.GetString("Speed") == "Hyper")
-                SecondsToMove = hyperSpeed;
+                SecondsToMove = hyperSpeedFox;
             else
             {
                 Debug.LogError("PlayerPrefs has key Speed but value was not expected.");
@@ -161,6 +161,14 @@ public class FoxCharacter : TurnBasedCharacter
         //The foxes current facing direction used for any input
         Vector3 curFacing = foxTransform.forward.normalized;
 
+        //Manual check to not walk through a house
+        Collider[] forwardBlocks = Physics.OverlapSphere(targetMoveToPosition, 0.2f);
+        if (forwardBlocks.Length > 0 && forwardBlocks[0].gameObject.CompareTag("House"))
+        {
+            StopWalking();
+            return;
+        }
+
         if (OkayToMoveToNextTile(targetMoveToPosition + curFacing))
         {
             //undo stuff
@@ -171,7 +179,7 @@ public class FoxCharacter : TurnBasedCharacter
             WriteToUndoManager();
 
             //moving stuff
-            targetMoveToPosition = targetMoveToPosition + curFacing;
+            targetMoveToPosition += curFacing;
             IncrementMoveCounter();
 
             //animation for this move
@@ -248,19 +256,22 @@ public class FoxCharacter : TurnBasedCharacter
     //overrided method from TBC script because foxes want to ignore houses in this check
     protected override bool NoWallIsPresent(Vector3 nextTilePosition)
     {
-        Collider[] wallHitColliders = Physics.OverlapSphere(nextTilePosition, .1f);
+        Collider[] wallHitColliders = Physics.OverlapSphere(nextTilePosition, .3f);
+        int colliderCount = wallHitColliders.Length;
 
-        if (wallHitColliders.Length > 0) //there's something here, could be hut or wall etc.
+        if (colliderCount > 0) //there's something here, could be hut or wall etc.
         {
-            for (int i = 0; i < wallHitColliders.Length; i++)
+            for (int i = 0; i < colliderCount; i++)
             {
                 if (wallHitColliders[i].CompareTag("House"))
                 {
                     return true;
                 }
             }
-            if (wallHitColliders[0].CompareTag("ScriptTrigger"))
+            if (wallHitColliders[0].CompareTag("ScriptTrigger") && colliderCount == 1)
+            {
                 return true;
+            }
             return false;
         }
         else //no Colliders in target position
